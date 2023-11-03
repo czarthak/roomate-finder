@@ -6,13 +6,6 @@ import jakarta.persistence.*;
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "USER")
 public class User {
-    public Integer getPid() {
-        return pid;
-    }
-
-    public void setPid(Integer pid) {
-        this.pid = pid;
-    }
 
     public String getFname() {
         return fname;
@@ -46,9 +39,6 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer pid;
 
     private String fname;
 
@@ -58,7 +48,8 @@ public class User {
 
     private Integer phoneNumber;
 
-
+    @Id
+    @Column(nullable = false)
     private String email;
 
     public String getEmail() {
