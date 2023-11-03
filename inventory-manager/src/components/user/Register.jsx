@@ -10,11 +10,6 @@ export const Register = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(fname);
-    console.log(lname);
-    console.log(email);
-    console.log(phoneNumber);
-    console.log(pass);
 
     Axios.post("http://localhost:8080/user/add", {
       email: email,
@@ -22,6 +17,8 @@ export const Register = (props) => {
       fname: fname,
       phoneNumber: phoneNumber,
       password: pass,
+    }).then((response) => {
+      console.log(response);
     });
   };
 
