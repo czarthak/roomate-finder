@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS USER (
     lname VARCHAR(64) NOT NULL,
     fname VARCHAR(64) NOT NULL,
     password VARCHAR(32) NOT NULL,
-    phoneNumber VARCHAR(14),
+    phone_number VARCHAR(14),
     email VARCHAR(128) NOT NULL,
     PRIMARY KEY (pid)
 );
