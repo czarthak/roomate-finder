@@ -1,15 +1,28 @@
 import React, { useState } from "react";
+import Axios from "axios";
 
 export const Register = (props) => {
-  const [email, setEmail] = useState("");
-  const [pid, setPid] = useState("");
-  const [pass, setPass] = useState("");
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [pass, setPass] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(fname);
+    console.log(lname);
     console.log(email);
+    console.log(phoneNumber);
+    console.log(pass);
+
+    Axios.post("http://localhost:8080/user/add", {
+      email: email,
+      lname: lname,
+      fname: fname,
+      phoneNumber: phoneNumber,
+      password: pass,
+    });
   };
 
   return (
@@ -46,20 +59,11 @@ export const Register = (props) => {
 
         <label htmlFor="phoneNumber">Phone Number</label>
         <input
-          value={pid}
-          onChange={(e) => setPid(e.target.value)}
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
           id="phoneNumber"
           name="phoneNumber"
           placeholder="###-###-####"
-        />
-
-        <label htmlFor="pid">PID</label>
-        <input
-          value={pid}
-          onChange={(e) => setPid(e.target.value)}
-          name="pid"
-          id="pid"
-          placeholder="Your PID"
         />
 
         <label htmlFor="password">Password</label>

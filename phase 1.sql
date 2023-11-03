@@ -1,14 +1,13 @@
--- DROP DATABASE IF EXISTS inventory;
--- CREATE DATABASE IF NOT EXISTS inventory;
+DROP DATABASE IF EXISTS inventory;
+CREATE DATABASE IF NOT EXISTS inventory;
 
 CREATE TABLE IF NOT EXISTS USER (
-	pid INT AUTO_INCREMENT,
+	email VARCHAR(128) NOT NULL,
     lname VARCHAR(64) NOT NULL,
     fname VARCHAR(64) NOT NULL,
     password VARCHAR(32) NOT NULL,
     phone_number VARCHAR(14),
-    email VARCHAR(128) NOT NULL,
-    PRIMARY KEY (pid)
+    PRIMARY KEY (email)
 );
 
 CREATE TABLE IF NOT EXISTS ORGANIZATION (
@@ -16,28 +15,28 @@ CREATE TABLE IF NOT EXISTS ORGANIZATION (
     name VARCHAR(256) NOT NULL,
     email VARCHAR(128) NOT NULL,
     description VARCHAR(1024),
-    ownerPid INT NOT NULL,
+    ownerEmail VARCHAR(128) NOT NULL,
     PRIMARY KEY (organizationId),
-    CONSTRAINT fk_user_organization FOREIGN KEY (ownerPid) REFERENCES USER (pid)
+    CONSTRAINT fk_user_organization FOREIGN KEY (ownerEmail) REFERENCES USER (email)
 );
 
 CREATE TABLE IF NOT EXISTS MANAGER (
-    userPid INT NOT NULL,
+    userEmail VARCHAR(128) NOT NULL,
     organizationId INT NOT NULL,
     PRIMARY KEY (userPid, organizationId),
-    CONSTRAINT fk_user_manager FOREIGN KEY (userPid) REFERENCES USER (pid),
+    CONSTRAINT fk_user_manager FOREIGN KEY (userEmail) REFERENCES USER (email),
     CONSTRAINT fk_organization_manager FOREIGN KEY (organizationId) REFERENCES ORGANIZATION (organizationId)
 );
 
 CREATE TABLE IF NOT EXISTS REQUEST (
 	requestId INT AUTO_INCREMENT NOT NULL,
-    userPid INT NOT NULL,
+    userEmail VARCHAR(128) NOT NULL,
     organizationId INT NOT NULL,
     status ENUM('PENDING', 'ACCEPTED', 'DECLINED') NOT NULL,
     description VARCHAR(256),
     type ENUM('JOIN', 'ITEM') NOT NULL,
     PRIMARY KEY (requestId),
-    CONSTRAINT fk_user_request FOREIGN KEY (userPid) REFERENCES USER (pid),
+    CONSTRAINT fk_user_request FOREIGN KEY (userEmail) REFERENCES USER (email),
     CONSTRAINT fk_organization_request FOREIGN KEY (organizationId) REFERENCES ORGANIZATION (organizationId)
 );
 
@@ -75,10 +74,10 @@ CREATE TABLE IF NOT EXISTS LISTING (
 );
 
 CREATE TABLE IF NOT EXISTS FAVORITE (
-    userPid INT NOT NULL,
+    userEmail VARCHAR(128) NOT NULL,
     listingId INT NOT NULL,
-    PRIMARY KEY (userPid, listingId),
-    CONSTRAINT fk_user_favorite FOREIGN KEY (userPid) REFERENCES USER (pid),
+    PRIMARY KEY (userEmail, listingId),
+    CONSTRAINT fk_user_favorite FOREIGN KEY (userEmail) REFERENCES USER (email),
     CONSTRAINT fk_listing_favorite FOREIGN KEY (listingId) REFERENCES LISTING (listingId)
 );
 
