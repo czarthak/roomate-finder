@@ -14,19 +14,56 @@ public class MainController {
     private UserRepository userRepository;
 
 
-    @PostMapping(path="/add") // Map ONLY POST Requests
+    @PostMapping(path = "/add") // Map ONLY POST Requests
     @ResponseBody
-    public User addJsonUser (@RequestBody User usr) {
+    public User addJsonUser(@RequestBody User usr) {
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
         userRepository.save(usr);
         return usr;
     }
 
+    @PutMapping(path = "/update")
+    @ResponseBody
+    public User updateUser(@RequestBody User usr)
+    {
+        userRepository.save(usr);
+        return usr;
+    }
+
+    @PutMapping(path = "/changepass")
+    @ResponseBody
+    public User updateUser(@RequestBody Map<String, String> json)
+    {
+        if (json.get("email"))
+        {
+            User user = userRepository.findById(json.get("email"));
+            user.setPassword(json.get("password"));
+            userRepository.save(user);
+            return user;
+        }
+        return null;
+    }
 
     @GetMapping(path="/all")
     public @ResponseBody Iterable<User> getAllUsers() {
         // This returns a JSON or XML with the users
         return userRepository.findAll();
+    }
+
+    @GetMapping(path = "/user")
+    public @ResponseBody Optional<User> getUser(@RequestBody String email)
+    {
+        return userRepository.findById(email);
+    }
+
+    @DeleteMapping(path = "/delete")
+    public @ResponseBody User deleteUser(@RequestBody String email)
+    {
+        User found = null;
+        found = userRepository.findById(email).get();
+        if (found != null)
+            userRepository.deleteById(email);
+        return found;
     }
 }
