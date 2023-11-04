@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+import java.util.Optional;
+
 @Controller // This means that this class is a Controller
 @RequestMapping(path="/user") // This means URL's start with /demo (after Application path)
 public class MainController {
@@ -35,12 +38,17 @@ public class MainController {
     @ResponseBody
     public User updateUser(@RequestBody Map<String, String> json)
     {
-        if (json.get("email"))
+        if (json.get("email") != null)
         {
-            User user = userRepository.findById(json.get("email"));
-            user.setPassword(json.get("password"));
-            userRepository.save(user);
-            return user;
+            Optional<User> user = userRepository.findById(json.get("email"));
+            if (user.isPresent())
+            {
+                User usr = user.get();
+                usr.setPassword(json.get("password"));
+                userRepository.save(usr);
+                return usr;
+            }
+            return null;
         }
         return null;
     }
