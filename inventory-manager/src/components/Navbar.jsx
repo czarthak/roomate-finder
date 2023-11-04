@@ -25,6 +25,12 @@ export const Navbar = () => {
         <li>
           <NavLink to="/register">Register</NavLink>
         </li>
+        <li>
+          <NavLink to="/deleteUser">Delete User</NavLink>
+        </li>
+        <li>
+          <NavLink to="/updatepassword">Update Password</NavLink>
+        </li>
       </ul>
     </nav>
   );
