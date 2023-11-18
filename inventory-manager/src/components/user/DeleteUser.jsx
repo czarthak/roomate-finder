@@ -7,12 +7,22 @@ export const DeleteUser = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    Axios.post("http://localhost:8080/user/delete", {
-      email: email,
+    Axios.delete("http://localhost:8080/user/delete", {
+      headers: {},
+      data: {
+        email: email
+      }
     }).then((response) => {
       console.log(response);
     });
-  };
+    };
+
+  //   Axios.delete("http://localhost:8080/user/delete", {
+  //     email: email,
+  //   }).then((response) => {
+  //     console.log(response);
+  //   });
+  // };
 
   return (
     <div className="auth-form-container">

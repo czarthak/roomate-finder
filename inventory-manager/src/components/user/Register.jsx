@@ -10,7 +10,6 @@ export const Register = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
     Axios.post("http://localhost:8080/user/add", {
       email: email,
       lname: lname,

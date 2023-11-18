@@ -31,11 +31,11 @@ public class User {
         this.password = password;
     }
 
-    public Integer getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(Integer phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -46,7 +46,7 @@ public class User {
 
     private String password;
 
-    private Integer phoneNumber;
+    private String phoneNumber;
 
     @Id
     @Column(nullable = false)

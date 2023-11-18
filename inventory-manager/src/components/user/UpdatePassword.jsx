@@ -8,7 +8,7 @@ export const UpdatePassword = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    Axios.post("http://localhost:8080/user/updatepass", {
+    Axios.put("http://localhost:8080/user/changepass", {
       email: email,
       password: pass,
     }).then((response) => {

@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.Optional;
 
-@Controller // This means that this class is a Controller
+@CrossOrigin
+@RestController // This means that this class is a Controller
 @RequestMapping(path="/user") // This means URL's start with /demo (after Application path)
 public class MainController {
     @Autowired // This means to get the bean called userRepository
@@ -60,18 +61,27 @@ public class MainController {
     }
 
     @GetMapping(path = "/user")
-    public @ResponseBody Optional<User> getUser(@RequestBody String email)
+    public @ResponseBody Optional<User> getUser(@RequestBody Map<String, String> json)
     {
+        String email = json.get("email");
         return userRepository.findById(email);
     }
 
     @DeleteMapping(path = "/delete")
-    public @ResponseBody User deleteUser(@RequestBody String email)
+    public @ResponseBody User deleteUser(@RequestBody Map<String, String> json)
     {
         User found = null;
-        found = userRepository.findById(email).get();
-        if (found != null)
+        String email = json.get("email");
+        Optional<User> optionalUser = userRepository.findById(email);
+
+        if (optionalUser.isPresent())
+        {
+            System.out.println("in if statement");
+            found = optionalUser.get();
             userRepository.deleteById(email);
-        return found;
+
+            return found;
+        }
+        return null;
     }
 }
