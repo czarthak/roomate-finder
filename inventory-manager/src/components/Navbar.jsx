@@ -31,6 +31,12 @@ export const Navbar = () => {
         <li>
           <NavLink to="/updatepassword">Update Password</NavLink>
         </li>
+        <li>
+          <NavLink to="/createorganization">Create Organization</NavLink>
+        </li>
+        <li>
+          <NavLink to="/createrequest">Create Request</NavLink>
+        </li>
       </ul>
     </nav>
   );

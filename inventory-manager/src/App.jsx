@@ -8,6 +8,8 @@ import {
   Register,
   UpdatePassword,
 } from "./components/user/index";
+import CreateOrganization from "./components/user/CreateOrganization";
+import CreateRequest from "./components/user/CreateRequest";
 
 function App() {
   return (
@@ -19,6 +21,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/deleteUser" element={<DeleteUser />} />
         <Route path="/updatepassword" element={<UpdatePassword />} />
+        <Route path="/createorganization" element={<CreateOrganization />} />
+        <Route path="/createrequest" element={<CreateRequest />} />
       </Routes>
     </div>
   );
