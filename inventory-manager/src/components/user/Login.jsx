@@ -1,15 +1,21 @@
 import React, { useState } from "react";
 import Axios from "axios";
-
-export const Login = (props) => {
-  const [email, setEmail] = useState("");
-  const [pass, setPass] = useState("");
-
+import PropTypes from "prop-types";
+export const Login = ({setToken}) => {
+  const [email, setEmail] = useState();
+  const [pass, setPass] = useState();
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(email);
     console.log(pass);
-
+    Axios.post("http://localhost:8080/auth/login", {
+      email: email,
+      password: pass,
+    }).then((response) => {
+      // console.log(typeof(response));
+      setToken(response);
+      console.log(response.data);
+    });
   };
 
   return (
@@ -39,5 +45,7 @@ export const Login = (props) => {
     </div>
   );
 };
-
+Login.propTypes = {
+  setToken: PropTypes.func.isRequired
+};
 export default Login;
