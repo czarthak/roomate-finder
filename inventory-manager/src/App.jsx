@@ -11,20 +11,6 @@ import {
 import { useState } from "react";
 import useToken from "./components/useToken";
 
-// function setToken(userToken) {
-//   sessionStorage.setItem('token', JSON.stringify(userToken.data));
-// }
-
-// function getToken() {
-//   const tokenString = sessionStorage.getItem('token');
-//   if (!tokenString)
-//     return null;
-//   const userToken = JSON.parse(tokenString);
-//   if (userToken.user != null)
-//     return tokenString;
-//   return null;
-// }
-
 
 function App() {
   // const [token, setToken] = useState();
@@ -39,9 +25,9 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login setToken={token}/>} />
         <Route path="/register" element={<Register />} />
-        <Route path="/deleteUser" element={<DeleteUser />} />
+        <Route path="/deleteUser" element={<DeleteUser token={token}/>} />
         <Route path="/updatepassword" element={<UpdatePassword />} />
       </Routes>
     </div>

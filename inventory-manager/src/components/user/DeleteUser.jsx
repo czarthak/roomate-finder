@@ -1,28 +1,23 @@
 import React, { useState } from "react";
 import Axios from "axios";
+import useToken from "../useToken";
 
-export const DeleteUser = () => {
+export const DeleteUser = (token) => {
   const [email, setEmail] = useState("");
-
+  console.log(JSON.parse(token.token).user);
   const handleSubmit = (e) => {
     e.preventDefault();
 
     Axios.delete("http://localhost:8080/user/delete", {
       headers: {},
       data: {
-        email: email
+        email: JSON.parse(token.token).user
       }
     }).then((response) => {
       console.log(response);
     });
     };
 
-  //   Axios.delete("http://localhost:8080/user/delete", {
-  //     email: email,
-  //   }).then((response) => {
-  //     console.log(response);
-  //   });
-  // };
 
   return (
     <div className="auth-form-container">
