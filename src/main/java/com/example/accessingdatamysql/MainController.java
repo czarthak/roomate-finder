@@ -7,6 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.HashMap;
+import io.jsonwebtoken.Claims;
+import com.example.accessingdatamysql.auth.AuthController;
 import java.util.Optional;
 
 @CrossOrigin
@@ -67,21 +70,28 @@ public class MainController {
         return userRepository.findById(email);
     }
 
-    @DeleteMapping(path = "/delete")
-    public @ResponseBody User deleteUser(@RequestBody Map<String, String> json)
+    @PostMapping(path = "/delete")
+    @ResponseBody 
+    public User deleteUser(@RequestBody Map<String, String> json)
     {
-        User found = null;
-        String email = json.get("email");
+        User found = new User();
+        AuthController au = new AuthController();
+        Map<String, String> res =  au.verify(json); // if the jwt token could not be verified
+        if (res.containsKey("login") && res.get("login").equals("failed"))
+        {
+            found.setEmail("failed");
+            return found;
+        }
+        String email = res.get("user");
         Optional<User> optionalUser = userRepository.findById(email);
-
         if (optionalUser.isPresent())
         {
             System.out.println("in if statement");
             found = optionalUser.get();
             userRepository.deleteById(email);
-
             return found;
         }
-        return null;
+        found.setEmail("not found");
+        return found;
     }
 }

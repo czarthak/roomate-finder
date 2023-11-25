@@ -4,17 +4,16 @@ import useToken from "../useToken";
 
 export const DeleteUser = (token) => {
   const [email, setEmail] = useState("");
-  console.log(JSON.parse(token.token).user);
+  // console.log(JSON.parse(token.token).user);
+  // console.log(token.token.user);
+  console.log(token);
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    Axios.delete("http://localhost:8080/user/delete", {
-      headers: {},
-      data: {
-        email: JSON.parse(token.token).user
-      }
+    Axios.post("http://localhost:8080/user/delete", {
+      jwt: token.token.jwt
     }).then((response) => {
-      console.log(response);
+      // console.log(response);
+      // if (response.data.email == "")
     });
     };
 

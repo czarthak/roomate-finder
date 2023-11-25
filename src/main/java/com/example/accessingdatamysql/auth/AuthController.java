@@ -1,6 +1,8 @@
 package com.example.accessingdatamysql.auth;
 import org.springframework.web.bind.annotation.RequestMapping;
+import com.example.accessingdatamysql.auth.JWT;
 
+import io.jsonwebtoken.Claims;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.MediaType;
@@ -43,12 +45,31 @@ public class AuthController {
             if (usr.getEmail().equals(json.get("email")) && usr.getPassword().equals(json.get("password")))
             {
                 res.put("user", user.get().getEmail());
+                //give them a token
+                res.put("jwt", JWT.createJWT("id", "issuer", "sarthaks@vt.edu", 99999999));
                 return res;
             }
-            res.put("login", "failed");
+            res.put("login", "bad password");
             return res;
         }
-        res.put("login", "failed");
+        res.put("login", "bad username");
+        return res;
+    }
+
+    @PostMapping(path="/verify")
+    public @ResponseBody Map<String, String> verify(@RequestBody Map<String, String> json)
+    {
+        Map<String, String> res = new HashMap<String, String>();
+        if (json.containsKey("jwt"))
+        {
+            Claims claim = JWT.decodeJWT(json.get("jwt"));
+            if (claim != null)
+                res.put("user", claim.getSubject());
+        }
+        else
+        {
+            res.put("login", "failed");
+        }
         return res;
     }
 }

@@ -1,13 +1,24 @@
 import { useState } from 'react';
+import Axios from "axios";
 
 export default function useToken() {
   const getToken = () => {
     const tokenString = sessionStorage.getItem('token');
     if (!tokenString)
         return null;
+    console.log(tokenString);
     const userToken = JSON.parse(tokenString);
-    if (userToken.user != null)
-        return tokenString;
+    console.log(userToken);
+    if (userToken.jwt != null)
+    {
+      Axios.post("http://localhost:8080/auth/verify", {
+        jwt: userToken.jwt
+      }).then((response) => {
+        console.log(response);
+        if (response.user)
+          return response;
+      });
+    }
     return null;
   };
 
@@ -15,7 +26,7 @@ export default function useToken() {
 
   const saveToken = userToken => {
     sessionStorage.setItem('token', JSON.stringify(userToken.data));
-    setToken(userToken.token);
+    setToken(userToken.data);
   };
 
   return {

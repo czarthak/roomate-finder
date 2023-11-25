@@ -1,21 +1,39 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import PropTypes from "prop-types";
-export const Login = ({setToken}) => {
+import './Login.css'; // Import your external CSS file
+
+export const Login = ({ setToken }) => {
   const [email, setEmail] = useState();
   const [pass, setPass] = useState();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(email);
-    console.log(pass);
+    setLoading(true);
+    setError("");
     Axios.post("http://localhost:8080/auth/login", {
       email: email,
       password: pass,
     }).then((response) => {
-      // console.log(typeof(response));
-      setToken(response);
-      console.log(response.data);
-    });
+      console.log(response);
+      // console.log(response.data.login);
+      if (response.data.login != "bad password")
+      {
+        setToken(response);
+      }
+      else 
+      {
+        setError("Invalid email or password. Please try again.");
+      }
+    }).catch((error) => {
+        setError("An error occurred. Please try again later.");
+        console.error("Login error:", error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -40,12 +58,19 @@ export const Login = ({setToken}) => {
           id="password"
           name="password"
         />
-        <button type="submit">Log In</button>
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          <button type="submit">Log In</button>
+        )}
+        {error && <p className="error-message">{error}</p>}
       </form>
     </div>
   );
-};
+}; 
+
 Login.propTypes = {
   setToken: PropTypes.func.isRequired
 };
+
 export default Login;
