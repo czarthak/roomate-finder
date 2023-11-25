@@ -12,6 +12,8 @@ const AccountInformation = ({ token }) => {
     email: "",
   });
 
+  const [updateSuccess, setUpdateSuccess] = useState(false);
+
   useEffect(() => {
     // Fetch user information when the component mounts
     getUserInfo();
@@ -43,6 +45,7 @@ const AccountInformation = ({ token }) => {
         }
       );
       setUserInfo(response.data);
+      setUpdateSuccess(true);
       console.log("User information updated successfully");
     } catch (error) {
       console.error("Error updating user information:", error);
@@ -60,6 +63,7 @@ const AccountInformation = ({ token }) => {
   return (
     <div className="account-info-container">
       <h2>Account Information</h2>
+      {updateSuccess && <p className="success-message">Information updated successfully!</p>}
       <div className="info-form">
         <label htmlFor="fname">First Name</label>
         <input

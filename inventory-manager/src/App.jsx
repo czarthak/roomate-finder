@@ -10,6 +10,7 @@ import {
 } from "./components/user/index";
 import { useState } from "react";
 import useToken from "./components/useToken";
+import AccountInformation from "./components/user/AccountInformation";
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/deleteUser" element={<DeleteUser token={token}/>} />
         <Route path="/updatepassword" element={<UpdatePassword />} />
+        <Route path="/accountinfo" element={<AccountInformation token={token}/> } />
       </Routes>
     </div>
   );

@@ -63,11 +63,24 @@ public class MainController {
         return userRepository.findAll();
     }
 
-    @GetMapping(path = "/user")
-    public @ResponseBody Optional<User> getUser(@RequestBody Map<String, String> json)
+    @PostMapping(path = "/user")
+    public @ResponseBody User getUser(@RequestBody Map<String, String> json)
     {
-        String email = json.get("email");
-        return userRepository.findById(email);
+        User found = new User();
+        AuthController au = new AuthController();
+        Map<String, String> res =  au.verify(json); // if the jwt token could not be verified
+        if (res.containsKey("login") && res.get("login").equals("failed"))
+        {
+            found.setEmail("failed");
+            return found;
+        }
+        Optional<User> usr = userRepository.findById(res.get("user"));
+        if (!usr.isPresent())
+        {
+            found.setEmail("not found");
+            return found;
+        }
+        return usr.get();
     }
 
     @PostMapping(path = "/delete")

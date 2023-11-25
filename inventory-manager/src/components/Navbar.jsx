@@ -31,6 +31,9 @@ export const Navbar = () => {
         <li>
           <NavLink to="/updatepassword">Update Password</NavLink>
         </li>
+        <li>
+          <NavLink to="/accountinfo">Account Information</NavLink>
+        </li>
       </ul>
     </nav>
   );
