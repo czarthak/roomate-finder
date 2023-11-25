@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom"; // Import Link from React Router
 import './Login.css'; // Import your external CSS file
 
 export const Login = ({ setToken }) => {
@@ -19,12 +20,9 @@ export const Login = ({ setToken }) => {
     }).then((response) => {
       console.log(response);
       // console.log(response.data.login);
-      if (response.data.result == "success")
-      {
+      if (response.data.result === "success") {
         setToken(response);
-      }
-      else 
-      {
+      } else {
         setError("Invalid email or password. Please try again.");
       }
     }).catch((error) => {
@@ -64,6 +62,8 @@ export const Login = ({ setToken }) => {
           <button type="submit">Log In</button>
         )}
         {error && <p className="error-message">{error}</p>}
+        {/* Add a Link to the Register page */}
+        <p>Don't have an account? <Link to="/register">Register here</Link></p>
       </form>
     </div>
   );
