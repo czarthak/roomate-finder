@@ -22,7 +22,7 @@ import com.example.accessingdatamysql.User;
 
 @Controller
 @CrossOrigin
-@RequestMapping(path="/auth") // This means URL's start with /demo (after Application path)
+@RequestMapping(path="/auth") // This means URL's start with /auth (after Application path)
 public class AuthController {
 
     @Autowired // This means to get the bean called userRepository
@@ -35,7 +35,7 @@ public class AuthController {
         Map<String, String> res = new HashMap<String, String>();
         if (!json.containsKey("email") || !json.containsKey("password"))
         {
-            res.put("login", "bad request");
+            res.put("result", "bad request");
             return res;
         }
         Optional<User> user = userRepository.findById(json.get("email"));
@@ -47,12 +47,13 @@ public class AuthController {
                 res.put("user", user.get().getEmail());
                 //give them a token
                 res.put("jwt", JWT.createJWT("id", "issuer", "sarthaks@vt.edu", 99999999));
+                res.put("result", "success");
                 return res;
             }
-            res.put("login", "bad password");
+            res.put("result", "bad password");
             return res;
         }
-        res.put("login", "bad username");
+        res.put("result", "bad username");
         return res;
     }
 

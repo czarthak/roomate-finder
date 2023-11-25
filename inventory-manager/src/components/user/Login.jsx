@@ -19,7 +19,7 @@ export const Login = ({ setToken }) => {
     }).then((response) => {
       console.log(response);
       // console.log(response.data.login);
-      if (response.data.login != "bad password")
+      if (response.data.result == "success")
       {
         setToken(response);
       }
