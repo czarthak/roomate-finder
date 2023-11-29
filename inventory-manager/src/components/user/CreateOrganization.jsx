@@ -11,10 +11,10 @@ export const CreateOrganization = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     Axios.post("http://localhost:8080/organization/add", {
+      desc: desc,
       email: email,
       name: name,
       ownerEmail: ownerEmail,
-      desc: desc,
       // orgId: orgId,
     }).then((response) => {
       console.log(response);

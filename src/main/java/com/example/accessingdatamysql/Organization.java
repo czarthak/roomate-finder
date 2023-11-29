@@ -15,6 +15,10 @@ public class Organization {
 
     private String desc;
 
+    @Id
+    @Column(nullable = false)
+    private Integer organizationId;
+
     public String getEmail() {
         return email;
     }
