@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom"; // Import Link from React Router
+import {Link, Navigate} from "react-router-dom"; // Import Link from React Router
 import './Login.css'; // Import your external CSS file
 
 export const Login = ({ setToken }) => {
@@ -9,7 +9,7 @@ export const Login = ({ setToken }) => {
   const [pass, setPass] = useState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
+  const [loggedIn, setLoggedIn] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -22,6 +22,7 @@ export const Login = ({ setToken }) => {
       // console.log(response.data.login);
       if (response.data.result === "success") {
         setToken(response);
+        setLoggedIn(true);
       } else {
         setError("Invalid email or password. Please try again.");
       }
@@ -33,7 +34,9 @@ export const Login = ({ setToken }) => {
         setLoading(false);
       });
   };
-
+  if (loggedIn) {
+    return <Navigate to="/" />;
+  }
   return (
     <div className="auth-form-container">
       <h2>Login</h2>
