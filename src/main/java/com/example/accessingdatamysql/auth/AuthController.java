@@ -65,6 +65,9 @@ public class AuthController {
         {
             Claims claim = JWT.decodeJWT(json.get("jwt"));
             if (claim != null)
+            {
+
+            }
                 res.put("user", claim.getSubject());
         }
         else

@@ -12,24 +12,30 @@ import { useState } from "react";
 import useToken from "./components/useToken";
 import AccountInformation from "./components/user/AccountInformation";
 import ProtectedRoute from "./routes/ProtectedRoute";
-
+import PrivateRoutes from "./routes/PrivateRoutes";
 
 function App() {
   // const [token, setToken] = useState();
   const { token, setToken } = useToken();
   // const token = getToken();
-  // if (!token) 
+  // if (!token)
   // {
   //   return <Login setToken={setToken}/>
   // }
+
+  console.log(token);
   return (
     <div className="App">
-      <Navbar />
+      <Navbar token={token} />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login setToken={setToken}/>} />
+        <Route path="/login" element={<Login setToken={setToken} />} />
         <Route path="/register" element={<Register />} />
-        <Route path='/accountinfo' element={<ProtectedRoute token={token}> <AccountInformation token={token}/> </ProtectedRoute>}>
+        <Route element={<PrivateRoutes token={token} />}>
+          <Route
+            path="/accountinfo"
+            element={<AccountInformation token={token} />}
+          />
         </Route>
         {/* <Route path="/deleteUser" element={<DeleteUser token={token}/>} />
         <Route path="/updatepassword" element={<UpdatePassword />} />
