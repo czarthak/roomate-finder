@@ -16,6 +16,8 @@ CREATE TABLE IF NOT EXISTS ORGANIZATION (
     email VARCHAR(128) NOT NULL,
     description VARCHAR(1024),
     ownerEmail VARCHAR(128) NOT NULL,
+    category ENUM('ACADEMIC', 'RECREATION', 'TECHNOLOGY', 'POLITICS', 'GREEK LIFE'),
+    memberCount INT DEFAULT 1,
     PRIMARY KEY (organizationId),
     CONSTRAINT fk_user_organization FOREIGN KEY (ownerEmail) REFERENCES USER (email)
 );
