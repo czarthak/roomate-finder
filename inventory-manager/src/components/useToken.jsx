@@ -4,20 +4,21 @@ import Axios from "axios";
 export default function useToken() {
   const getToken = () => {
     const tokenString = sessionStorage.getItem('token');
-    if (!tokenString)
+    if (!tokenString || tokenString == "undefined")
         return null;
     console.log(tokenString);
     const userToken = JSON.parse(tokenString);
     console.log(userToken);
     if (userToken.jwt != null)
     {
-      Axios.post("http://localhost:8080/auth/verify", {
-        jwt: userToken.jwt
-      }).then((response) => {
-        console.log(response);
-        if (response.user)
-          return response;
-      });
+      // Axios.post("http://localhost:8080/auth/verify", {
+      //   jwt: userToken.jwt
+      // }).then((response) => {
+      //   console.log(response);
+      //   if (response.user)
+      //     return response;
+      // });
+      return userToken;
     }
     return null;
   };
