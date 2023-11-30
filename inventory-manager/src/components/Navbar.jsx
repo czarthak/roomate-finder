@@ -34,16 +34,7 @@ export const Navbar = ({ token }) => {
               <li>
                 <NavLink to="/accountinfo">Account Information</NavLink>
               </li>
-              <li>
-                <NavLink
-                  to="/"
-                  onClick={() => {
-                    sessionStorage.removeItem("token");
-                    window.location.reload(false);
-                  }}>
-                  Sign Out
-                </NavLink>
-              </li>
+
               <li>
                 <NavLink to="/createorganization">Create Organization</NavLink>
               </li>
@@ -53,6 +44,16 @@ export const Navbar = ({ token }) => {
               <li>
                 <NavLink to="/listallorganizations">
                   List All Organizations
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/"
+                  onClick={() => {
+                    sessionStorage.removeItem("token");
+                    window.location.reload(false);
+                  }}>
+                  Sign Out
                 </NavLink>
               </li>
             </>

@@ -39,8 +39,13 @@ function App() {
             element={<AccountInformation token={token} />}
           />
         </Route>
-        <Route path="/createorganization" element={<CreateOrganization />} />
-        <Route path="/createrequest" element={<CreateRequest />} />
+        <Route element={<PrivateRoutes token={token} />}>
+          <Route path="/createorganization" element={<CreateOrganization />} />
+        </Route>
+        <Route element={<PrivateRoutes token={token} />}>
+          <Route path="/createrequest" element={<CreateRequest />} />
+        </Route>
+
         <Route
           path="/listallorganizations"
           element={<ListAllOrganizations />}
