@@ -46,7 +46,7 @@ public class AuthController {
             {
                 res.put("user", user.get().getEmail());
                 //give them a token
-                res.put("jwt", JWT.createJWT("id", "issuer", "sarthaks@vt.edu", 99999999));
+                res.put("jwt", JWT.createJWT("id", "issuer", json.get("email"), 99999999));
                 res.put("result", "success");
                 return res;
             }
@@ -57,6 +57,9 @@ public class AuthController {
         return res;
     }
 
+    //create auth/organization end point to authenticate the user for a specific organization. 
+    //also create a verification end point to verify their access to this one org.
+
     @PostMapping(path="/verify")
     public @ResponseBody Map<String, String> verify(@RequestBody Map<String, String> json)
     {
@@ -66,9 +69,12 @@ public class AuthController {
             Claims claim = JWT.decodeJWT(json.get("jwt"));
             if (claim != null)
             {
-
-            }
                 res.put("user", claim.getSubject());
+            }
+            else
+            {
+                res.put("login", "failed - expired/bad token");
+            }
         }
         else
         {

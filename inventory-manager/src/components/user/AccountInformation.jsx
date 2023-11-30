@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import PropTypes from "prop-types";
-import './AccountInformation.css'; // Import your external CSS file
+import "./AccountInformation.css"; // Import your external CSS file
 
 const AccountInformation = ({ token }) => {
   const [userInfo, setUserInfo] = useState({
@@ -21,10 +21,10 @@ const AccountInformation = ({ token }) => {
 
   const getUserInfo = async () => {
     try {
-      const response = await Axios.post(
-        "http://localhost:8080/user/user",
-        { jwt: token.jwt }
-      );
+      console.log(token);
+      const response = await Axios.post("http://localhost:8080/user/user", {
+        jwt: token.jwt,
+      });
       setUserInfo(response.data);
     } catch (error) {
       console.error("Error fetching user information:", error);
@@ -33,17 +33,14 @@ const AccountInformation = ({ token }) => {
 
   const handleUpdate = async () => {
     try {
-      const response = await Axios.put(
-        "http://localhost:8080/user/update",
-        {
-          fname: userInfo.fname,
-          lname: userInfo.lname,
-          password: userInfo.password,
-          phoneNumber: userInfo.phoneNumber,
-          email: userInfo.email,
-          jwt: token.jwt,
-        }
-      );
+      const response = await Axios.put("http://localhost:8080/user/update", {
+        fname: userInfo.fname,
+        lname: userInfo.lname,
+        password: userInfo.password,
+        phoneNumber: userInfo.phoneNumber,
+        email: userInfo.email,
+        jwt: token.jwt,
+      });
       setUserInfo(response.data);
       setUpdateSuccess(true);
       console.log("User information updated successfully");
@@ -63,7 +60,9 @@ const AccountInformation = ({ token }) => {
   return (
     <div className="account-info-container">
       <h2>Account Information</h2>
-      {updateSuccess && <p className="success-message">Information updated successfully!</p>}
+      {updateSuccess && (
+        <p className="success-message">Information updated successfully!</p>
+      )}
       <div className="info-form">
         <label htmlFor="fname">First Name</label>
         <input

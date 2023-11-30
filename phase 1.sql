@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS ORGANIZATION (
 CREATE TABLE IF NOT EXISTS MANAGER (
     userEmail VARCHAR(128) NOT NULL,
     organizationId INT NOT NULL,
+    type ENUM('MEMBER', 'MANAGER') NOT NULL,
     PRIMARY KEY (userEmail, organizationId),
     CONSTRAINT fk_user_manager FOREIGN KEY (userEmail) REFERENCES USER (email),
     CONSTRAINT fk_organization_manager FOREIGN KEY (organizationId) REFERENCES ORGANIZATION (organizationId)

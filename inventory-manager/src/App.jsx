@@ -11,7 +11,6 @@ import {
 import { useState } from "react";
 import useToken from "./components/useToken";
 import AccountInformation from "./components/user/AccountInformation";
-import ProtectedRoute from "./routes/ProtectedRoute";
 import PrivateRoutes from "./routes/PrivateRoutes";
 
 function App() {
