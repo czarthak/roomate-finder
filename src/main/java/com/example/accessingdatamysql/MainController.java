@@ -74,6 +74,7 @@ public class MainController {
             found.setEmail("failed");
             return found;
         }
+        System.out.println(res.get("user"));
         Optional<User> usr = userRepository.findById(res.get("user"));
         if (!usr.isPresent())
         {
