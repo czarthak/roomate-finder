@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect} from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -10,77 +10,53 @@ import Paper from '@mui/material/Paper';
 import Axios from "axios";
 import { Button } from '@mui/material';
 
-// function createData(name, calories, fat, carbs, protein) {
-//   return { name, calories, fat, carbs, protein };
-// }
+export const ListAllOrganizations = (props) => {
+  const [rows, setRows] = useState([]); // State to store the rows
 
-// const rows = [
-//   createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-//   createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-//   createData('Eclair', 262, 16.0, 24, 6.0),
-//   createData('Cupcake', 305, 3.7, 67, 4.3),
-//   createData('Gingerbread', 356, 16.0, 49, 3.9),
-// ];
+  useEffect(() => {
+    const fetchOrganizations = async () => {
+      try {
+        const response = await Axios.get("http://localhost:8080/organization/all");
+        setRows(response.data); // Update state with fetched data
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
+    };
 
-function createData() {
-    
-}
+    fetchOrganizations();
+  }, []); // The empty array ensures this effect runs once on mount
 
-
-const rows = [];
-
-const handleSubmit = (e) => {
-    e.preventDefault();
-    Axios.get("http://localhost:8080/organization/all")
-    .then((response) => {
-      const posts = response.data; // json array
-      console.log("hello");
-      console.log(posts);
-      //rows.append(posts);
-    });
-  };
-
-
-
-export const ListAllOrganizations = (props) =>{
-    // {(e) => handleSubmit(e.target.value)};
-    // handleSubmit(e);
   return (
     <div>
-        <button onClick={handleSubmit}>hi</button>
-   
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow
-              key={row.name}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell align="right">{row.calories}</TableCell>
-              <TableCell align="right">{row.fat}</TableCell>
-              <TableCell align="right">{row.carbs}</TableCell>
-              <TableCell align="right">{row.protein}</TableCell>
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Name</TableCell>
+              <TableCell align="right">Category</TableCell>
+              <TableCell align="right">Description</TableCell>
+              <TableCell align="right">Owner Email</TableCell>
+              <TableCell align="right">Member Count</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <TableRow
+                key={row.name}
+                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              >
+                <TableCell component="th" scope="row">
+                  {row.name}
+                </TableCell>
+                <TableCell align="right">{row.category}</TableCell>
+                <TableCell align="right">{row.description}</TableCell>
+                <TableCell align="right">{row.owner}</TableCell>
+                <TableCell align="right">{row.membercount}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
-    
   );
 }
-
-// export default ListAllOrganizations;
