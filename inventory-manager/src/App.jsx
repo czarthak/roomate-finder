@@ -7,6 +7,9 @@ import {
   Login,
   Register,
   UpdatePassword,
+  CreateOrganization,
+  CreateRequest,
+  ListAllOrganizations,
 } from "./components/user/index";
 import { useState } from "react";
 import useToken from "./components/useToken";
@@ -36,9 +39,12 @@ function App() {
             element={<AccountInformation token={token} />}
           />
         </Route>
-        {/* <Route path="/deleteUser" element={<DeleteUser token={token}/>} />
-        <Route path="/updatepassword" element={<UpdatePassword />} />
-        <Route path="/accountinfo" element={<AccountInformation token={token}/> } /> */}
+        <Route path="/createorganization" element={<CreateOrganization />} />
+        <Route path="/createrequest" element={<CreateRequest />} />
+        <Route
+          path="/listallorganizations"
+          element={<ListAllOrganizations />}
+        />
       </Routes>
     </div>
   );

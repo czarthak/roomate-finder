@@ -44,16 +44,20 @@ export const Navbar = ({ token }) => {
                   Sign Out
                 </NavLink>
               </li>
+              <li>
+                <NavLink to="/createorganization">Create Organization</NavLink>
+              </li>
+              <li>
+                <NavLink to="/createrequest">Create Request</NavLink>
+              </li>
+              <li>
+                <NavLink to="/listallorganizations">
+                  List All Organizations
+                </NavLink>
+              </li>
             </>
           )}
         </>
-        {/*<li>*/}
-        {/*  <NavLink to="/login">Login</NavLink>*/}
-        {/*</li>*/}
-
-        {/*<li>*/}
-        {/*  <NavLink to="/accountinfo">Account Information</NavLink>*/}
-        {/*</li>*/}
       </ul>
     </nav>
   );
