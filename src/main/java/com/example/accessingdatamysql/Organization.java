@@ -7,13 +7,51 @@ import jakarta.persistence.*;
 @Table(name = "ORGANIZATION")
 public class Organization {
 
+    // enum Category {
+    //     ACADEMIC,
+    //     RECREATION,
+    //     TECHNOLOGY,
+    //     POLITICS,
+    //     GREEKLIFE
+    // }
+
+    // private Category category;
+
+    private String category;
+
+    private Integer membercount;
+
     private String name;
 
     private String email;
 
-    private String ownerEmail;
+    private String owner;
 
-    private String desc;
+    private String description;
+
+    // public Category getCategory() {
+    //     return category;
+    // }
+
+    // public void setCategory(Category category) {
+    //     this.category = category;
+    // }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public Integer getMembercount() {
+        return membercount;
+    }
+
+    public void setMembercount(Integer membercount) {
+        this.membercount = membercount;
+    }
 
     public String getEmail() {
         return email;
@@ -31,32 +69,33 @@ public class Organization {
         this.name = name;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getOwnerEmail() {
-        return ownerEmail;
+    public String getOwner() {
+        return owner;
     }
 
-    public void setOwnerEmail(String ownerEmail) {
-        this.ownerEmail = ownerEmail;
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
     @Id
-    @Column(nullable = false)
-    private int orgId;
+    @Column(name="organizationId")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)   
+    private Integer organizationId;
 
     public int getOrgId() {
-        return orgId;
+        return organizationId;
     }
 
-    public void setOrgId(int orgId) {
-        this.orgId = orgId;
+    public void setOrgId(Integer orgId) {
+        this.organizationId = orgId;
     }
 
 }

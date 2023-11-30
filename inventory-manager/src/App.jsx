@@ -7,9 +7,10 @@ import {
   Login,
   Register,
   UpdatePassword,
+  CreateOrganization,
+  CreateRequest,
+  ListAllOrganizations,
 } from "./components/user/index";
-import CreateOrganization from "./components/user/CreateOrganization";
-import CreateRequest from "./components/user/CreateRequest";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/updatepassword" element={<UpdatePassword />} />
         <Route path="/createorganization" element={<CreateOrganization />} />
         <Route path="/createrequest" element={<CreateRequest />} />
+        <Route path="/listallorganizations" element={<ListAllOrganizations />} />
       </Routes>
     </div>
   );

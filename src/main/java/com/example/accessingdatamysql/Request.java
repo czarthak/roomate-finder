@@ -22,7 +22,7 @@ public class Request {
 
     private int orgId;
 
-    private String desc;
+    private String description;
 
     private Status status;
     
@@ -61,11 +61,11 @@ public class Request {
     }
 
     public String getDesc() {
-        return desc;
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDesc(String description) {
+        this.description = description;
     }
 
     @Id

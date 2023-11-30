@@ -12,41 +12,43 @@ CREATE TABLE IF NOT EXISTS USER (
 );
 
 CREATE TABLE IF NOT EXISTS ORGANIZATION (
-    organizationId INT AUTO_INCREMENT,
+    organization_id INT AUTO_INCREMENT,
     name VARCHAR(256) NOT NULL,
     email VARCHAR(128) NOT NULL,
     description VARCHAR(1024),
-    ownerEmail VARCHAR(128) NOT NULL,
-    PRIMARY KEY (organizationId),
-    CONSTRAINT fk_user_organization FOREIGN KEY (ownerEmail) REFERENCES USER (email)
+    owner VARCHAR(128),
+    category ENUM('ACADEMIC', 'RECREATION', 'TECHNOLOGY', 'POLITICS', 'GREEK LIFE'),
+    memberCount INT DEFAULT 1,
+    PRIMARY KEY (organization_id),
+    CONSTRAINT fk_user_organization FOREIGN KEY (owner) REFERENCES USER (email)
 );
 
 CREATE TABLE IF NOT EXISTS MANAGER (
     userEmail VARCHAR(128) NOT NULL,
-    organizationId INT NOT NULL,
-    PRIMARY KEY (userEmail, organizationId),
+    organization_id INT NOT NULL,
+    PRIMARY KEY (userEmail, organization_id),
     CONSTRAINT fk_user_manager FOREIGN KEY (userEmail) REFERENCES USER (email),
-    CONSTRAINT fk_organization_manager FOREIGN KEY (organizationId) REFERENCES ORGANIZATION (organizationId)
+    CONSTRAINT fk_organization_manager FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id)
 );
 
 CREATE TABLE IF NOT EXISTS REQUEST (
 	requestId INT AUTO_INCREMENT NOT NULL,
     userEmail VARCHAR(128) NOT NULL,
-    organizationId INT NOT NULL,
+    organization_id INT NOT NULL,
     status ENUM('PENDING', 'ACCEPTED', 'DECLINED') NOT NULL,
     description VARCHAR(256),
     type ENUM('JOIN', 'ITEM') NOT NULL,
     PRIMARY KEY (requestId),
     CONSTRAINT fk_user_request FOREIGN KEY (userEmail) REFERENCES USER (email),
-    CONSTRAINT fk_organization_request FOREIGN KEY (organizationId) REFERENCES ORGANIZATION (organizationId)
+    CONSTRAINT fk_organization_request FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id)
 );
 
 CREATE TABLE IF NOT EXISTS LOCATION (
 	locationId INT AUTO_INCREMENT,
     location VARCHAR(256),
-    organizationId INT NOT NULL,
+    organization_id INT NOT NULL,
     PRIMARY KEY (locationId),
-    CONSTRAINT fk_organization_location FOREIGN KEY (organizationId) REFERENCES ORGANIZATION (organizationId)
+    CONSTRAINT fk_organization_location FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id)
 );
 
 CREATE TABLE IF NOT EXISTS ITEM (
@@ -58,10 +60,10 @@ CREATE TABLE IF NOT EXISTS ITEM (
     category VARCHAR(128),
     status ENUM('AVAILABLE', 'BORROWED', 'LISTED', 'SOLD') NOT NULL,
     locationId INT NOT NULL,
-    organizationId INT NOT NULL,
+    organization_id INT NOT NULL,
     PRIMARY KEY (itemId),
     CONSTRAINT fk_location_item FOREIGN KEY (locationId) REFERENCES LOCATION (locationId),
-    CONSTRAINT fk_organiztion_item FOREIGN KEY (organizationId) REFERENCES ORGANIZATION (organizationId)
+    CONSTRAINT fk_organiztion_item FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id)
 );
 
 CREATE TABLE IF NOT EXISTS LISTING (

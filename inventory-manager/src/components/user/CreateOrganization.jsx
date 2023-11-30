@@ -4,18 +4,26 @@ import Axios from "axios";
 export const CreateOrganization = (props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [ownerEmail, setOwnerEmail] = useState("");
-  const [desc, setDesc] = useState("");
-  // const [orgId, setOrgId] = useState("");
+  const [owner, setOwner] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+  const [membercount, setMembercount] = useState("");
+
+  // const Categories = {
+  //   ACADEMIC: "academic",
+  // }
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(owner);
+    console.log(description);
     Axios.post("http://localhost:8080/organization/add", {
       email: email,
       name: name,
-      ownerEmail: ownerEmail,
-      desc: desc,
-      // orgId: orgId,
+      owner: owner,
+      description: description,
+      category: category,
+      membercount: membercount,
     }).then((response) => {
       console.log(response);
     });
@@ -34,12 +42,12 @@ export const CreateOrganization = (props) => {
           placeholder="Name"
         />
 
-        <label htmlFor="ownerEmail">Owner Email</label>
+        <label htmlFor="owner">Owner Email</label>
         <input
-          value={ownerEmail}
-          onChange={(e) => setOwnerEmail(e.target.value)}
-          name="ownerEmail"
-          id="ownerEmail"
+          value={owner}
+          onChange={(e) => setOwner(e.target.value)}
+          name="owner"
+          id="owner"
           placeholder="owner_pid@vt.edu"
           type="email"
         />
@@ -54,13 +62,31 @@ export const CreateOrganization = (props) => {
           type="email"
         />
 
-        <label htmlFor="desc">Description</label>
+        <label htmlFor="description">Description</label>
         <input
-          value={desc}
-          onChange={(e) => setDesc(e.target.value)}
-          id="desc"
-          name="desc"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          id="description"
+          name="description"
           placeholder="..."
+        />
+
+        <label htmlFor="category">Category</label>
+        <input
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          id="category"
+          name="category"
+          placeholder="Category"
+        />
+
+        <label htmlFor="membercount">Member Count</label>
+        <input
+          value={membercount}
+          onChange={(e) => setMembercount(parseInt(e.target.value))}
+          id="membercount"
+          name="membercount"
+          placeholder="Member Count"
         />
 
         <button type="submit">Create</button>

@@ -37,6 +37,9 @@ export const Navbar = () => {
         <li>
           <NavLink to="/createrequest">Create Request</NavLink>
         </li>
+        <li>
+          <NavLink to="/listallorganizations">List All Organizations</NavLink>
+        </li>
       </ul>
     </nav>
   );
