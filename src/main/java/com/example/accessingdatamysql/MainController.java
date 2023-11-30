@@ -74,7 +74,6 @@ public class MainController {
             found.setEmail("failed");
             return found;
         }
-        System.out.println(res.get("user"));
         Optional<User> usr = userRepository.findById(res.get("user"));
         if (!usr.isPresent())
         {
@@ -100,7 +99,6 @@ public class MainController {
         Optional<User> optionalUser = userRepository.findById(email);
         if (optionalUser.isPresent())
         {
-            System.out.println("in if statement");
             found = optionalUser.get();
             userRepository.deleteById(email);
             return found;

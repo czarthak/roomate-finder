@@ -10,7 +10,7 @@ export const Login = ({ setToken }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
-  const mytoken = null;
+  const [myToken, setMyToken] = useState();
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -25,7 +25,7 @@ export const Login = ({ setToken }) => {
         if (response.data.result === "success") {
           setToken(response);
           setLoggedIn(true);
-          mytoken = response.data;
+          setMyToken(response.data);
         } else {
           setError("Invalid email or password. Please try again.");
         }
@@ -39,7 +39,7 @@ export const Login = ({ setToken }) => {
       });
   };
   if (loggedIn) {
-    return <Navigate to="/accountinfo" token={mytoken} />;
+    return <Navigate to="/accountinfo" token={myToken} />;
   }
   return (
     <div className="auth-form-container">
