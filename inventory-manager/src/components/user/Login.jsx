@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Axios from "axios";
 import PropTypes from "prop-types";
-import {Link, Navigate} from "react-router-dom"; // Import Link from React Router
-import './Login.css'; // Import your external CSS file
+import { Link, Navigate } from "react-router-dom"; // Import Link from React Router
+import "./Login.css"; // Import your external CSS file
 
 export const Login = ({ setToken }) => {
   const [email, setEmail] = useState();
@@ -10,6 +10,7 @@ export const Login = ({ setToken }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
+  const mytoken = null;
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -17,16 +18,19 @@ export const Login = ({ setToken }) => {
     Axios.post("http://localhost:8080/auth/login", {
       email: email,
       password: pass,
-    }).then((response) => {
-      console.log(response);
-      // console.log(response.data.login);
-      if (response.data.result === "success") {
-        setToken(response);
-        setLoggedIn(true);
-      } else {
-        setError("Invalid email or password. Please try again.");
-      }
-    }).catch((error) => {
+    })
+      .then((response) => {
+        console.log(response);
+        // console.log(response.data.login);
+        if (response.data.result === "success") {
+          setToken(response);
+          setLoggedIn(true);
+          mytoken = response.data;
+        } else {
+          setError("Invalid email or password. Please try again.");
+        }
+      })
+      .catch((error) => {
         setError("An error occurred. Please try again later.");
         console.error("Login error:", error);
       })
@@ -35,7 +39,7 @@ export const Login = ({ setToken }) => {
       });
   };
   if (loggedIn) {
-    return <Navigate to="/" />;
+    return <Navigate to="/accountinfo" token={mytoken} />;
   }
   return (
     <div className="auth-form-container">
@@ -59,21 +63,19 @@ export const Login = ({ setToken }) => {
           id="password"
           name="password"
         />
-        {loading ? (
-          <p>Loading...</p>
-        ) : (
-          <button type="submit">Log In</button>
-        )}
+        {loading ? <p>Loading...</p> : <button type="submit">Log In</button>}
         {error && <p className="error-message">{error}</p>}
         {/* Add a Link to the Register page */}
-        <p>Don't have an account? <Link to="/register">Register here</Link></p>
+        <p>
+          Don't have an account? <Link to="/register">Register here</Link>
+        </p>
       </form>
     </div>
   );
-}; 
+};
 
 Login.propTypes = {
-  setToken: PropTypes.func.isRequired
+  setToken: PropTypes.func.isRequired,
 };
 
 export default Login;

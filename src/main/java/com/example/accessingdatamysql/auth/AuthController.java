@@ -57,6 +57,9 @@ public class AuthController {
         return res;
     }
 
+    //create auth/organization end point to authenticate the user for a specific organization. 
+    //also create a verification end point to verify their access to this one org.
+
     @PostMapping(path="/verify")
     public @ResponseBody Map<String, String> verify(@RequestBody Map<String, String> json)
     {
