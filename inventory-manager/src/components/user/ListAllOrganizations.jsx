@@ -1,14 +1,14 @@
-import React, { useState, useEffect} from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import React, { useState, useEffect } from "react";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
 import Axios from "axios";
-import { Button } from '@mui/material';
+import { Button } from "@mui/material";
 
 export const ListAllOrganizations = (props) => {
   const [rows, setRows] = useState([]); // State to store the rows
@@ -16,10 +16,12 @@ export const ListAllOrganizations = (props) => {
   useEffect(() => {
     const fetchOrganizations = async () => {
       try {
-        const response = await Axios.get("http://localhost:8080/organization/all");
+        const response = await Axios.get(
+          "http://localhost:8080/organization/all"
+        );
         setRows(response.data); // Update state with fetched data
       } catch (error) {
-        console.error('Error fetching data: ', error);
+        console.error("Error fetching data: ", error);
       }
     };
 
@@ -43,15 +45,14 @@ export const ListAllOrganizations = (props) => {
             {rows.map((row) => (
               <TableRow
                 key={row.name}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
                 <TableCell component="th" scope="row">
                   {row.name}
                 </TableCell>
                 <TableCell align="right">{row.category}</TableCell>
                 <TableCell align="right">{row.description}</TableCell>
-                <TableCell align="right">{row.owner}</TableCell>
-                <TableCell align="right">{row.membercount}</TableCell>
+                <TableCell align="right">{row.ownerEmail}</TableCell>
+                <TableCell align="right">{row.memberCount}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -59,4 +60,4 @@ export const ListAllOrganizations = (props) => {
       </TableContainer>
     </div>
   );
-}
+};
