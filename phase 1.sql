@@ -38,11 +38,13 @@ INSERT INTO ORGANIZATION (name, email, description, owner_email, category, membe
 ('Political Discussion Group', 'politics@example.com', 'Discussions on current political affairs', 'alicedoe@example.com', 'POLITICS', 25),
 ('Greek Life Association', 'greeklife@example.com', 'Promoting Greek culture and traditions', 'emilyjohnson@example.com', 'GREEKLIFE', 40);
 
+DROP TABLE ORGANIZATION_ROSTER;
 CREATE TABLE IF NOT EXISTS ORGANIZATION_ROSTER (
+    roster_id INT AUTO_INCREMENT NOT NULL,
     user_email VARCHAR(128) NOT NULL,
     organization_id INT NOT NULL,
     type ENUM('MEMBER', 'MANAGER') NOT NULL,
-    PRIMARY KEY (user_email, organization_id),
+    PRIMARY KEY (roster_id),
     CONSTRAINT fk_user_manager FOREIGN KEY (user_email) REFERENCES USER (email),
     CONSTRAINT fk_organization_manager FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id)
 );

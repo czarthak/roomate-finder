@@ -1,13 +1,8 @@
-package com.example.accessingdatamysql;
+package com.example.accessingdatamysql.org;
 
 
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
-import java.util.Optional;
 
 @CrossOrigin
 @RestController // This means that this class is a Controller
