@@ -18,14 +18,14 @@ INSERT INTO USER (email, lname, fname, password, phone_number) VALUES
 SELECT * FROM USER;
 -- DELETE FROM USER;
 
-
+DROP TABLE ORGANIZATION;
 CREATE TABLE IF NOT EXISTS ORGANIZATION (
     organization_id INT AUTO_INCREMENT,
     name VARCHAR(256) NOT NULL,
     email VARCHAR(128) NOT NULL,
     description VARCHAR(1024),
     owner_email VARCHAR(128) NOT NULL,
-    category ENUM('ACADEMIC', 'RECREATION', 'TECHNOLOGY', 'POLITICS', 'GREEK LIFE'),
+    category ENUM('ACADEMIC', 'RECREATION', 'TECHNOLOGY', 'POLITICS', 'GREEKLIFE'),
     member_count INT DEFAULT 1,
     PRIMARY KEY (organization_id),
     CONSTRAINT fk_user_organization FOREIGN KEY (owner_email) REFERENCES USER (email)
@@ -36,7 +36,7 @@ INSERT INTO ORGANIZATION (name, email, description, owner_email, category, membe
 ('Chess Society', 'chesssociety@example.com', 'Organization for chess lovers', 'alicedoe@example.com', 'RECREATION', 20),
 ('Science Association', 'science@example.com', 'Encouraging scientific exploration', 'johnsmith@example.com', 'ACADEMIC', 30),
 ('Political Discussion Group', 'politics@example.com', 'Discussions on current political affairs', 'alicedoe@example.com', 'POLITICS', 25),
-('Greek Life Association', 'greeklife@example.com', 'Promoting Greek culture and traditions', 'emilyjohnson@example.com', 'GREEK LIFE', 40);
+('Greek Life Association', 'greeklife@example.com', 'Promoting Greek culture and traditions', 'emilyjohnson@example.com', 'GREEKLIFE', 40);
 
 CREATE TABLE IF NOT EXISTS ORGANIZATION_ROSTER (
     user_email VARCHAR(128) NOT NULL,

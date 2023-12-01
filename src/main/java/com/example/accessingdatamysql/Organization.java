@@ -7,17 +7,19 @@ import jakarta.persistence.*;
 @Table(name = "ORGANIZATION")
 public class Organization {
 
-    // enum Category {
-    //     ACADEMIC,
-    //     RECREATION,
-    //     TECHNOLOGY,
-    //     POLITICS,
-    //     GREEKLIFE
-    // }
+     enum Category {
+         ACADEMIC,
+         RECREATION,
+         TECHNOLOGY,
+         POLITICS,
 
-    // private Category category;
+         GREEKLIFE
+     }
 
-    private String category;
+     @Enumerated(EnumType.STRING)
+     private Category category;
+
+//    private String category;
 
     private Integer memberCount;
 
@@ -37,11 +39,11 @@ public class Organization {
     //     this.category = category;
     // }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
