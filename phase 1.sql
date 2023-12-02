@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS ORGANIZATION_ROSTER (
     type ENUM('MEMBER', 'MANAGER', 'OWNER') NOT NULL,
     PRIMARY KEY (roster_id),
     CONSTRAINT fk_user_manager FOREIGN KEY (user_email) REFERENCES USER (email),
-    CONSTRAINT fk_organization_manager FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id)
+    CONSTRAINT fk_organization_manager FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id) 
 );
 
 INSERT INTO ORGANIZATION_ROSTER (user_email, organization_id, type)
@@ -90,8 +90,8 @@ CREATE TABLE IF NOT EXISTS REQUEST (
     description VARCHAR(256),
     type ENUM('JOIN', 'ITEM') NOT NULL,
     PRIMARY KEY (request_id),
-    CONSTRAINT fk_user_request FOREIGN KEY (user_email) REFERENCES USER (email),
-    CONSTRAINT fk_organization_request FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id)
+    CONSTRAINT fk_user_request FOREIGN KEY (user_email) REFERENCES USER (email) ON DELETE CASCADE,
+    CONSTRAINT fk_organization_request FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS LOCATION (
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS LOCATION (
     location VARCHAR(256),
     organization_id INT NOT NULL,
     PRIMARY KEY (location_id),
-    CONSTRAINT fk_organization_location FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id)
+    CONSTRAINT fk_organization_location FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS ITEM (
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS ITEM (
     organization_id INT NOT NULL,
     PRIMARY KEY (item_id),
     CONSTRAINT fk_location_item FOREIGN KEY (location_id) REFERENCES LOCATION (location_id),
-    CONSTRAINT fk_organiztion_item FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id)
+    CONSTRAINT fk_organiztion_item FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS LISTING (
@@ -124,7 +124,7 @@ CREATE TABLE IF NOT EXISTS LISTING (
     status ENUM('AVAILABLE', 'SOLD') NOT NULL,
     date_listed TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     PRIMARY KEY (listing_id),
-    CONSTRAINT fk_item_listing FOREIGN KEY (item_id) REFERENCES ITEM (item_id)
+    CONSTRAINT fk_item_listing FOREIGN KEY (item_id) REFERENCES ITEM (item_id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS FAVORITE (
