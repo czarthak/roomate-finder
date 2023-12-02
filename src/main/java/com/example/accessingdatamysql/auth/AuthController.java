@@ -61,12 +61,13 @@ public class AuthController {
     //also create a verification end point to verify their access to this one org.
 
     @PostMapping(path="/verify")
-    public @ResponseBody Map<String, String> verify(@RequestBody Map<String, String> json)
+    public @ResponseBody Map<String, String> verify(@RequestBody Map<String, Object> json)
     {
         Map<String, String> res = new HashMap<String, String>();
+        System.out.println(json.entrySet());
         if (json.containsKey("jwt"))
         {
-            Claims claim = JWT.decodeJWT(json.get("jwt"));
+            Claims claim = JWT.decodeJWT((String) json.get("jwt")); //this will be a string
             if (claim != null)
             {
                 res.put("user", claim.getSubject());

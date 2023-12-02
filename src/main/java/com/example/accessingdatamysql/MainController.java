@@ -64,7 +64,7 @@ public class MainController {
     }
 
     @PostMapping(path = "/user")
-    public @ResponseBody User getUser(@RequestBody Map<String, String> json)
+    public @ResponseBody User getUser(@RequestBody Map<String, Object> json)
     {
         User found = new User();
         AuthController au = new AuthController();
@@ -85,7 +85,7 @@ public class MainController {
 
     @PostMapping(path = "/delete")
     @ResponseBody 
-    public User deleteUser(@RequestBody Map<String, String> json)
+    public User deleteUser(@RequestBody Map<String, Object> json)
     {
         User found = new User();
         AuthController au = new AuthController();
