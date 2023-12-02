@@ -21,8 +21,17 @@ public class OrgUserType {
 
     private String email;
 
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
     private String description;
 
+    private String userEmail;
     @Enumerated(EnumType.STRING)
     private OrganizationRoster.Type type;
 

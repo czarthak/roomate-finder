@@ -97,6 +97,7 @@ public class OrgRosterController {
         {
             result.put("result", "success");
             result.put("type", map.get("type")); //tell the client what type this user is so they can render buttons for the roster
+            result.put("userEmail", map.get("userEmail"));
             System.out.println(map.get("orgId"));
             if (json.get("orgId") instanceof Integer)
                 result.put("roster", myOrgRosterRepository.getRoster((Integer) json.get("orgId")));
@@ -112,8 +113,10 @@ public class OrgRosterController {
     public @ResponseBody Map<String, Object> updateUser(@RequestBody Map<String, Object> json)
     {
         Map<String, Object> result = new HashMap<>();
+        System.out.println(json.entrySet());
         if (!json.containsKey("orgId") || !json.containsKey("newtype") || !json.containsKey("jwt") || !json.containsKey("memberEmail"))
         {
+            System.out.println("thought there were wrong headers");
             result.put("result", "failure bad request");
             return result;
         }
@@ -139,10 +142,20 @@ public class OrgRosterController {
                     //simple promotion/demotion case
                     result.put("result", "success");
                     result.put("data", myOrgRosterRepository.updateMember(orgId, (String) json.get("memberEmail"), OrganizationRoster.Type.valueOf((String)json.get("newtype"))));
+                    return result;
                 }
                 else if (json.get("newtype").equals("DELETE"))
                 {
+                    result.put("result", "success");
                     result.put("data", myOrgRosterRepository.deleteMember(orgId, (String) json.get("memberEmail")));
+                    return result;
+                }
+                else if (json.get("newtype").equals("OWNER"))
+                {
+                    result.put("result", "success");
+                    //transferring ownership
+                    result.put("data", myOrgRosterRepository.updateMember(orgId, (String) json.get("memberEmail"), OrganizationRoster.Type.valueOf((String)json.get("newtype"))));
+                    myOrgRosterRepository.updateMember(orgId, (String) map.get("userEmail"), OrganizationRoster.Type.MANAGER);
                     return result;
                 }
                 else

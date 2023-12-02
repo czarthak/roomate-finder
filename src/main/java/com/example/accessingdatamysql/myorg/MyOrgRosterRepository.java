@@ -41,7 +41,7 @@ public class MyOrgRosterRepository implements OrgRosterRepository{
         Map<String, Object> result = new HashMap<>();
         try {
 
-            String nativeQuery = "SELECT r.type, o.* " +
+            String nativeQuery = "SELECT r.type, r.user_email, o.* " +
                     "FROM ORGANIZATION_ROSTER r " +
                     "JOIN ORGANIZATION o ON r.organization_id = o.organization_id " +
                     "WHERE r.user_email = :userEmail AND r.organization_id = :orgId";
@@ -53,6 +53,7 @@ public class MyOrgRosterRepository implements OrgRosterRepository{
             if (queryResult != null) {
                 result.put("result", "success");
                 result.put("type", queryResult.getType());
+                result.put("userEmail", queryResult.getUserEmail());
                 result.put("orgId", orgId);
                 result.put("data", queryResult);
                 return result;

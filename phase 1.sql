@@ -62,7 +62,8 @@ VALUES
 
 INSERT INTO ORGANIZATION_ROSTER(user_email, organization_id, type)
 VALUES
-    ('johnsmith@example.com', 2, 'MEMBER');
+    ('johnsmith@example.com', 2, 'MEMBER'),
+    ('emilyjohnson@example.com', 2, 'MANAGER');
 
 UPDATE ORGANIZATION o
 SET member_count = (
