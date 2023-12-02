@@ -1,11 +1,15 @@
 package com.example.accessingdatamysql.myorg;
 
+import com.example.accessingdatamysql.User;
+import com.example.accessingdatamysql.UserRepository;
+import com.example.accessingdatamysql.auth.AuthController;
 import com.example.accessingdatamysql.org.Organization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @CrossOrigin
 @RestController // This means that this class is a Controller
@@ -19,6 +23,8 @@ public class OrgRosterController {
     @Autowired
     private MyOrgRosterRepository myOrgRosterRepository;
 
+    @Autowired
+    private UserRepository userRepository;
     @GetMapping(path="/all")
     public @ResponseBody Iterable<OrganizationRoster> getOrgs()
     {
@@ -29,14 +35,22 @@ public class OrgRosterController {
     public @ResponseBody Map<String, Object> getUsersOrgs(@RequestBody Map<String, String> json)
     {
         Map<String, Object> response = new HashMap<>();
-//        System.out.println(json.entrySet());
-        if (json.containsKey("email"))
+        User found = new User();
+        AuthController au = new AuthController();
+        Map<String, String> res =  au.verify(json); // if the jwt token could not be verified
+        if (res.containsKey("login") && res.get("login").equals("failed"))
         {
-            response.put("result", "success");
-            response.put("data", myOrgRosterRepository.findUserOrgs(json.get("email")));
+            response.put("result", "failed = bad token or bad request");
             return response;
         }
-        response.put("result", "failure - bad request");
+        Optional<User> usr = userRepository.findById(res.get("user"));
+        if (!usr.isPresent())
+        {
+            response.put("result", "failed = user not found");
+            return response;
+        }
+        response.put("result", "success");
+        response.put("data", myOrgRosterRepository.findUserOrgs(res.get("user")));
         return response;
     }
 }
