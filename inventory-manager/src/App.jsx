@@ -10,6 +10,7 @@ import {
   CreateOrganization,
   CreateRequest,
   ListAllOrganizations,
+  OrganizationSearch,
 } from "./components/user/index";
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/createorganization" element={<CreateOrganization />} />
         <Route path="/createrequest" element={<CreateRequest />} />
         <Route path="/listallorganizations" element={<ListAllOrganizations />} />
+        {/* <Route path="/organizationsearch" element={<OrganizationSearch />} /> */}
       </Routes>
     </div>
   );

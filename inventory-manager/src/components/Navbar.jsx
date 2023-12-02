@@ -40,6 +40,9 @@ export const Navbar = () => {
         <li>
           <NavLink to="/listallorganizations">List All Organizations</NavLink>
         </li>
+        {/* <li>
+          <NavLink to="/organizationsearch">Organization Search</NavLink>
+        </li> */}
       </ul>
     </nav>
   );
