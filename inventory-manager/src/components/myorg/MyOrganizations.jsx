@@ -2,10 +2,18 @@ import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import './MyOrganization.css'
 import PropTypes from "prop-types";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 const MyOrganizations = ({ token }) => {
     const [organizations, setOrganizations] = useState([]);
-
+    // if (token == null || token == undefined)
+    //     const {token2} = useLocation();
+    //     token = token2;
+    const {state} = useLocation();
+    if (token == null || token == undefined)
+    {
+        console.log('updated token to be token2');
+        token = state.token2;
+    }
     useEffect(() => {
         const fetchOrganizations = async () => {
             try {
@@ -15,6 +23,7 @@ const MyOrganizations = ({ token }) => {
                 });
 
                 if (response.data.result === 'success') {
+
                     setOrganizations(response.data.data);
                 } else {
                     console.error('Error fetching organizations');

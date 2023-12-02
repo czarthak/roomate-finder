@@ -10,10 +10,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class MyOrgRosterRepository implements OrgRosterRepository{
@@ -27,7 +24,7 @@ public class MyOrgRosterRepository implements OrgRosterRepository{
         String nativeQuery = "SELECT DISTINCT o.* " +
                 "FROM ORGANIZATION o " +
                 "JOIN ORGANIZATION_ROSTER r ON o.organization_id = r.organization_id " +
-                "WHERE r.user_email = :userEmail OR o.owner_email = :userEmail";
+                "WHERE r.user_email = :userEmail";
         List<Organization> organizations = entityManager
                 .createNativeQuery(nativeQuery, Organization.class)
                 .setParameter("userEmail", userEmail)
@@ -105,9 +102,79 @@ public class MyOrgRosterRepository implements OrgRosterRepository{
     }
 
     @Transactional
-    public Map<String, Object> deleteMember(Integer orgId, String memberEmail)
-    {
+    public Map<String, Object> promoteRandom(Integer orgId) {
         Map<String, Object> result = new HashMap<>();
+
+        try {
+            // Get the count of managers for the organization
+            Long managerCount = entityManager.createQuery(
+                            "SELECT COUNT(*) FROM OrganizationRoster r WHERE r.organizationId = :orgId AND r.type = 'MANAGER'",
+                            Long.class
+                    )
+                    .setParameter("orgId", orgId)
+                    .getSingleResult();
+
+            if (managerCount > 0) {
+                // Promote a random manager to owner
+                String promoteManagerQuery = "UPDATE organization_roster SET type = 'OWNER' WHERE organization_id = :orgId AND type = 'MANAGER' ORDER BY RAND() LIMIT 1";
+                Query promoteManagerNativeQuery = entityManager.createNativeQuery(promoteManagerQuery);
+                promoteManagerNativeQuery.setParameter("orgId", orgId);
+
+
+                int updatedRows = promoteManagerNativeQuery.executeUpdate();
+                System.out.println("updated a random manager to be the owner, " + updatedRows);
+                if (updatedRows > 0) {
+                    // Update owner_email in Organization table
+                    String updateOwnerEmailQuery = "UPDATE organization SET owner_email = (SELECT user_email FROM organization_roster WHERE organization_id = :orgId AND type = 'OWNER') WHERE organization_id = :orgId";
+                    Query updateOwnerEmailNativeQuery = entityManager.createNativeQuery(updateOwnerEmailQuery);
+                    updateOwnerEmailNativeQuery.setParameter("orgId", orgId);
+
+                    int updatedOwnerEmailRows = updateOwnerEmailNativeQuery.executeUpdate();
+
+                    result.put("result", "success");
+                    result.put("message", "Random manager promoted to owner");
+                    result.put("updatedOwnerEmailRows", updatedOwnerEmailRows);
+                } else {
+                    result.put("result", "failure");
+                    result.put("error", "No manager found to promote");
+                }
+            } else {
+                // Promote a random member to owner
+                String promoteMemberQuery = "UPDATE organization_roster SET type = 'OWNER' WHERE organization_id = :orgId AND type = 'MEMBER' ORDER BY RAND() LIMIT 1";
+                Query promoteMemberNativeQuery = entityManager.createNativeQuery(promoteMemberQuery);
+                promoteMemberNativeQuery.setParameter("orgId", orgId);
+
+                int updatedRows = promoteMemberNativeQuery.executeUpdate();
+                System.out.println("updated a random member to be the owner, " + updatedRows);
+                if (updatedRows > 0) {
+                    // Update owner_email in Organization table
+                    String updateOwnerEmailQuery = "UPDATE organization SET owner_email = (SELECT user_email FROM organization_roster WHERE organization_id = :orgId AND type = 'OWNER') WHERE organization_id = :orgId";
+                    Query updateOwnerEmailNativeQuery = entityManager.createNativeQuery(updateOwnerEmailQuery);
+                    updateOwnerEmailNativeQuery.setParameter("orgId", orgId);
+
+                    int updatedOwnerEmailRows = updateOwnerEmailNativeQuery.executeUpdate();
+
+                    result.put("result", "success");
+                    result.put("message", "Random member promoted to owner");
+                    result.put("updatedOwnerEmailRows", updatedOwnerEmailRows);
+                } else {
+                    result.put("result", "failure");
+                    result.put("error", "No member found to promote");
+                }
+            }
+        } catch (Exception e) {
+            result.put("result", "failure");
+            result.put("error", e.getMessage());
+        }
+
+        return result;
+    }
+
+
+    @Transactional
+    public Map<String, Object> deleteMember(Integer orgId, String memberEmail) {
+        Map<String, Object> result = new HashMap<>();
+
         try {
             // Delete the member from ORGANIZATION_ROSTER
             String deleteQuery = "DELETE FROM organization_roster WHERE organization_id = :orgId AND user_email = :memberEmail";
@@ -124,10 +191,22 @@ public class MyOrgRosterRepository implements OrgRosterRepository{
                 updateCountNativeQuery.setParameter("orgId", orgId);
 
                 int updatedCountRows = updateCountNativeQuery.executeUpdate();
+//                List<Object> resultList = updateCountNativeQuery.getResultList();
+//                System.out.println(Arrays.toString(resultList.toArray()));
 
                 result.put("result", "success");
                 result.put("deletedRows", deletedRows);
                 result.put("updatedCountRows", updatedCountRows);
+
+                // Check if the query effected a row, which means the user was present and subsequently removed
+                if (updatedCountRows == 1) {
+                    String nativeQuery = "DELETE FROM organization WHERE organization_id = :orgId AND NOT EXISTS (SELECT 1 FROM organization_roster WHERE organization_id = :orgId)";
+                    Query deleteOrganizationNativeQuery = entityManager.createNativeQuery(nativeQuery);
+                    deleteOrganizationNativeQuery.setParameter("orgId", orgId);
+                    int deletedOrganizationRows = deleteOrganizationNativeQuery.executeUpdate();
+                    if (deletedOrganizationRows != 0)
+                        result.put("deletedOrganization", "deleted the organization " +orgId+ " since last member was removed");
+                }
             } else {
                 result.put("result", "failure");
                 result.put("error", "Member not found in the organization roster");
@@ -136,8 +215,10 @@ public class MyOrgRosterRepository implements OrgRosterRepository{
             result.put("result", "failure");
             result.put("error", e.getMessage());
         }
+
         return result;
     }
+
 
     @Override
     public <S extends OrganizationRoster> S save(S entity) {
