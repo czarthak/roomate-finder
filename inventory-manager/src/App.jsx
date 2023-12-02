@@ -10,6 +10,7 @@ import {
   CreateOrganization,
   CreateRequest,
   ListAllOrganizations,
+  OrganizationSearch,
 } from "./components/user/index";
 import { useState } from "react";
 import useToken from "./components/useToken";
