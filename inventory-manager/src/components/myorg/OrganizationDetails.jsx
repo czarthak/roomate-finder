@@ -34,6 +34,30 @@ const OrganizationDetails = ({token}) => {
         // Redirect to the OrganizationMembers page
         navigate(`/organizations/${orgId}/members`);
     };
+    const handleLeaveButtonClick = async () => {
+        if (window.confirm(`Are you sure you want to leave the organization: ${organization.name}?`)) {
+            try {
+                const response = await Axios.put('http://localhost:8080/myorg/user/update', {
+                    orgId: orgId,
+                    jwt: token.jwt,
+                    newtype: "DELETE",
+                    memberEmail: "self"
+                });
+                if (response.data.result === 'success') {
+                    // window.location.reload(false); //refresh the page, remount component and render based on new perms
+                    navigate(`/myorganizations`, {state: {token2: token}});
+                } else {
+                    console.log(response);
+                }
+            } catch (error) {
+                console.error('Error fetching organization members:', error);
+                navigate('/404');
+            }
+        } else {
+            console.log("user clicked no, doing nothing");
+        }
+
+    }
     if (!organization) {
         return <div>Loading...</div>;
     }
@@ -53,6 +77,7 @@ const OrganizationDetails = ({token}) => {
                 <button className="blue-button">Requests</button>
                 <button className="blue-button">Items</button>
                 <button className="blue-button">Listings</button>
+                <button className="blue-button" onClick={handleLeaveButtonClick}>Leave Organization</button>
             </div>
         </div>
     );

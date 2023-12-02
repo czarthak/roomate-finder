@@ -62,7 +62,7 @@ public class OrgRosterController {
     public @ResponseBody Map<String, Object> getUserOrg(@RequestBody Map<String, Object> json)
     {
         Map<String, Object> response = new HashMap<>();
-        System.out.println(json.get("orgId"));
+//        System.out.println(json.get("orgId"));
         if (!json.containsKey("orgId"))
         {
             response.put("result", "failed = no orgId provided bad request");
@@ -98,7 +98,7 @@ public class OrgRosterController {
             result.put("result", "success");
             result.put("type", map.get("type")); //tell the client what type this user is so they can render buttons for the roster
             result.put("userEmail", map.get("userEmail"));
-            System.out.println(map.get("orgId"));
+//            System.out.println(map.get("orgId"));
             if (json.get("orgId") instanceof Integer)
                 result.put("roster", myOrgRosterRepository.getRoster((Integer) json.get("orgId")));
             else
@@ -113,7 +113,7 @@ public class OrgRosterController {
     public @ResponseBody Map<String, Object> updateUser(@RequestBody Map<String, Object> json)
     {
         Map<String, Object> result = new HashMap<>();
-        System.out.println(json.entrySet());
+//        System.out.println(json.entrySet());
         if (!json.containsKey("orgId") || !json.containsKey("newtype") || !json.containsKey("jwt") || !json.containsKey("memberEmail"))
         {
             System.out.println("thought there were wrong headers");
@@ -133,9 +133,23 @@ public class OrgRosterController {
             {
                 orgId = Integer.parseInt((String)json.get("orgId"));
             }
-            System.out.println(map.get("type"));
-            System.out.println(map.get("type").getClass());
-            if (map.get("type") == OrganizationRoster.Type.OWNER)
+            String userEmail = (String)map.get("userEmail");
+            System.out.println(json.entrySet());
+            if ("self".equals((String)(json.get("memberEmail"))) && json.get("newtype").equals("DELETE"))
+            {
+                System.out.println("In the self removal case");
+                //basically if the user tries to remove themselves from the organization
+                result.put("data", myOrgRosterRepository.deleteMember(orgId, userEmail));
+                //above, remove the user
+                if (map.get("type") == OrganizationRoster.Type.OWNER)
+                {
+                    //we need to promote an existing member to owner
+                    result.put("data", myOrgRosterRepository.promoteRandom(orgId));
+                }
+                result.put("result", "success");
+                return result;
+            }
+            else if (map.get("type") == OrganizationRoster.Type.OWNER)
             {
                 if (json.get("newtype").equals("MANAGER") || json.get("newtype").equals("MEMBER"))
                 {

@@ -15,10 +15,9 @@ INSERT INTO USER (email, lname, fname, password, phone_number) VALUES
 ('alicedoe@example.com', 'Doe', 'Alice', 'securepass', '987-654-3210'),
 ('emilyjohnson@example.com', 'Johnson', 'Emily', 'sciencePass', '8888888888');
 
-SELECT * FROM USER;
+# SELECT * FROM USER;
 -- DELETE FROM USER;
 
-DROP TABLE ORGANIZATION;
 CREATE TABLE IF NOT EXISTS ORGANIZATION (
     organization_id INT AUTO_INCREMENT,
     name VARCHAR(256) NOT NULL,
@@ -38,7 +37,6 @@ INSERT INTO ORGANIZATION (name, email, description, owner_email, category, membe
 ('Political Discussion Group', 'politics@example.com', 'Discussions on current political affairs', 'alicedoe@example.com', 'POLITICS', 25),
 ('Greek Life Association', 'greeklife@example.com', 'Promoting Greek culture and traditions', 'emilyjohnson@example.com', 'GREEKLIFE', 40);
 
-DROP TABLE ORGANIZATION_ROSTER;
 CREATE TABLE IF NOT EXISTS ORGANIZATION_ROSTER (
     roster_id INT AUTO_INCREMENT NOT NULL,
     user_email VARCHAR(128) NOT NULL,
@@ -60,10 +58,10 @@ VALUES
     ('alicedoe@example.com', 5, 'MEMBER'),
     ('emilyjohnson@example.com', 2, 'MEMBER');
 
-INSERT INTO ORGANIZATION_ROSTER(user_email, organization_id, type)
-VALUES
-    ('johnsmith@example.com', 2, 'MEMBER'),
-    ('emilyjohnson@example.com', 2, 'MANAGER');
+# INSERT INTO ORGANIZATION_ROSTER(user_email, organization_id, type)
+# VALUES
+#     ('johnsmith@example.com', 2, 'MEMBER'),
+#     ('emilyjohnson@example.com', 2, 'MANAGER');
 
 UPDATE ORGANIZATION o
 SET member_count = (
@@ -71,17 +69,17 @@ SET member_count = (
     FROM ORGANIZATION_ROSTER
     WHERE organization_id = o.organization_id
 )
-WHERE member_count != o.member_count;
+WHERE true;
 
 
 
-SELECT * FROM ORGANIZATION_ROSTER WHERE ORGANIZATION_ROSTER.user_email LIKE 'emilyjohnson@example.com';
-SELECT DISTINCT o.*
-FROM ORGANIZATION o
-         JOIN ORGANIZATION_ROSTER r ON o.organization_id = r.organization_id
-WHERE r.user_email = 'emilyjohnson@example.com'
-   OR o.owner_email = 'emilyjohnson@example.com';
+# SELECT DISTINCT o.*
+# FROM ORGANIZATION o
+#          JOIN ORGANIZATION_ROSTER r ON o.organization_id = r.organization_id
+# WHERE r.user_email = 'emilyjohnson@example.com'
+#    OR o.owner_email = 'emilyjohnson@example.com';
 
+# DROP TABLE REQUEST; DROP TABLE FAVORITE; DROP TABLE LISTING; DROP TABLE ITEM; DROP TABLE LOCATION;
 CREATE TABLE IF NOT EXISTS REQUEST (
 	request_id INT AUTO_INCREMENT NOT NULL,
     user_email VARCHAR(128) NOT NULL,

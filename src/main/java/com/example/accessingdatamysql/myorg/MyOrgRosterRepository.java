@@ -105,6 +105,75 @@ public class MyOrgRosterRepository implements OrgRosterRepository{
     }
 
     @Transactional
+    public Map<String, Object> promoteRandom(Integer orgId) {
+        Map<String, Object> result = new HashMap<>();
+
+        try {
+            // Get the count of managers for the organization
+            Long managerCount = entityManager.createQuery(
+                            "SELECT COUNT(*) FROM OrganizationRoster r WHERE r.organizationId = :orgId AND r.type = 'MANAGER'",
+                            Long.class
+                    )
+                    .setParameter("orgId", orgId)
+                    .getSingleResult();
+
+            if (managerCount > 0) {
+                // Promote a random manager to owner
+                String promoteManagerQuery = "UPDATE organization_roster SET type = 'OWNER' WHERE organization_id = :orgId AND type = 'MANAGER' ORDER BY RAND() LIMIT 1";
+                Query promoteManagerNativeQuery = entityManager.createNativeQuery(promoteManagerQuery);
+                promoteManagerNativeQuery.setParameter("orgId", orgId);
+
+                int updatedRows = promoteManagerNativeQuery.executeUpdate();
+
+                if (updatedRows > 0) {
+                    // Update owner_email in Organization table
+                    String updateOwnerEmailQuery = "UPDATE organization SET owner_email = (SELECT user_email FROM organization_roster WHERE organization_id = :orgId AND type = 'OWNER') WHERE organization_id = :orgId";
+                    Query updateOwnerEmailNativeQuery = entityManager.createNativeQuery(updateOwnerEmailQuery);
+                    updateOwnerEmailNativeQuery.setParameter("orgId", orgId);
+
+                    int updatedOwnerEmailRows = updateOwnerEmailNativeQuery.executeUpdate();
+
+                    result.put("result", "success");
+                    result.put("message", "Random manager promoted to owner");
+                    result.put("updatedOwnerEmailRows", updatedOwnerEmailRows);
+                } else {
+                    result.put("result", "failure");
+                    result.put("error", "No manager found to promote");
+                }
+            } else {
+                // Promote a random member to owner
+                String promoteMemberQuery = "UPDATE organization_roster SET type = 'OWNER' WHERE organization_id = :orgId AND type = 'MEMBER' ORDER BY RAND() LIMIT 1";
+                Query promoteMemberNativeQuery = entityManager.createNativeQuery(promoteMemberQuery);
+                promoteMemberNativeQuery.setParameter("orgId", orgId);
+
+                int updatedRows = promoteMemberNativeQuery.executeUpdate();
+
+                if (updatedRows > 0) {
+                    // Update owner_email in Organization table
+                    String updateOwnerEmailQuery = "UPDATE organization SET owner_email = (SELECT user_email FROM organization_roster WHERE organization_id = :orgId AND type = 'OWNER') WHERE organization_id = :orgId";
+                    Query updateOwnerEmailNativeQuery = entityManager.createNativeQuery(updateOwnerEmailQuery);
+                    updateOwnerEmailNativeQuery.setParameter("orgId", orgId);
+
+                    int updatedOwnerEmailRows = updateOwnerEmailNativeQuery.executeUpdate();
+
+                    result.put("result", "success");
+                    result.put("message", "Random member promoted to owner");
+                    result.put("updatedOwnerEmailRows", updatedOwnerEmailRows);
+                } else {
+                    result.put("result", "failure");
+                    result.put("error", "No member found to promote");
+                }
+            }
+        } catch (Exception e) {
+            result.put("result", "failure");
+            result.put("error", e.getMessage());
+        }
+
+        return result;
+    }
+
+
+    @Transactional
     public Map<String, Object> deleteMember(Integer orgId, String memberEmail)
     {
         Map<String, Object> result = new HashMap<>();

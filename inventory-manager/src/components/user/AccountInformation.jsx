@@ -21,7 +21,7 @@ const AccountInformation = ({ token }) => {
 
   const getUserInfo = async () => {
     try {
-      console.log(token);
+      // console.log(token);
       const response = await Axios.post("http://localhost:8080/user/user", {
         jwt: token.jwt,
       });
