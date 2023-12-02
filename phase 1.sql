@@ -43,11 +43,22 @@ CREATE TABLE IF NOT EXISTS ORGANIZATION_ROSTER (
     roster_id INT AUTO_INCREMENT NOT NULL,
     user_email VARCHAR(128) NOT NULL,
     organization_id INT NOT NULL,
-    type ENUM('MEMBER', 'MANAGER') NOT NULL,
+    type ENUM('MEMBER', 'MANAGER', 'OWNER') NOT NULL,
     PRIMARY KEY (roster_id),
     CONSTRAINT fk_user_manager FOREIGN KEY (user_email) REFERENCES USER (email),
     CONSTRAINT fk_organization_manager FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id)
 );
+
+INSERT INTO ORGANIZATION_ROSTER (user_email, organization_id, type)
+SELECT owner_email, organization_id, 'OWNER'
+FROM ORGANIZATION;
+
+SELECT * FROM ORGANIZATION_ROSTER WHERE ORGANIZATION_ROSTER.user_email LIKE 'emilyjohnson@example.com';
+SELECT DISTINCT o.*
+FROM ORGANIZATION o
+         JOIN ORGANIZATION_ROSTER r ON o.organization_id = r.organization_id
+WHERE r.user_email = 'emilyjohnson@example.com'
+   OR o.owner_email = 'emilyjohnson@example.com';
 
 CREATE TABLE IF NOT EXISTS REQUEST (
 	request_id INT AUTO_INCREMENT NOT NULL,

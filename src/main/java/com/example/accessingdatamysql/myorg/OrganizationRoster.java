@@ -2,12 +2,11 @@ package com.example.accessingdatamysql.myorg;
 
 import jakarta.persistence.*;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-@Table(name="Organization_Roster")
-public class Organization_Roster {
+@Table(name="OrganizationRoster")
+public class OrganizationRoster {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -25,11 +24,17 @@ public class Organization_Roster {
         this.rosterId = rosterId;
     }
 
+    public OrganizationRoster(String userEmail, Integer organizationId, Type type) {
+        this.userEmail = userEmail;
+        this.organizationId = organizationId;
+        this.type = type;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Organization_Roster that = (Organization_Roster) o;
+        OrganizationRoster that = (OrganizationRoster) o;
         return getRosterId().equals(that.getRosterId()) && userEmail.equals(that.userEmail) && organizationId.equals(that.organizationId) && type == that.type;
     }
 
@@ -38,10 +43,10 @@ public class Organization_Roster {
         return Objects.hash(getRosterId(), userEmail, organizationId, type);
     }
 
-    public Organization_Roster() {
+    public OrganizationRoster() {
     }
 
-    enum Type {
+    public enum Type {
         OWNER,
         MANAGER,
         MEMBER
