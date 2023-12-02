@@ -10,10 +10,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Repository
 public class MyOrgRosterRepository implements OrgRosterRepository{
@@ -174,9 +171,9 @@ public class MyOrgRosterRepository implements OrgRosterRepository{
 
 
     @Transactional
-    public Map<String, Object> deleteMember(Integer orgId, String memberEmail)
-    {
+    public Map<String, Object> deleteMember(Integer orgId, String memberEmail) {
         Map<String, Object> result = new HashMap<>();
+
         try {
             // Delete the member from ORGANIZATION_ROSTER
             String deleteQuery = "DELETE FROM organization_roster WHERE organization_id = :orgId AND user_email = :memberEmail";
@@ -193,10 +190,22 @@ public class MyOrgRosterRepository implements OrgRosterRepository{
                 updateCountNativeQuery.setParameter("orgId", orgId);
 
                 int updatedCountRows = updateCountNativeQuery.executeUpdate();
+//                List<Object> resultList = updateCountNativeQuery.getResultList();
+//                System.out.println(Arrays.toString(resultList.toArray()));
 
                 result.put("result", "success");
                 result.put("deletedRows", deletedRows);
                 result.put("updatedCountRows", updatedCountRows);
+
+                // Check if the query effected a row, which means the user was present and subsequently removed
+                if (updatedCountRows == 1) {
+                    String nativeQuery = "DELETE FROM organization WHERE organization_id = :orgId AND NOT EXISTS (SELECT 1 FROM organization_roster WHERE organization_id = :orgId)";
+                    Query deleteOrganizationNativeQuery = entityManager.createNativeQuery(nativeQuery);
+                    deleteOrganizationNativeQuery.setParameter("orgId", orgId);
+                    int deletedOrganizationRows = deleteOrganizationNativeQuery.executeUpdate();
+                    if (deletedOrganizationRows != 0)
+                        result.put("deletedOrganization", "deleted the organization " +orgId+ " since last member was removed");
+                }
             } else {
                 result.put("result", "failure");
                 result.put("error", "Member not found in the organization roster");
@@ -205,8 +214,10 @@ public class MyOrgRosterRepository implements OrgRosterRepository{
             result.put("result", "failure");
             result.put("error", e.getMessage());
         }
+
         return result;
     }
+
 
     @Override
     public <S extends OrganizationRoster> S save(S entity) {

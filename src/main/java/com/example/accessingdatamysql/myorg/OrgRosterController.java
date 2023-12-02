@@ -134,10 +134,8 @@ public class OrgRosterController {
                 orgId = Integer.parseInt((String)json.get("orgId"));
             }
             String userEmail = (String)map.get("userEmail");
-            System.out.println(json.entrySet());
             if ("self".equals((String)(json.get("memberEmail"))) && json.get("newtype").equals("DELETE"))
             {
-                System.out.println("In the self removal case");
                 //basically if the user tries to remove themselves from the organization
                 result.put("data", myOrgRosterRepository.deleteMember(orgId, userEmail));
                 //above, remove the user
