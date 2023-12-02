@@ -18,14 +18,14 @@ INSERT INTO USER (email, lname, fname, password, phone_number) VALUES
 SELECT * FROM USER;
 -- DELETE FROM USER;
 
-
+DROP TABLE ORGANIZATION;
 CREATE TABLE IF NOT EXISTS ORGANIZATION (
     organization_id INT AUTO_INCREMENT,
     name VARCHAR(256) NOT NULL,
     email VARCHAR(128) NOT NULL,
     description VARCHAR(1024),
     owner_email VARCHAR(128) NOT NULL,
-    category ENUM('ACADEMIC', 'RECREATION', 'TECHNOLOGY', 'POLITICS', 'GREEK LIFE'),
+    category ENUM('ACADEMIC', 'RECREATION', 'TECHNOLOGY', 'POLITICS', 'GREEKLIFE'),
     member_count INT DEFAULT 1,
     PRIMARY KEY (organization_id),
     CONSTRAINT fk_user_organization FOREIGN KEY (owner_email) REFERENCES USER (email)
@@ -36,16 +36,51 @@ INSERT INTO ORGANIZATION (name, email, description, owner_email, category, membe
 ('Chess Society', 'chesssociety@example.com', 'Organization for chess lovers', 'alicedoe@example.com', 'RECREATION', 20),
 ('Science Association', 'science@example.com', 'Encouraging scientific exploration', 'johnsmith@example.com', 'ACADEMIC', 30),
 ('Political Discussion Group', 'politics@example.com', 'Discussions on current political affairs', 'alicedoe@example.com', 'POLITICS', 25),
-('Greek Life Association', 'greeklife@example.com', 'Promoting Greek culture and traditions', 'emilyjohnson@example.com', 'GREEK LIFE', 40);
+('Greek Life Association', 'greeklife@example.com', 'Promoting Greek culture and traditions', 'emilyjohnson@example.com', 'GREEKLIFE', 40);
 
+DROP TABLE ORGANIZATION_ROSTER;
 CREATE TABLE IF NOT EXISTS ORGANIZATION_ROSTER (
+    roster_id INT AUTO_INCREMENT NOT NULL,
     user_email VARCHAR(128) NOT NULL,
     organization_id INT NOT NULL,
-    type ENUM('MEMBER', 'MANAGER') NOT NULL,
-    PRIMARY KEY (user_email, organization_id),
+    type ENUM('MEMBER', 'MANAGER', 'OWNER') NOT NULL,
+    PRIMARY KEY (roster_id),
     CONSTRAINT fk_user_manager FOREIGN KEY (user_email) REFERENCES USER (email),
     CONSTRAINT fk_organization_manager FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id)
 );
+
+INSERT INTO ORGANIZATION_ROSTER (user_email, organization_id, type)
+SELECT owner_email, organization_id, 'OWNER'
+FROM ORGANIZATION;
+
+INSERT INTO ORGANIZATION_ROSTER (user_email, organization_id, type)
+VALUES
+    ('johnsmith@example.com', 2, 'MEMBER'),
+    ('johnsmith@example.com', 4, 'MANAGER'),
+    ('alicedoe@example.com', 5, 'MEMBER'),
+    ('emilyjohnson@example.com', 2, 'MEMBER');
+
+INSERT INTO ORGANIZATION_ROSTER(user_email, organization_id, type)
+VALUES
+    ('johnsmith@example.com', 2, 'MEMBER'),
+    ('emilyjohnson@example.com', 2, 'MANAGER');
+
+UPDATE ORGANIZATION o
+SET member_count = (
+    SELECT COUNT(DISTINCT user_email)
+    FROM ORGANIZATION_ROSTER
+    WHERE organization_id = o.organization_id
+)
+WHERE member_count != o.member_count;
+
+
+
+SELECT * FROM ORGANIZATION_ROSTER WHERE ORGANIZATION_ROSTER.user_email LIKE 'emilyjohnson@example.com';
+SELECT DISTINCT o.*
+FROM ORGANIZATION o
+         JOIN ORGANIZATION_ROSTER r ON o.organization_id = r.organization_id
+WHERE r.user_email = 'emilyjohnson@example.com'
+   OR o.owner_email = 'emilyjohnson@example.com';
 
 CREATE TABLE IF NOT EXISTS REQUEST (
 	request_id INT AUTO_INCREMENT NOT NULL,
