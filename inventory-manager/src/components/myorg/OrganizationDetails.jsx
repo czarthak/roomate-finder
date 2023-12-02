@@ -77,7 +77,7 @@ const OrganizationDetails = ({token}) => {
                 <button className="blue-button">Requests</button>
                 <button className="blue-button">Items</button>
                 <button className="blue-button">Listings</button>
-                <button className="blue-button" onClick={handleLeaveButtonClick}>Leave Organization</button>
+                <button className="dark-red-button" onClick={handleLeaveButtonClick}>Leave Organization</button>
             </div>
         </div>
     );

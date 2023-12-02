@@ -24,7 +24,7 @@ public class MyOrgRosterRepository implements OrgRosterRepository{
         String nativeQuery = "SELECT DISTINCT o.* " +
                 "FROM ORGANIZATION o " +
                 "JOIN ORGANIZATION_ROSTER r ON o.organization_id = r.organization_id " +
-                "WHERE r.user_email = :userEmail OR o.owner_email = :userEmail";
+                "WHERE r.user_email = :userEmail";
         List<Organization> organizations = entityManager
                 .createNativeQuery(nativeQuery, Organization.class)
                 .setParameter("userEmail", userEmail)
@@ -120,8 +120,9 @@ public class MyOrgRosterRepository implements OrgRosterRepository{
                 Query promoteManagerNativeQuery = entityManager.createNativeQuery(promoteManagerQuery);
                 promoteManagerNativeQuery.setParameter("orgId", orgId);
 
-                int updatedRows = promoteManagerNativeQuery.executeUpdate();
 
+                int updatedRows = promoteManagerNativeQuery.executeUpdate();
+                System.out.println("updated a random manager to be the owner, " + updatedRows);
                 if (updatedRows > 0) {
                     // Update owner_email in Organization table
                     String updateOwnerEmailQuery = "UPDATE organization SET owner_email = (SELECT user_email FROM organization_roster WHERE organization_id = :orgId AND type = 'OWNER') WHERE organization_id = :orgId";
@@ -144,7 +145,7 @@ public class MyOrgRosterRepository implements OrgRosterRepository{
                 promoteMemberNativeQuery.setParameter("orgId", orgId);
 
                 int updatedRows = promoteMemberNativeQuery.executeUpdate();
-
+                System.out.println("updated a random member to be the owner, " + updatedRows);
                 if (updatedRows > 0) {
                     // Update owner_email in Organization table
                     String updateOwnerEmailQuery = "UPDATE organization SET owner_email = (SELECT user_email FROM organization_roster WHERE organization_id = :orgId AND type = 'OWNER') WHERE organization_id = :orgId";

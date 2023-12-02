@@ -39,3 +39,18 @@ p {
 .blue-button:hover {
     background-color: #2980b9;
 }
+
+.dark-red-button {
+    background-color: #8b0000; /* Dark red color */
+    color: #fff;
+    border: 1px solid #6b0000; /* Dark red border color */
+    padding: 8px 16px;
+    margin: 0 10px;
+    font-size: 14px;
+    cursor: pointer;
+    max-width: 10%;
+}
+
+.dark-red-button:hover {
+    background-color: #6b0000; /* Dark red color on hover */
+}
