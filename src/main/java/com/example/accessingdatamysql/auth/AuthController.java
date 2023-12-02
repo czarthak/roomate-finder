@@ -64,6 +64,7 @@ public class AuthController {
     public @ResponseBody Map<String, String> verify(@RequestBody Map<String, String> json)
     {
         Map<String, String> res = new HashMap<String, String>();
+        System.out.println(json.entrySet());
         if (json.containsKey("jwt"))
         {
             Claims claim = JWT.decodeJWT(json.get("jwt"));
