@@ -30,6 +30,10 @@ const OrganizationDetails = ({token}) => {
         fetchOrganizationDetails();
     }, [orgId]);
 
+    const handleRosterButtonClick = () => {
+        // Redirect to the OrganizationMembers page
+        navigate(`/organizations/${orgId}/members`);
+    };
     if (!organization) {
         return <div>Loading...</div>;
     }
@@ -45,7 +49,7 @@ const OrganizationDetails = ({token}) => {
             </div>
             {/* Buttons at the bottom */}
             <div className="button-container">
-                <button className="blue-button">Roster</button>
+                <button className="blue-button" onClick={handleRosterButtonClick}>Roster</button>
                 <button className="blue-button">Requests</button>
                 <button className="blue-button">Items</button>
                 <button className="blue-button">Listings</button>

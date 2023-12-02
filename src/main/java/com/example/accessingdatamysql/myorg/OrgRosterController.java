@@ -98,8 +98,79 @@ public class OrgRosterController {
             result.put("result", "success");
             result.put("type", map.get("type")); //tell the client what type this user is so they can render buttons for the roster
             System.out.println(map.get("orgId"));
-            result.put("roster", myOrgRosterRepository.getRoster((Integer) json.get("orgId")));
+            if (json.get("orgId") instanceof Integer)
+                result.put("roster", myOrgRosterRepository.getRoster((Integer) json.get("orgId")));
+            else
+                result.put("roster", myOrgRosterRepository.getRoster(Integer.parseInt((String) json.get("orgId"))));
             return result;
+        }
+        result.put("result", "failure");
+        return result;
+    }
+
+    @PutMapping(path="/user/update")
+    public @ResponseBody Map<String, Object> updateUser(@RequestBody Map<String, Object> json)
+    {
+        Map<String, Object> result = new HashMap<>();
+        if (!json.containsKey("orgId") || !json.containsKey("newtype") || !json.containsKey("jwt") || !json.containsKey("memberEmail"))
+        {
+            result.put("result", "failure bad request");
+            return result;
+        }
+        Map<String, Object> map = getUserOrg(json);
+        //above, verify that this user is even supposed to see this information
+        if (map.get("result").equals("success"))
+        {
+            Integer orgId;
+            if (json.get("orgId") instanceof Integer)
+            {
+                orgId = (Integer) json.get("orgId");
+            }
+            else
+            {
+                orgId = Integer.parseInt((String)json.get("orgId"));
+            }
+            System.out.println(map.get("type"));
+            System.out.println(map.get("type").getClass());
+            if (map.get("type") == OrganizationRoster.Type.OWNER)
+            {
+                if (json.get("newtype").equals("MANAGER") || json.get("newtype").equals("MEMBER"))
+                {
+                    //simple promotion/demotion case
+                    result.put("result", "success");
+                    result.put("data", myOrgRosterRepository.updateMember(orgId, (String) json.get("memberEmail"), OrganizationRoster.Type.valueOf((String)json.get("newtype"))));
+                }
+                else if (json.get("newtype").equals("DELETE"))
+                {
+                    result.put("data", myOrgRosterRepository.deleteMember(orgId, (String) json.get("memberEmail")));
+                    return result;
+                }
+                else
+                {
+                    result.put("result", "failure - bad type");
+                    return result;
+                }
+            }
+            else if (map.get("type") == OrganizationRoster.Type.MANAGER)
+            {
+                if (json.get("newtype").equals("DELETE"))
+                {
+                    //delete this user, update the membercount for the org
+                    result.put("data", myOrgRosterRepository.deleteMember(orgId, (String) json.get("memberEmail")));
+                    return result;
+                }
+                else
+                {
+                    result.put("result", "failure - permission denied or bad type");
+                    return result;
+                }
+            }
+            else
+            {
+                //members cannot promote or change anyone's type
+                result.put("result", "failure - permission denied");
+                return result;
+            }
         }
         result.put("result", "failure");
         return result;

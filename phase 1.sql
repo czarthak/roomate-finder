@@ -60,14 +60,17 @@ VALUES
     ('alicedoe@example.com', 5, 'MEMBER'),
     ('emilyjohnson@example.com', 2, 'MEMBER');
 
+INSERT INTO ORGANIZATION_ROSTER(user_email, organization_id, type)
+VALUES
+    ('johnsmith@example.com', 2, 'MEMBER');
+
 UPDATE ORGANIZATION o
 SET member_count = (
     SELECT COUNT(DISTINCT user_email)
     FROM ORGANIZATION_ROSTER
     WHERE organization_id = o.organization_id
 )
-WHERE member_count != o.member_count
-;
+WHERE member_count != o.member_count;
 
 
 
