@@ -16,6 +16,8 @@ import useToken from "./components/useToken";
 import AccountInformation from "./components/user/AccountInformation";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import MyOrganizations from "./components/myorg/MyOrganizations";
+import OrganizationDetails from "./components/myorg/OrganizationDetails";
+import NotFound from "./components/error/NotFound";
 
 function App() {
   // const [token, setToken] = useState();
@@ -49,6 +51,13 @@ function App() {
         <Route element={<PrivateRoutes token={token} />}>
           <Route path="/myorganizations" element={<MyOrganizations token={token}/>} />
         </Route>
+        <Route element={<PrivateRoutes token={token} />}>
+          <Route path="/organizations/:orgId" element={<OrganizationDetails token={token}/> } />
+        </Route>
+        <Route path='*' element={<NotFound />}/>
+        <Route path='/404' element={<NotFound />}/>
+        {/*<Route path="/organizations/:orgId" element={<OrganizationDetails token={token}/>}>*/}
+        {/*</Route>*/}
         <Route
           path="/listallorganizations"
           element={<ListAllOrganizations />}

@@ -3,11 +3,14 @@ package com.example.accessingdatamysql.myorg;
 import com.example.accessingdatamysql.User;
 import com.example.accessingdatamysql.UserRepository;
 import com.example.accessingdatamysql.auth.AuthController;
+import com.example.accessingdatamysql.auth.JWT;
 import com.example.accessingdatamysql.org.Organization;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -32,7 +35,7 @@ public class OrgRosterController {
     }
 
     @PostMapping(path="/user")
-    public @ResponseBody Map<String, Object> getUsersOrgs(@RequestBody Map<String, String> json)
+    public @ResponseBody Map<String, Object> getUsersOrgs(@RequestBody Map<String, Object> json)
     {
         Map<String, Object> response = new HashMap<>();
         User found = new User();
@@ -52,6 +55,54 @@ public class OrgRosterController {
         response.put("result", "success");
         response.put("data", myOrgRosterRepository.findUserOrgs(res.get("user")));
         return response;
+    }
+
+
+    @PostMapping(path="/user/org")
+    public @ResponseBody Map<String, Object> getUserOrg(@RequestBody Map<String, Object> json)
+    {
+        Map<String, Object> response = new HashMap<>();
+        System.out.println(json.get("orgId"));
+        if (!json.containsKey("orgId"))
+        {
+            response.put("result", "failed = no orgId provided bad request");
+            return response;
+        }
+        User found = new User();
+        AuthController au = new AuthController();
+        Map<String, String> res =  au.verify(json); // if the jwt token could not be verified
+        if (res.containsKey("login") && res.get("login").equals("failed"))
+        {
+            response.put("result", "failed = bad token or bad request");
+            return response;
+        }
+        Optional<User> usr = userRepository.findById(res.get("user"));
+        if (!usr.isPresent())
+        {
+            response.put("result", "failed = user not found");
+            return response;
+        }
+        if (json.get("orgId") instanceof Integer)
+            return myOrgRosterRepository.findUserOrg(usr.get().getEmail(), (Integer) json.get("orgId"));
+        return myOrgRosterRepository.findUserOrg(usr.get().getEmail(),  Integer.parseInt((String) json.get("orgId")));
+    }
+
+    @PostMapping(path="/user/roster")
+    public @ResponseBody Map<String, Object> getRoster(@RequestBody Map<String, Object> json)
+    {
+        Map<String, Object> map = getUserOrg(json);
+        Map<String, Object> result = new HashMap<>();
+        //above, verify that this user is even supposed to see this information
+        if (map.get("result").equals("success"))
+        {
+            result.put("result", "success");
+            result.put("type", map.get("type")); //tell the client what type this user is so they can render buttons for the roster
+            System.out.println(map.get("orgId"));
+            result.put("roster", myOrgRosterRepository.getRoster((Integer) json.get("orgId")));
+            return result;
+        }
+        result.put("result", "failure");
+        return result;
     }
 }
 

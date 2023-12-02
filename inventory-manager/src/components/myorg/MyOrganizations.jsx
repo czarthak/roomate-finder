@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import './MyOrganization.css'
 import PropTypes from "prop-types";
+import {Link} from "react-router-dom";
 const MyOrganizations = ({ token }) => {
     const [organizations, setOrganizations] = useState([]);
 
@@ -32,9 +33,9 @@ const MyOrganizations = ({ token }) => {
             <ul>
                 {organizations.map((org) => (
                     <li key={org.orgId} className="organization-item">
-                        {/*<Link to={`/organization/${org.orgId}`}>*/}
+                        <Link to={`/organizations/${org.orgId}`}>
                         <h3>{org.name}</h3>
-                        {/*</Link>*/}
+                        </Link>
                         <p>Category: {org.category}</p>
                         <p>Members: {org.memberCount}</p>
                         {/* Add more information as needed */}

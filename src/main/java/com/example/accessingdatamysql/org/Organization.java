@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 @Table(name = "ORGANIZATION")
 public class Organization {
 
-     enum Category {
+     public enum Category {
          ACADEMIC,
          RECREATION,
          TECHNOLOGY,

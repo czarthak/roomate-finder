@@ -53,6 +53,24 @@ INSERT INTO ORGANIZATION_ROSTER (user_email, organization_id, type)
 SELECT owner_email, organization_id, 'OWNER'
 FROM ORGANIZATION;
 
+INSERT INTO ORGANIZATION_ROSTER (user_email, organization_id, type)
+VALUES
+    ('johnsmith@example.com', 2, 'MEMBER'),
+    ('johnsmith@example.com', 4, 'MANAGER'),
+    ('alicedoe@example.com', 5, 'MEMBER'),
+    ('emilyjohnson@example.com', 2, 'MEMBER');
+
+UPDATE ORGANIZATION o
+SET member_count = (
+    SELECT COUNT(DISTINCT user_email)
+    FROM ORGANIZATION_ROSTER
+    WHERE organization_id = o.organization_id
+)
+WHERE member_count != o.member_count
+;
+
+
+
 SELECT * FROM ORGANIZATION_ROSTER WHERE ORGANIZATION_ROSTER.user_email LIKE 'emilyjohnson@example.com';
 SELECT DISTINCT o.*
 FROM ORGANIZATION o
