@@ -34,6 +34,10 @@ const OrganizationDetails = ({token}) => {
         // Redirect to the OrganizationMembers page
         navigate(`/organizations/${orgId}/members`);
     };
+    const handleItemsButtonClick = () => {
+        // Redirect to the OrganizationMembers page
+        navigate(`/organizations/${orgId}/items`);
+    };
     const handleLeaveButtonClick = async () => {
         if (window.confirm(`Are you sure you want to leave the organization: ${organization.name}?`)) {
             try {
@@ -75,7 +79,7 @@ const OrganizationDetails = ({token}) => {
             <div className="button-container">
                 <button className="blue-button" onClick={handleRosterButtonClick}>Roster</button>
                 <button className="blue-button">Requests</button>
-                <button className="blue-button">Items</button>
+                <button className="blue-button" onClick={handleItemsButtonClick}>Items</button>
                 <button className="blue-button">Listings</button>
                 <button className="dark-red-button" onClick={handleLeaveButtonClick}>Leave Organization</button>
             </div>
