@@ -27,5 +27,16 @@ public class CustomItemRepository {
         return resultList;
     }
 
+    @Transactional
+    public Object getItem(Integer orgId, Integer itemId)
+    {
+        String nativeQuery = "SELECT I.*, L.location FROM ITEM I JOIN LOCATION L ON I.location_id = L.location_id WHERE I.organization_id = :orgId AND I.item_id = :itemId";
+        Query query = entityManager.createNativeQuery(nativeQuery)
+                .setParameter("orgId", orgId)
+                .setParameter("itemId", itemId);
+
+        return query.getSingleResult();
+    }
+
 
 }

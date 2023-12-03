@@ -86,6 +86,44 @@ public class ItemController {
         return response;
     }
 
+    @PostMapping(path="/user/oneitem")
+    public @ResponseBody Map<String, Object> getItemToken(@RequestBody Map<String, Object> json)
+    {
+        Map<String, Object> response = new HashMap<>();
+        System.out.println(json.entrySet());
+        if (!json.containsKey("orgId") || !json.containsKey("jwt") || !json.containsKey("itemId"))
+        {
+            response.put("result", "failure - bad request");
+            return response;
+        }
+        Map<String, Object> map = getUserOrg(json);
+        if (map.get("result").equals("success"))
+        {
+            Integer orgId = 0;
+            Integer itemId;
+            if (json.get("orgId") instanceof Integer)
+            {
+                orgId = (Integer) json.get("orgId");
+            }
+            else
+            {
+                orgId = Integer.parseInt((String)(json.get("orgId"))); }
+            if (json.get("itemId") instanceof Integer)
+                itemId = (Integer) json.get("itemId");
+            else
+                itemId = Integer.parseInt((String)(json.get("itemId")));
+            response.put("data", customItemRepository.getItem(orgId, itemId));
+            response.put("result", "success");
+            response.put("type", map.get("type"));
+        }
+        else
+        {
+            response.put("result", "failure - not authorized");
+        }
+        return response;
+    }
+
+
     /*
     Private helper function to validate that the user is supposed to see this data
      */

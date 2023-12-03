@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 
 import './OrganizationItems.css'
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 const OrganizationItems = ({ token }) => {
     // const [orgId, setOrgId] = useState(null);
     const [items, setItems] = useState([]);
@@ -14,6 +14,10 @@ const OrganizationItems = ({ token }) => {
     const [locationFilter, setLocationFilter] = useState('');
     const [quantityFilter, setQuantityFilter] = useState('');
     const [searchFilter, setSearchFilter] = useState('');
+    const navigate = useNavigate();
+    const handleItemClick = (item) => {
+        navigate(`/organizations/${orgId}/items/${item}`);
+    };
 
     useEffect(() => {
         const fetchData = async () => {
@@ -33,9 +37,11 @@ const OrganizationItems = ({ token }) => {
                     setLocations(['', ...uniqueLocations]);
                 } else {
                     console.error('Error fetching organization items');
+                    navigate('/404');
                 }
             } catch (error) {
                 console.error('Error fetching organization items:', error);
+                navigate('/404');
             }
         };
 
@@ -108,8 +114,8 @@ const OrganizationItems = ({ token }) => {
             <div className="items-list">
                 {filteredItems.length > 0 ? (
                     filteredItems.map((item, index) => (
-                        <div key={index} className="item-item">
-                            <div className="item-details">
+                        <div key={index} className="item-item" onClick={() => handleItemClick(item)}>
+                            <div className="item-details" >
                                 <span><strong>Name:</strong> {item[1]}</span>
                                 <span><strong>Description:</strong> {item[2]}</span>
                                 <span><strong>Owner Email:</strong> {item[3]}</span>
