@@ -7,40 +7,46 @@ import jakarta.persistence.*;
 @Table(name = "REQUEST")
 public class Request {
 
-    enum Status {
-        PENDING,
-        ACCEPTED,
-        DECLINED
-    }
+    // enum Status {
+    //     PENDING,
+    //     ACCEPTED,
+    //     DECLINED
+    // }
 
-    enum Type {
-        JOIN,
-        ITEM
-    }
+    // enum Type {
+    //     JOIN,
+    //     ITEM
+    // }
 
     private String userEmail;
 
-    private int orgId;
+    // private int orgId;
+
+    private String organizationName;
 
     private String description;
 
-    private Status status;
-    
-    private Type type;
+    // private Status status;
 
-    public Status getStatus() {
+    private String status;
+    
+    private String type;
+    
+    // private Type type;
+
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public Type getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(String type) {
         this.type = type;
     }
 
@@ -52,31 +58,39 @@ public class Request {
         this.userEmail = userEmail;
     }
 
-    public int getOrgId() {
-        return orgId;
+    // public int getOrgId() {
+    //     return orgId;
+    // }
+
+    // public void setOrgId(int orgId) {
+    //     this.orgId = orgId;
+    // }
+
+    public String getOrganizationName() {
+        return organizationName;
     }
 
-    public void setOrgId(int orgId) {
-        this.orgId = orgId;
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
     }
 
-    public String getDesc() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDesc(String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
     @Id
     @Column(nullable = false)
-    private int reqId;
+    private int requestId;
 
-    public int getReqId() {
-        return reqId;
+    public int getRequestId() {
+        return requestId;
     }
 
-    public void setReqId(int reqId) {
-        this.reqId = reqId;
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
     }
 }

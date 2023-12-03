@@ -23,17 +23,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import Axios from "axios";
-
-function createData(id, name, calories, fat, carbs, protein) {
-  return {
-    id,
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-  };
-}
+import { useNavigate } from 'react-router-dom';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -83,28 +73,22 @@ const headCells = [
   },
   {
     id: 'description',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Description',
   },
   {
     id: 'owner',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Owner Email',
   },
   {
     id: 'membercount',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Member',
   },
-  // {
-  //   id: 'protein',
-  //   numeric: true,
-  //   disablePadding: false,
-  //   label: 'Protein (g)',
-  // },
 ];
 
 function EnhancedTableHead(props) {
@@ -117,15 +101,23 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
+        {/* const [selectedRow, setSelectedRow] = React.useState({});
+
+        <TableRow
+          onClick={() => setSelectedRow(row)}
+          key={row.name}
+          sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+        ></TableRow> */}
+
         <TableCell padding="checkbox">
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
+            // inputProps={{
+            //   'aria-label': 'select all desserts',
+            // }}
           />
         </TableCell>
         {headCells.map((headCell) => (
@@ -193,7 +185,7 @@ function EnhancedTableToolbar(props) {
           id="tableTitle"
           component="div"
         >
-          Nutrition
+          Organizations
         </Typography>
       )}
 
@@ -219,9 +211,11 @@ EnhancedTableToolbar.propTypes = {
 };
 
 //export default function EnhancedTable() {
-  export const ListAllOrganizations = (props) => {
+export const ListAllOrganizations = (props) => {
+  const navigate = useNavigate();
+
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
+  const [orderBy, setOrderBy] = React.useState('');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -275,6 +269,14 @@ EnhancedTableToolbar.propTypes = {
       );
     }
     setSelected(newSelected);
+  };
+
+  // const toRequest = (event, id) => {
+  //   window.location.href = `http://localhost:3000/createrequest`; 
+  // }
+
+  const toRequest = (event, row) => {
+    navigate('/createrequest', { state: { data: row } });
   };
 
   const handleChangePage = (event, newPage) => {
@@ -331,7 +333,8 @@ EnhancedTableToolbar.propTypes = {
                 return (
                   <TableRow
                     hover
-                    onClick={(event) => handleClick(event, row.id)}
+                    // onClick={(event) => handleClick(event, row.id)}
+                    onClick={(event) => toRequest(event, row)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}
@@ -356,11 +359,10 @@ EnhancedTableToolbar.propTypes = {
                     >
                       {row.name}
                     </TableCell>
-                   {/* <TableCell align="right">{row.name}</TableCell> */}
                    <TableCell align="left">{row.category}</TableCell>
-                   <TableCell align="right">{row.description}</TableCell>
-                   <TableCell align="right">{row.owner}</TableCell>
-                   <TableCell align="right">{row.membercount}</TableCell>
+                   <TableCell align="left">{row.description}</TableCell>
+                   <TableCell align="left">{row.ownerEmail}</TableCell>
+                   <TableCell align="left">{row.memberCount}</TableCell>
                   </TableRow>
                 );
               })}

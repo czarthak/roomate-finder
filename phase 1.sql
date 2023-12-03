@@ -15,8 +15,9 @@ INSERT INTO USER (email, lname, fname, password, phone_number) VALUES
 ('alicedoe@example.com', 'Doe', 'Alice', 'securepass', '987-654-3210'),
 ('emilyjohnson@example.com', 'Johnson', 'Emily', 'sciencePass', '8888888888');
 
-# SELECT * FROM USER;
+-- SELECT * FROM USER;
 -- DELETE FROM USER;
+
 
 CREATE TABLE IF NOT EXISTS ORGANIZATION (
     organization_id INT AUTO_INCREMENT,
@@ -83,13 +84,14 @@ WHERE true;
 CREATE TABLE IF NOT EXISTS REQUEST (
 	request_id INT AUTO_INCREMENT NOT NULL,
     user_email VARCHAR(128) NOT NULL,
-    organization_id INT NOT NULL,
+    -- organization_id INT NOT NULL,
+    organization_name VARCHAR(128) NOT NULL,
     status ENUM('PENDING', 'ACCEPTED', 'DECLINED') NOT NULL,
     description VARCHAR(256),
     type ENUM('JOIN', 'ITEM') NOT NULL,
     PRIMARY KEY (request_id),
-    CONSTRAINT fk_user_request FOREIGN KEY (user_email) REFERENCES USER (email) ON DELETE CASCADE,
-    CONSTRAINT fk_organization_request FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id) ON DELETE CASCADE
+    CONSTRAINT fk_user_request FOREIGN KEY (user_email) REFERENCES USER (email)
+    -- CONSTRAINT fk_organization_request FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id)
 );
 
 CREATE TABLE IF NOT EXISTS LOCATION (
