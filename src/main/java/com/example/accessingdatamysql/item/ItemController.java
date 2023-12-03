@@ -155,7 +155,41 @@ public class ItemController {
         }
         return response;
     }
-
+    @PutMapping(path="/user/oneitem")
+    public @ResponseBody Map<String, Object> updateItemToken(@RequestBody Map<String, Object> json)
+    {
+        Map<String, Object> response = new HashMap<>();
+        System.out.println(json.entrySet());
+        if (!json.containsKey("orgId") || !json.containsKey("jwt") || !json.containsKey("itemId") || !json.containsKey("name")
+                || !json.containsKey("description") || !json.containsKey("quantity") || !json.containsKey("category")
+                    || !json.containsKey("status"))
+        {
+            response.put("result", "failure - bad request");
+            return response;
+        }
+        Map<String, Object> map = getUserOrg(json);
+        System.out.println(map.entrySet());
+        if (map.get("result").equals("success"))
+        {
+            Integer itemId;
+            if (map.get("type") != OrganizationRoster.Type.MANAGER && map.get("type") != OrganizationRoster.Type.OWNER)
+            {
+                response.put("result", "failure - not authorized, user cannot delete");
+                return response;
+            }
+            if (json.get("itemId") instanceof Integer)
+                itemId = (Integer) json.get("itemId");
+            else
+                itemId = Integer.parseInt((String)(json.get("itemId")));
+            response.put("data", customItemRepository.updateItem(json));
+            response.put("result", "success");
+        }
+        else
+        {
+            response.put("result", "failure - not authorized");
+        }
+        return response;
+    }
 
     /*
     Private helper function to validate that the user is supposed to see this data

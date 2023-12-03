@@ -114,7 +114,7 @@ const OrganizationItems = ({ token }) => {
             <div className="items-list">
                 {filteredItems.length > 0 ? (
                     filteredItems.map((item, index) => (
-                        <div key={index} className="item-item" onClick={() => handleItemClick(item)}>
+                        <div key={index} className="item-item" onClick={() => handleItemClick(item[0])}>
                             <div className="item-details" >
                                 <span><strong>Name:</strong> {item[1]}</span>
                                 <span><strong>Description:</strong> {item[2]}</span>
