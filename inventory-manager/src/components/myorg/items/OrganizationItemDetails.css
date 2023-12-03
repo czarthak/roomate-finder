@@ -1,5 +1,4 @@
 /* OrganizationItemDetails.css */
-
 .organization-item-details {
     max-width: 600px;
     margin: 0 auto;
@@ -7,30 +6,43 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center; /* Center the entire content */
+    text-align: center;
+    align-items: center;
 }
 
 .item-details {
     margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the entire content */
+    text-align: center;
 }
 
 .item-details span {
     display: block;
     margin-bottom: 10px;
-    text-align: left; /* Align text to the left within each span */
+    text-align: left;
+    width: 100%;
 }
 
-.delete-item-button {
+.modify-item-button {
     display: block;
     margin-top: 20px;
     padding: 10px 20px;
     color: #fff;
-    background-color: #d9534f; /* Dark red color */
-    border: 1px solid #d9534f;
+    background-color: #5bc0de; /* Blue color for modify button */
+    border: 1px solid #5bc0de;
     border-radius: 5px;
     cursor: pointer;
 }
 
-.delete-item-button:hover {
-    background-color: #c9302c; /* Darker red color on hover */
+.modify-item-button:hover {
+    background-color: #46b8da; /* Darker blue color on hover */
+}
+
+/* Style for dropdowns */
+.item-details select {
+    padding: 8px;
+    width: 100%;
+    margin-bottom: 10px;
 }

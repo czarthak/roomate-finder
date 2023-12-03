@@ -42,6 +42,12 @@ const OrganizationItemDetails = ({ token }) => {
         }
     };
 
+    const handleDropdownChange = (field, value) => {
+        setModifiedFields((prevFields) => ({
+            ...prevFields,
+            [field]: value,
+        }));
+    };
     const handleModifyItem = async () => {
         // Logic to handle item modification
         try {
@@ -143,22 +149,30 @@ const OrganizationItemDetails = ({ token }) => {
                 <div>
                     <h3>Modify Item</h3>
                     <div className="modify-item-fields">
-                        <label>
-                            Status:
-                            <input
-                                type="text"
-                                value={modifiedFields.status}
-                                onChange={(e) => setModifiedFields({ ...modifiedFields, status: e.target.value })}
-                            />
-                        </label>
-                        <label>
-                            Category:
-                            <input
-                                type="text"
-                                value={modifiedFields.category}
-                                onChange={(e) => setModifiedFields({ ...modifiedFields, category: e.target.value })}
-                            />
-                        </label>
+                        <div>
+                            <span>Status:</span>
+                            <select value={modifiedFields.status} defaultValue={itemInfo.data[6]} onChange={(e) => handleDropdownChange('status', e.target.value)}>
+                                <option value="AVAILABLE">Available</option>
+                                <option value="BORROWED">Borrowed</option>
+                            </select>
+                        </div>
+                        <div>
+                            <span>Category:</span>
+                            <select value={modifiedFields.category} defaultValue={itemInfo.data[5]} onChange={(e) => handleDropdownChange('category', e.target.value)}>
+                                <option value="STATIONERY">Stationery</option>
+                                <option value="MARKETING">Marketing</option>
+                                <option value="ELECTRONICS">Electronics</option>
+                                <option value="SUPPLIES">Supplies</option>
+                                <option value="PERISHABLES">Perishables</option>
+                                <option value="MERCHANDISE">Merchandise</option>
+                                <option value="TOOLS">Tools</option>
+                                <option value="CHEMICALS">Chemicals</option>
+                                <option value="FLAMMABLE">Flammable</option>
+                                <option value="OTHER">Other</option>
+                                <option value="UNIQUE">Unique</option>
+                                <option value="BOOKS">Books</option>
+                            </select>
+                        </div>
                         <label>
                             Description:
                             <input
