@@ -8,6 +8,8 @@ import './OrganizationItemDetails.css';
 const OrganizationItemDetails = ({ token }) => {
     const { orgId, itemId } = useParams();
     const [itemInfo, setItemInfo] = useState(null);
+    const [locations, setLocations] = useState([]);
+    const [modifiedLocation, setModifiedLocation] = useState('');
     const [modifiedFields, setModifiedFields] = useState({
         status: '',
         category: '',
@@ -72,6 +74,8 @@ const OrganizationItemDetails = ({ token }) => {
                         modifiedFieldsToSend[key] = itemInfo.data[1];
                     else if (key === 'description')
                         modifiedFieldsToSend[key] = itemInfo.data[2];
+                    else if (key === 'location')
+                        modifiedFieldsToSend[key] = itemInfo.data[9];
                 }
             });
 
@@ -108,6 +112,24 @@ const OrganizationItemDetails = ({ token }) => {
 
     // Fetch item details on component mount
     useEffect(() => {
+        const fetchLocations = async () => {
+            try {
+                const response = await Axios.post('http://localhost:8080/item/user/location', {
+                    orgId: parseInt(orgId),
+                    jwt: token.jwt,
+                });
+
+                if (response.data.result === 'success') {
+                    setLocations(response.data.data);
+                } else {
+                    console.error('Error fetching locations');
+                }
+            } catch (error) {
+                console.error('Error fetching locations:', error);
+            }
+        };
+
+        fetchLocations();
         const fetchItemDetails = async () => {
             try {
                 const response = await Axios.post('http://localhost:8080/item/user/oneitem', {
@@ -198,6 +220,19 @@ const OrganizationItemDetails = ({ token }) => {
                             />
                         </label>
                     </div>
+                    <label>
+                        Location:
+                        <select
+                            value={modifiedFields.locationId}
+                            onChange={(e) => setModifiedFields( { ...modifiedFields, locationId:e.target.value})}
+                        >
+                            {locations.map(([locationName, locationId], index) => (
+                                <option key={locationId} value={locationId}>
+                                    {locationName}
+                                </option>
+                            ))}
+                        </select>
+                    </label>
                     <button onClick={handleModifyItem} className="modify-item-button">
                         Modify Item
                     </button>

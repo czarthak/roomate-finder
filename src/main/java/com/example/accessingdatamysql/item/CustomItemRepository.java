@@ -55,6 +55,15 @@ public class CustomItemRepository {
                 .setParameter("itemId", itemId);
         return query.executeUpdate();
     }
+
+    @Transactional
+    public List<Object> getLocation(Integer orgId)
+    {
+        String nativeQuery = "SELECT L.location, L.location_id FROM LOCATION L WHERE L.organization_id = :orgId";
+        Query query = entityManager.createNativeQuery(nativeQuery)
+                .setParameter("orgId", orgId);
+        return query.getResultList();
+    }
     @Transactional
     public Object updateItem(Map<String, Object> json)
     {
@@ -71,20 +80,26 @@ public class CustomItemRepository {
         else {
             quantity = Integer.parseInt((String)json.get("quantity"));
         }
+        Integer locationId;
+        if (json.get("locationId") instanceof Integer)
+            locationId = (Integer) json.get("locationId");
+        else {
+            locationId = Integer.parseInt((String)json.get("locationId"));
+        }
         String status = (String) json.get("status");
         String description = (String) json.get("description");
         String category = (String) json.get("category");
         String name = (String) json.get("name");
-
         // Use native SQL query with EntityManager to update the item
-        String nativeQuery = "UPDATE ITEM SET status = ?1, description = ?2, quantity = ?3, category = ?4, name = ?5 WHERE item_id = ?6";
+        String nativeQuery = "UPDATE ITEM SET status = ?1, description = ?2, quantity = ?3, category = ?4, name = ?5, location_id = ?6 WHERE item_id = ?7";
         Query query = entityManager.createNativeQuery(nativeQuery)
                 .setParameter(1, status)
                 .setParameter(2, description)
                 .setParameter(3, quantity)
                 .setParameter(4, category)
                 .setParameter(5, name)
-                .setParameter(6, itemId);
+                .setParameter(6, locationId)
+                .setParameter(7, itemId);
 
         int updatedRows = query.executeUpdate();
 

@@ -159,16 +159,14 @@ public class ItemController {
     public @ResponseBody Map<String, Object> updateItemToken(@RequestBody Map<String, Object> json)
     {
         Map<String, Object> response = new HashMap<>();
-        System.out.println(json.entrySet());
         if (!json.containsKey("orgId") || !json.containsKey("jwt") || !json.containsKey("itemId") || !json.containsKey("name")
                 || !json.containsKey("description") || !json.containsKey("quantity") || !json.containsKey("category")
-                    || !json.containsKey("status"))
+                    || !json.containsKey("status") || !json.containsKey("locationId"))
         {
             response.put("result", "failure - bad request");
             return response;
         }
         Map<String, Object> map = getUserOrg(json);
-        System.out.println(map.entrySet());
         if (map.get("result").equals("success"))
         {
             Integer itemId;
@@ -182,6 +180,35 @@ public class ItemController {
             else
                 itemId = Integer.parseInt((String)(json.get("itemId")));
             response.put("data", customItemRepository.updateItem(json));
+            response.put("result", "success");
+        }
+        else
+        {
+            response.put("result", "failure - not authorized");
+        }
+        return response;
+    }
+
+    @PostMapping(path="/user/location")
+    public @ResponseBody Map<String, Object> getLocation(@RequestBody Map<String, Object> json)
+    {
+        Map<String, Object> response = new HashMap<>();
+        if (!json.containsKey("jwt") || !json.containsKey("orgId"))
+        {
+            response.put("result", "failure - bad request");
+            return response;
+        }
+        System.out.println(json.entrySet());
+        Map<String, Object> map = getUserOrg(json);
+        System.out.println(map.entrySet());
+        if (map.get("result").equals("success"))
+        {
+            Integer orgId;
+            if (json.get("orgId") instanceof Integer)
+                orgId = (Integer) json.get("orgId");
+            else
+                orgId = Integer.parseInt((String)(json.get("orgId")));
+            response.put("data", customItemRepository.getLocation(orgId));
             response.put("result", "success");
         }
         else
