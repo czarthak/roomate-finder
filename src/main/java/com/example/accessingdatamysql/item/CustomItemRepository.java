@@ -59,10 +59,20 @@ public class CustomItemRepository {
     public Object updateItem(Map<String, Object> json)
     {
         // Extract parameters from the JSON map
-        Integer itemId = (Integer) json.get("itemId");
+        Integer itemId;
+        if (json.get("itemId") instanceof Integer)
+            itemId = (Integer) json.get("itemId");
+        else {
+            itemId = Integer.parseInt((String)json.get("itemId"));
+        }
+        Integer quantity;
+        if (json.get("quantity") instanceof Integer)
+            quantity = (Integer) json.get("quantity");
+        else {
+            quantity = Integer.parseInt((String)json.get("quantity"));
+        }
         String status = (String) json.get("status");
         String description = (String) json.get("description");
-        Integer quantity = (Integer) json.get("quantity");
         String category = (String) json.get("category");
         String name = (String) json.get("name");
 
