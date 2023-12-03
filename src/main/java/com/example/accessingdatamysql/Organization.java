@@ -19,13 +19,13 @@ public class Organization {
 
     private String category;
 
-    private Integer membercount;
+    private Integer memberCount;
 
     private String name;
 
     private String email;
 
-    private String owner;
+    private String ownerEmail;
 
     private String description;
 
@@ -45,12 +45,12 @@ public class Organization {
         this.category = category;
     }
 
-    public Integer getMembercount() {
-        return membercount;
+    public Integer getMemberCount() {
+        return memberCount;
     }
 
-    public void setMembercount(Integer membercount) {
-        this.membercount = membercount;
+    public void setMemberCount(Integer membercount) {
+        this.memberCount = membercount;
     }
 
     public String getEmail() {
@@ -77,12 +77,12 @@ public class Organization {
         this.description = description;
     }
 
-    public String getOwner() {
-        return owner;
+    public String getOwnerEmail() {
+        return ownerEmail;
     }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setOwnerEmail(String ownerEmail) {
+        this.ownerEmail = ownerEmail;
     }
 
     @Id

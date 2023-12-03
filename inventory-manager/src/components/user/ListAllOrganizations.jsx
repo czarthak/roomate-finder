@@ -392,4 +392,4 @@ EnhancedTableToolbar.propTypes = {
       />
     </Box>
   );
-}
+};
