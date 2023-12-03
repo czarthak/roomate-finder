@@ -38,5 +38,13 @@ public class CustomItemRepository {
         return query.getSingleResult();
     }
 
+    @Transactional
+    public Object deleteItem(Integer itemId)
+    {
+        String nativeQuery = "DELETE FROM ITEM I WHERE I.item_id = :itemId";
+        Query query = entityManager.createNativeQuery(nativeQuery)
+                .setParameter("itemId", itemId);
+        return query.executeUpdate();
+    }
 
 }

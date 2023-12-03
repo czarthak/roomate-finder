@@ -90,7 +90,6 @@ public class ItemController {
     public @ResponseBody Map<String, Object> getItemToken(@RequestBody Map<String, Object> json)
     {
         Map<String, Object> response = new HashMap<>();
-        System.out.println(json.entrySet());
         if (!json.containsKey("orgId") || !json.containsKey("jwt") || !json.containsKey("itemId"))
         {
             response.put("result", "failure - bad request");
@@ -115,6 +114,40 @@ public class ItemController {
             response.put("data", customItemRepository.getItem(orgId, itemId));
             response.put("result", "success");
             response.put("type", map.get("type"));
+        }
+        else
+        {
+            response.put("result", "failure - not authorized");
+        }
+        return response;
+    }
+
+    @PostMapping(path="/user/oneitem/delete")
+    public @ResponseBody Map<String, Object> deleteItemToken(@RequestBody Map<String, Object> json)
+    {
+        Map<String, Object> response = new HashMap<>();
+        System.out.println(json.entrySet());
+        if (!json.containsKey("orgId") || !json.containsKey("jwt") || !json.containsKey("itemId"))
+        {
+            response.put("result", "failure - bad request");
+            return response;
+        }
+        Map<String, Object> map = getUserOrg(json);
+        System.out.println(map.entrySet());
+        if (map.get("result").equals("success"))
+        {
+            Integer itemId;
+            if (map.get("type") != OrganizationRoster.Type.MANAGER && map.get("type") != OrganizationRoster.Type.OWNER)
+            {
+                response.put("result", "failure - not authorized, user cannot delete");
+                return response;
+            }
+            if (json.get("itemId") instanceof Integer)
+                itemId = (Integer) json.get("itemId");
+            else
+                itemId = Integer.parseInt((String)(json.get("itemId")));
+            response.put("data", customItemRepository.deleteItem(itemId));
+            response.put("result", "success");
         }
         else
         {

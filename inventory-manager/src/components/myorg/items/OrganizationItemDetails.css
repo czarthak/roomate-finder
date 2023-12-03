@@ -19,3 +19,18 @@
     margin-bottom: 10px;
     text-align: left; /* Align text to the left within each span */
 }
+
+.delete-item-button {
+    display: block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #d9534f; /* Dark red color */
+    border: 1px solid #d9534f;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-item-button:hover {
+    background-color: #c9302c; /* Darker red color on hover */
+}
