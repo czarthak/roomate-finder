@@ -23,7 +23,7 @@ export const OrgChart = () => {
   };
 
   const options = {
-    title: "My Daily Activities",
+    title: "Organizations by Category",
   };
 
   return (
