@@ -24,11 +24,45 @@ public class Request {
 
     private String description;
 
+    public Integer getItem_id() {
+        return item_id;
+    }
+
+    public void setItem_id(Integer item_id) {
+        this.item_id = item_id;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
     @Enumerated(EnumType.STRING)
     private Type type;
+
+    private Integer item_id;
+
+    @Override
+    public String toString() {
+        return "Request{" +
+                "userEmail='" + userEmail + '\'' +
+                ", organizationId=" + organizationId +
+                ", description='" + description + '\'' +
+                ", status=" + status +
+                ", type=" + type +
+                ", item_id=" + item_id +
+                ", quantity=" + quantity +
+                ", requestId=" + requestId +
+                '}';
+    }
+
+    private Integer quantity;
 
     public Integer getOrganizationId() {
         return organizationId;

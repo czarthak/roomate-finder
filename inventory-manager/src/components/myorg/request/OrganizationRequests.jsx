@@ -56,7 +56,7 @@ const OrganizationRequests = ({ token }) => {
         <div className="organization-requests">
             <h2>Organization Requests</h2>
             <ul className="requests-list">
-                {requests.map(([requestId, userEmail, orgId, requestStatus, requestMessage, requestType]) => (
+                {requests.map(([requestId, userEmail, orgId, requestStatus, requestMessage, requestType, itemId, requestQuantity]) => (
                     <li key={requestId} className="request-item">
                         <div className="request-details">
                             <span className="status-column">
@@ -72,6 +72,7 @@ const OrganizationRequests = ({ token }) => {
                             {/*<span>{requestStatus}</span>*/}
                             <span>{requestMessage}</span>
                             <span>{requestType}</span>
+                            {requestType === 'ITEM' && <span>{requestQuantity}</span>}
                         </div>
                         <div className="request-buttons">
                             {requestStatus === 'PENDING' && (
