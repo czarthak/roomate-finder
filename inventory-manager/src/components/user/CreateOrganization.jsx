@@ -47,6 +47,14 @@ export const CreateOrganization = ({ token }) => {
     window.location.reload(false);
   };
 
+  const categories = [
+    "GREEKLIFE",
+    "ACADEMIC",
+    "RECREATION",
+    "TECHNOLOGY",
+    "POLITICS",
+  ];
+
   return (
     <div className="creation-form-container">
       <h2>Create Organization</h2>
@@ -80,13 +88,18 @@ export const CreateOrganization = ({ token }) => {
         />
 
         <label htmlFor="category">Category</label>
-        <input
+        <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
           id="category"
-          name="category"
-          placeholder="Category"
-        />
+          name="category">
+          <option value="">Select a category</option>
+          {categories.map((cat, index) => (
+            <option key={index} value={cat}>
+              {cat}
+            </option>
+          ))}
+        </select>
 
         <button type="submit">Create</button>
       </form>

@@ -12,7 +12,6 @@ public class Organization {
          RECREATION,
          TECHNOLOGY,
          POLITICS,
-
          GREEKLIFE
      }
 

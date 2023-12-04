@@ -26,6 +26,7 @@ import OrganizationItemCreate from "./components/myorg/item/OrganizationItemCrea
 import OrganizationLocations from "./components/myorg/location/OrganizationLocations";
 import OrganizationRequests from "./components/myorg/request/OrganizationRequests";
 import MyRequests from "./components/myrequests/MyRequests";
+import OrgChart from "./components/stats/OrgChart";
 
 function App() {
   // const [token, setToken] = useState();
@@ -118,6 +119,7 @@ function App() {
           path="/listallorganizations"
           element={<ListAllOrganizations />}
         />
+        <Route path="/allorganizationstatistics" element={<OrgChart />} />
       </Routes>
     </div>
   );
