@@ -307,6 +307,40 @@ public class ItemController {
         }
         return response;
     }
+    @PostMapping(path="/location/all")
+    public @ResponseBody Map<String, Object> getItemLocations(@RequestBody Map<String, Object> json)
+    {
+        Map<String, Object> response = new HashMap<>();
+        if (!json.containsKey("jwt") || !json.containsKey("orgId"))
+        {
+            response.put("result", "failure - bad request");
+            return response;
+        }
+        Map<String, Object> map = getUserOrg(json);
+        if (map.get("result").equals("success"))
+        {
+            Integer orgId;
+            if (json.get("orgId") instanceof Integer)
+                orgId = (Integer) json.get("orgId");
+            else
+                orgId = Integer.parseInt((String)(json.get("orgId")));
+            if (map.get("type") == OrganizationRoster.Type.MEMBER)
+            {
+                response.put("result", "failure - members are not authorized to delete locations");
+                response.put("type", map.get("type"));
+                return response;
+            }
+            response.put("data", customItemRepository.getLocationCount(orgId));
+            response.put("result", "success");
+            response.put("type", map.get("type"));
+        }
+        else
+        {
+            response.put("result", "failure - not authorized");
+        }
+        return response;
+    }
+
     /*
     Private helper function to validate that the user is supposed to see this data
      */

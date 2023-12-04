@@ -27,6 +27,7 @@ import OrganizationLocations from "./components/myorg/location/OrganizationLocat
 import OrganizationRequests from "./components/myorg/request/OrganizationRequests";
 import MyRequests from "./components/myrequests/MyRequests";
 import OrgChart from "./components/stats/OrgChart";
+import LocationInformation from "./components/myorg/location/LocationInformation";
 
 function App() {
   // const [token, setToken] = useState();
@@ -109,6 +110,12 @@ function App() {
           <Route
             path="/organizations/:orgId/requests"
             element={<OrganizationRequests token={token} />}
+          />
+        </Route>
+        <Route element={<PrivateRoutes token={token} />}>
+          <Route
+              path="/organizations/:orgId/locationinformation"
+              element={<LocationInformation token={token} />}
           />
         </Route>
         <Route path="*" element={<NotFound />} />

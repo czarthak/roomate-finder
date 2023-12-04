@@ -15,7 +15,7 @@ export const OrgChart = () => {
       const response = await Axios.get(
         "http://localhost:8080/organization/all/stats"
       );
-      const some = [["Task", "Hours per Day"], ...response.data.data];
+      const some = [["Location", "Number of Items"], ...response.data.data];
       setInfo(some);
     } catch (error) {
       console.error("Error fetching stats:", error);

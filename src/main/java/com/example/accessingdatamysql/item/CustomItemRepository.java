@@ -65,6 +65,22 @@ public class CustomItemRepository {
         return query.getResultList();
     }
     @Transactional
+    public List<Object[]> getLocationCount(Integer orgId)
+    {
+        String nativeQuery = "SELECT l.location, COUNT(i.item_id) AS item_count " +
+                "FROM LOCATION l " +
+                "LEFT JOIN ITEM i ON l.location_id = i.location_id " +
+                "WHERE l.organization_id = :orgId " +
+                "GROUP BY l.location";
+
+        Query query = entityManager.createNativeQuery(nativeQuery);
+        query.setParameter("orgId", orgId);
+
+        @SuppressWarnings("unchecked")
+        List<Object[]> resultRows = query.getResultList();
+        return resultRows;
+    }
+    @Transactional
     public Object deleteLocation(Integer locationId)
     {
         String nativeQuery = "DELETE FROM LOCATION L WHERE L.location_id = :locationId";
