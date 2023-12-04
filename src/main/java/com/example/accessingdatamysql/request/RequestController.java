@@ -76,6 +76,40 @@ public class RequestController {
         return response;
     }
 
+    @PostMapping(path = "/user/request/update")
+    public @ResponseBody Map<String, Object> updateOrgRequest(@RequestBody Map<String, Object> json)
+    {
+        Map<String, Object> response = new HashMap<>();
+        if (!json.containsKey("jwt") || !json.containsKey("orgId") || !json.containsKey("status") || !json.containsKey("requestId"))
+        {
+            response.put("result", "failure - bad request");
+            return response;
+        }
+        Map<String, Object> map = getUserOrg(json);
+        if (map.get("result").equals("success"))
+        {
+            Integer orgId;
+            if (json.get("orgId") instanceof Integer)
+                orgId = (Integer) json.get("orgId");
+            else
+                orgId = Integer.parseInt((String)(json.get("orgId")));
+            if (map.get("type") == OrganizationRoster.Type.MEMBER)
+            {
+                response.put("result", "failure - not authorized members cannot view requests");
+                response.put("type", map.get("type"));
+                return response;
+            }
+            response.put("data", customRequestRepository.updateRequest(json));
+            response.put("result", "success");
+            response.put("type", map.get("type"));
+        }
+        else
+        {
+            response.put("result", "failure - not authorized");
+        }
+        return response;
+    }
+
     /*
        Private helper function to validate that the user is supposed to see this data
         */

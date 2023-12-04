@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class CustomRequestRepository {
@@ -23,4 +24,18 @@ public class CustomRequestRepository {
         return query.getResultList();
     }
 
+    @Transactional
+    public Object updateRequest(Map<String, Object> json)
+    {
+        Integer requestId;
+        if (json.get("requestId") instanceof Integer)
+            requestId = (Integer) json.get("requestId");
+        else
+            requestId = Integer.parseInt((String) json.get("requestId"));
+        String nativeQuery = "UPDATE REQUEST r SET status = ?1 WHERE r.request_id = ?2";
+        Query query = entityManager.createNativeQuery(nativeQuery)
+                .setParameter(1, json.get("status"))
+                .setParameter(2, requestId);
+        return query.executeUpdate() > 0;
+    }
 }

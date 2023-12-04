@@ -32,11 +32,11 @@ const OrganizationRequests = ({ token }) => {
 
     const handleDecision = async (requestId, status) => {
         try {
-            const response = await Axios.post('http://localhost:8080/request/user/request/decision', {
+            const response = await Axios.post('http://localhost:8080/request/user/request/update', {
                 jwt: token.jwt,
                 orgId: parseInt(orgId),
-                requestId,
-                status,
+                requestId: requestId,
+                status: status,
             });
 
             if (response.data.result === 'success') {
@@ -84,9 +84,9 @@ const OrganizationRequests = ({ token }) => {
                                     </button>
                                     <button
                                         className="deny-button"
-                                        onClick={() => handleDecision(requestId, 'ACCEPTED')}
+                                        onClick={() => handleDecision(requestId, 'DECLINED')}
                                     >
-                                        Deny
+                                        Decline
                                     </button>
                                 </>
                             )}
