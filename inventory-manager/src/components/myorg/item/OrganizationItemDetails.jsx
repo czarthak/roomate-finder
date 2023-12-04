@@ -59,7 +59,7 @@ const OrganizationItemDetails = ({ token }) => {
         // Assuming you have an API endpoint to handle request creation
         try {
             // You need to replace this with your actual API endpoint
-            const response = await Axios.post('http://localhost:8080/requests/create', {
+            const response = await Axios.post('http://localhost:8080/request/user/create', {
                 orgId: parseInt(orgId),
                 itemId: parseInt(itemId),
                 description: requestDescription,
