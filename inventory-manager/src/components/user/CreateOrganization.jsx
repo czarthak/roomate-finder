@@ -1,32 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Axios from "axios";
 
-export const CreateOrganization = (props) => {
+export const CreateOrganization = ({ token }) => {
+  const [userInfo, setUserInfo] = useState({
+    fname: "",
+    lname: "",
+    password: "",
+    phoneNumber: "",
+    email: "",
+  });
+
+  useEffect(() => {
+    // Fetch user information when the component mounts
+    getUserInfo();
+  }, []); // Empty dependency array ensures the effect runs once
+
+  const getUserInfo = async () => {
+    try {
+      const response = await Axios.post("http://localhost:8080/user/user", {
+        jwt: token.jwt,
+      });
+      setUserInfo(response.data);
+    } catch (error) {
+      // console.log(response);
+      console.error("Error fetching user information:", error);
+    }
+  };
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [owner, setOwner] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  const [membercount, setMembercount] = useState("");
-
-  // const Categories = {
-  //   ACADEMIC: "academic",
-  // }
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(owner);
-    console.log(description);
     Axios.post("http://localhost:8080/organization/add", {
-      email: email,
       name: name,
-      owner: owner,
+      email: email,
       description: description,
+      ownerEmail: userInfo.email,
       category: category,
-      membercount: membercount,
     }).then((response) => {
-      console.log(response);
+      // console.log(response);
     });
+    // window.location.reload(false);
   };
 
   return (
@@ -42,21 +59,11 @@ export const CreateOrganization = (props) => {
           placeholder="Name"
         />
 
-        <label htmlFor="owner">Owner Email</label>
-        <input
-          value={owner}
-          onChange={(e) => setOwner(e.target.value)}
-          name="owner"
-          id="owner"
-          placeholder="owner_pid@vt.edu"
-          type="email"
-        />
-
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email">Organization email</label>
         <input
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          name="email"
+          name="Organization email"
           id="email"
           placeholder="pid@vt.edu"
           type="email"
@@ -80,15 +87,6 @@ export const CreateOrganization = (props) => {
           placeholder="Category"
         />
 
-        <label htmlFor="membercount">Member Count</label>
-        <input
-          value={membercount}
-          onChange={(e) => setMembercount(parseInt(e.target.value))}
-          id="membercount"
-          name="membercount"
-          placeholder="Member Count"
-        />
-
         <button type="submit">Create</button>
       </form>
     </div>
@@ -96,4 +94,3 @@ export const CreateOrganization = (props) => {
 };
 
 export default CreateOrganization;
-

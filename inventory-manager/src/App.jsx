@@ -51,40 +51,67 @@ function App() {
           />
         </Route>
         <Route element={<PrivateRoutes token={token} />}>
-          <Route path="/createorganization" element={<CreateOrganization />} />
+          <Route
+            path="/createorganization"
+            element={<CreateOrganization token={token} />}
+          />
         </Route>
         <Route element={<PrivateRoutes token={token} />}>
           <Route path="/createrequest" element={<CreateRequest />} />
         </Route>
         <Route element={<PrivateRoutes token={token} />}>
-          <Route path="/myorganizations" element={<MyOrganizations token={token}/>} />
+          <Route
+            path="/myorganizations"
+            element={<MyOrganizations token={token} />}
+          />
         </Route>
         <Route element={<PrivateRoutes token={token} />}>
-          <Route path="/myrequests" element={<MyRequests token={token}/>} />
+          <Route path="/myrequests" element={<MyRequests token={token} />} />
         </Route>
         <Route element={<PrivateRoutes token={token} />}>
-          <Route path="/organizations/:orgId" element={<OrganizationDetails token={token}/> } />
+          <Route
+            path="/organizations/:orgId"
+            element={<OrganizationDetails token={token} />}
+          />
         </Route>
         <Route element={<PrivateRoutes token={token} />}>
-          <Route path="/organizations/:orgId/members" element={<OrganizationRoster token={token}/> } />
+          <Route
+            path="/organizations/:orgId/members"
+            element={<OrganizationRoster token={token} />}
+          />
         </Route>
         <Route element={<PrivateRoutes token={token} />}>
-          <Route path="/organizations/:orgId/items" element={<OrganizationItems token={token}/> } />
+          <Route
+            path="/organizations/:orgId/items"
+            element={<OrganizationItems token={token} />}
+          />
         </Route>
         <Route element={<PrivateRoutes token={token} />}>
-          <Route path="/organizations/:orgId/items/:itemId" element={<OrganizationItemDetails token={token}/> } />
+          <Route
+            path="/organizations/:orgId/items/:itemId"
+            element={<OrganizationItemDetails token={token} />}
+          />
         </Route>
         <Route element={<PrivateRoutes token={token} />}>
-          <Route path="/organizations/:orgId/items/create" element={<OrganizationItemCreate token={token}/> } />
+          <Route
+            path="/organizations/:orgId/items/create"
+            element={<OrganizationItemCreate token={token} />}
+          />
         </Route>
         <Route element={<PrivateRoutes token={token} />}>
-          <Route path="/organizations/:orgId/locations" element={<OrganizationLocations token={token}/> } />
+          <Route
+            path="/organizations/:orgId/locations"
+            element={<OrganizationLocations token={token} />}
+          />
         </Route>
         <Route element={<PrivateRoutes token={token} />}>
-          <Route path="/organizations/:orgId/requests" element={<OrganizationRequests token={token}/> } />
+          <Route
+            path="/organizations/:orgId/requests"
+            element={<OrganizationRequests token={token} />}
+          />
         </Route>
-        <Route path='*' element={<NotFound />}/>
-        <Route path='/404' element={<NotFound />}/>
+        <Route path="*" element={<NotFound />} />
+        <Route path="/404" element={<NotFound />} />
         {/*<Route path="/organizations/:orgId" element={<OrganizationDetails token={token}/>}>*/}
         {/*</Route>*/}
         <Route
