@@ -245,6 +245,33 @@ public class ItemController {
         }
         return response;
     }
+    @PostMapping(path="/user/location/create")
+    public @ResponseBody Map<String, Object> createLocation(@RequestBody Map<String, Object> json)
+    {
+        Map<String, Object> response = new HashMap<>();
+        if (!json.containsKey("jwt") || !json.containsKey("orgId") || !json.containsKey("location"))
+        {
+            response.put("result", "failure - bad request");
+            return response;
+        }
+        Map<String, Object> map = getUserOrg(json);
+        if (map.get("result").equals("success"))
+        {
+            Integer orgId;
+            if (json.get("orgId") instanceof Integer)
+                orgId = (Integer) json.get("orgId");
+            else
+                orgId = Integer.parseInt((String)(json.get("orgId")));
+            response.put("data", customItemRepository.createLocation((String)json.get("location"), orgId));
+            response.put("result", "success");
+            response.put("type", map.get("type"));
+        }
+        else
+        {
+            response.put("result", "failure - not authorized");
+        }
+        return response;
+    }
     @PostMapping(path="/user/location/delete")
     public @ResponseBody Map<String, Object> deleteLocation(@RequestBody Map<String, Object> json)
     {

@@ -72,6 +72,16 @@ public class CustomItemRepository {
                 .setParameter("locationId", locationId);
         return query.executeUpdate();
     }
+
+    @Transactional
+    public Object createLocation(String locationName, Integer orgId)
+    {
+        String nativeQuery = "INSERT INTO LOCATION(location, organization_id) VALUES (:locationName, :orgId)";
+        Query query = entityManager.createNativeQuery(nativeQuery)
+                .setParameter("locationName", locationName)
+                .setParameter("orgId", orgId);
+        return query.executeUpdate();
+    }
     @Transactional
     public Object updateItem(Map<String, Object> json)
     {

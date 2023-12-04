@@ -7,7 +7,8 @@ const OrganizationLocations = ({ token }) => {
     const [locations, setLocations] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [userType, setUserType] = useState('');
-
+    const [newLocation, setNewLocation] = useState('');
+    const [createVisible, setCreateVisible] = useState(false);
     useEffect(() => {
         const fetchLocations = async () => {
             try {
@@ -53,6 +54,25 @@ const OrganizationLocations = ({ token }) => {
             }
         }
     };
+    const handleCreateLocation = async () => {
+        try {
+            const response = await Axios.post('http://localhost:8080/item/user/location/create', {
+                orgId: parseInt(orgId),
+                jwt: token.jwt,
+                location: newLocation,
+            });
+
+            if (response.data.result === 'success') {
+                // Refresh the locations after creating a new one
+                setCreateVisible(false);
+                window.location.reload(false);
+            } else {
+                console.error('Error creating location');
+            }
+        } catch (error) {
+            console.error('Error creating location:', error);
+        }
+    };
 
     const filteredLocations = locations.filter(([locationName]) =>
         locationName.toLowerCase().includes(searchTerm.toLowerCase())
@@ -61,6 +81,24 @@ const OrganizationLocations = ({ token }) => {
     return (
         <div className="organization-locations">
             <h2>Organization Locations</h2>
+            {userType === 'OWNER' || userType === 'MANAGER' ? (
+                <div>
+                    <button className="create-location-button" onClick={() => setCreateVisible(true)}>
+                        Create Location
+                    </button>
+                    {createVisible === true && (
+                        <div>
+                            <input
+                                type="text"
+                                placeholder="Enter location name"
+                                value={newLocation}
+                                onChange={(e) => setNewLocation(e.target.value)}
+                            />
+                            <button onClick={handleCreateLocation}>Enter</button>
+                        </div>
+                    )}
+                </div>
+            ) : null}
             <label>
                 Search Location:
                 <input
