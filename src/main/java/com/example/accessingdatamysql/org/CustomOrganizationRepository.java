@@ -19,7 +19,7 @@ public class CustomOrganizationRepository
     @Transactional
     public List<Object[]> countOrganizationsByCategory()
     {
-        String query = "SELECT category, member_count FROM Organization GROUP BY category";
+        String query = "SELECT category, COUNT(*) FROM Organization GROUP BY category";
         Query q = this.entityManager.createNativeQuery(query);
         return (List<Object[]>)q.getResultList();
     }
