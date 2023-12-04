@@ -40,10 +40,11 @@ export const CreateOrganization = ({ token }) => {
       description: description,
       ownerEmail: userInfo.email,
       category: category,
+      memberCount: 1,
     }).then((response) => {
       // console.log(response);
     });
-    // window.location.reload(false);
+    window.location.reload(false);
   };
 
   return (
