@@ -30,22 +30,27 @@ const OrganizationLocations = ({ token }) => {
         fetchLocations();
     }, [orgId, token]);
 
-    const handleDeleteLocation = async (locationId) => {
-        try {
-            const response = await Axios.post('http://localhost:8080/item/user/location/delete', {
-                orgId: parseInt(orgId),
-                jwt: token.jwt,
-                locationId: locationId,
-            });
+    const handleDeleteLocation = async (locationId, locationName) => {
+        if (
+            window.confirm(`Are you sure you want to delete the location ${locationName}? This will also delete all the items at this location. Please be sure you want to do that.`)
+        ) {
+            try {
 
-            if (response.data.result === 'success') {
-                // Update the locations list after deletion
-                setLocations(locations.filter(([_, id]) => id !== locationId));
-            } else {
-                console.error('Error deleting location');
+                const response = await Axios.post('http://localhost:8080/item/user/location/delete', {
+                    orgId: parseInt(orgId),
+                    jwt: token.jwt,
+                    locationId: locationId,
+                });
+
+                if (response.data.result === 'success') {
+                    // Update the locations list after deletion
+                    setLocations(locations.filter(([_, id]) => id !== locationId));
+                } else {
+                    console.error('Error deleting location');
+                }
+            } catch (error) {
+                console.error('Some unexpected error occurred:', error);
             }
-        } catch (error) {
-            console.error('Some unexpected error occurred:', error);
         }
     };
 
@@ -69,7 +74,7 @@ const OrganizationLocations = ({ token }) => {
                     <li key={locationId} className="custom-li">
                         {locationName}
                         {(userType === 'OWNER' || userType === 'MANAGER') && (
-                            <button onClick={() => handleDeleteLocation(locationId)} className="delete-button">
+                            <button onClick={() => handleDeleteLocation(locationId, locationName)} className="delete-button">
                                 Delete Location
                             </button>
                         )}

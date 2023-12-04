@@ -65,6 +65,14 @@ public class CustomItemRepository {
         return query.getResultList();
     }
     @Transactional
+    public Object deleteLocation(Integer locationId)
+    {
+        String nativeQuery = "DELETE FROM LOCATION L WHERE L.location_id = :locationId";
+        Query query = entityManager.createNativeQuery(nativeQuery)
+                .setParameter("locationId", locationId);
+        return query.executeUpdate();
+    }
+    @Transactional
     public Object updateItem(Map<String, Object> json)
     {
         // Extract parameters from the JSON map

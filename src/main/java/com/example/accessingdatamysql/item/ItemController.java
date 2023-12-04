@@ -227,9 +227,7 @@ public class ItemController {
             response.put("result", "failure - bad request");
             return response;
         }
-        System.out.println(json.entrySet());
         Map<String, Object> map = getUserOrg(json);
-        System.out.println(map.entrySet());
         if (map.get("result").equals("success"))
         {
             Integer orgId;
@@ -247,7 +245,33 @@ public class ItemController {
         }
         return response;
     }
-
+    @PostMapping(path="/user/location/delete")
+    public @ResponseBody Map<String, Object> deleteLocation(@RequestBody Map<String, Object> json)
+    {
+        Map<String, Object> response = new HashMap<>();
+        if (!json.containsKey("jwt") || !json.containsKey("orgId") || !json.containsKey("locationId"))
+        {
+            response.put("result", "failure - bad request");
+            return response;
+        }
+        Map<String, Object> map = getUserOrg(json);
+        if (map.get("result").equals("success"))
+        {
+            Integer locationId;
+            if (json.get("locationId") instanceof Integer)
+                locationId = (Integer) json.get("locationId");
+            else
+                locationId = Integer.parseInt((String)(json.get("locationId")));
+            response.put("data", customItemRepository.deleteLocation(locationId));
+            response.put("result", "success");
+            response.put("type", map.get("type"));
+        }
+        else
+        {
+            response.put("result", "failure - not authorized");
+        }
+        return response;
+    }
     /*
     Private helper function to validate that the user is supposed to see this data
      */
