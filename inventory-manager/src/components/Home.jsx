@@ -13,10 +13,9 @@ export const Home = () => {
       <ul>
         <li>Create Organizations</li>
         <li>Manage Inventory</li>
-        <li>Buy and Sell Items with Other Clubs/People</li>
       </ul>
       <p>
-        Streamline your organization's operations and transactions seamlessly. 
+        Streamline your organization's operations seamlessly.
         Join inVT today for a better inventory management experience!
       </p>
     </div>

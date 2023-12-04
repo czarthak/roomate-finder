@@ -74,6 +74,9 @@ const OrganizationDetails = ({token}) => {
     const handleLocationInfoButtonClick = () => {
         navigate(`/organizations/${orgId}/locationinformation`);
     };
+    const handleItemInfoButtonClick = () => {
+        navigate(`/organizations/${orgId}/itemstats`);
+    };
     if (!organization) {
         return <div>Loading...</div>;
     }
@@ -92,6 +95,7 @@ const OrganizationDetails = ({token}) => {
                 <button className="blue-button" onClick={handleRosterButtonClick}>Roster</button>
                 {(type === 'MANAGER' || type === 'OWNER') && <button className="blue-button" onClick={handleRequestButtonClick}>Requests</button>}
                 {(type === 'MANAGER' || type === 'OWNER') && <button className="blue-button" onClick={handleLocationInfoButtonClick}>Location Information</button>}
+                {(type === 'MANAGER' || type === 'OWNER') && <button className="blue-button" onClick={handleItemInfoButtonClick}>Item Information</button>}
                 <button className="blue-button" onClick={handleItemsButtonClick}>Items</button>
                 <button className="blue-button" onClick={handleLocationButtonClick}>Locations</button>
                 <button className="dark-red-button" onClick={handleLeaveButtonClick}>Leave Organization</button>

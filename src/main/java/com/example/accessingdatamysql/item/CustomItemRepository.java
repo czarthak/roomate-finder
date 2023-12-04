@@ -80,6 +80,39 @@ public class CustomItemRepository {
         List<Object[]> resultRows = query.getResultList();
         return resultRows;
     }
+
+    @Transactional
+    public List<Object[]> getAvailableItemCategoryCount(Integer orgId) {
+        String nativeQuery = "SELECT i.category, SUM(i.quantity) AS available_count " +
+                "FROM ITEM i " +
+                "WHERE i.organization_id = :orgId AND i.status = 'AVAILABLE' " +
+                "GROUP BY i.category";
+
+        Query query = entityManager.createNativeQuery(nativeQuery);
+        query.setParameter("orgId", orgId);
+
+        @SuppressWarnings("unchecked")
+        List<Object[]> resultRows = query.getResultList();
+
+        return resultRows;
+    }
+
+    @Transactional
+    public List<Object[]> getBorrowedItemCategoryCount(Integer orgId) {
+        String nativeQuery = "SELECT i.category, SUM(i.quantity) AS borrowed_count " +
+                "FROM ITEM i " +
+                "WHERE i.organization_id = :orgId AND i.status = 'BORROWED' " +
+                "GROUP BY i.category";
+
+        Query query = entityManager.createNativeQuery(nativeQuery);
+        query.setParameter("orgId", orgId);
+
+        @SuppressWarnings("unchecked")
+        List<Object[]> resultRows = query.getResultList();
+
+        return resultRows;
+    }
+
     @Transactional
     public Object deleteLocation(Integer locationId)
     {

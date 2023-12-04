@@ -85,6 +85,7 @@ public class ItemController {
         return response;
     }
 
+
     @PostMapping(path="/user/oneitem")
     public @ResponseBody Map<String, Object> getItemToken(@RequestBody Map<String, Object> json)
     {
@@ -326,7 +327,7 @@ public class ItemController {
                 orgId = Integer.parseInt((String)(json.get("orgId")));
             if (map.get("type") == OrganizationRoster.Type.MEMBER)
             {
-                response.put("result", "failure - members are not authorized to delete locations");
+                response.put("result", "failure - members are not authorized to view managerial information");
                 response.put("type", map.get("type"));
                 return response;
             }
@@ -341,6 +342,72 @@ public class ItemController {
         return response;
     }
 
+    @PostMapping(path="/category/available")
+    public @ResponseBody Map<String, Object> getItemCategoryAvailable(@RequestBody Map<String, Object> json)
+    {
+        Map<String, Object> response = new HashMap<>();
+        if (!json.containsKey("jwt") || !json.containsKey("orgId"))
+        {
+            response.put("result", "failure - bad request");
+            return response;
+        }
+        Map<String, Object> map = getUserOrg(json);
+        if (map.get("result").equals("success"))
+        {
+            Integer orgId;
+            if (json.get("orgId") instanceof Integer)
+                orgId = (Integer) json.get("orgId");
+            else
+                orgId = Integer.parseInt((String)(json.get("orgId")));
+            if (map.get("type") == OrganizationRoster.Type.MEMBER)
+            {
+                response.put("result", "failure - members are not authorized to view managerial information");
+                response.put("type", map.get("type"));
+                return response;
+            }
+            response.put("data", customItemRepository.getAvailableItemCategoryCount(orgId));
+            response.put("result", "success");
+            response.put("type", map.get("type"));
+        }
+        else
+        {
+            response.put("result", "failure - not authorized");
+        }
+        return response;
+    }
+    @PostMapping(path="/category/borrowed")
+    public @ResponseBody Map<String, Object> getItemCategoryBorrowed(@RequestBody Map<String, Object> json)
+    {
+        Map<String, Object> response = new HashMap<>();
+        if (!json.containsKey("jwt") || !json.containsKey("orgId"))
+        {
+            response.put("result", "failure - bad request");
+            return response;
+        }
+        Map<String, Object> map = getUserOrg(json);
+        if (map.get("result").equals("success"))
+        {
+            Integer orgId;
+            if (json.get("orgId") instanceof Integer)
+                orgId = (Integer) json.get("orgId");
+            else
+                orgId = Integer.parseInt((String)(json.get("orgId")));
+            if (map.get("type") == OrganizationRoster.Type.MEMBER)
+            {
+                response.put("result", "failure - members are not authorized to view managerial information");
+                response.put("type", map.get("type"));
+                return response;
+            }
+            response.put("data", customItemRepository.getBorrowedItemCategoryCount(orgId));
+            response.put("result", "success");
+            response.put("type", map.get("type"));
+        }
+        else
+        {
+            response.put("result", "failure - not authorized");
+        }
+        return response;
+    }
     /*
     Private helper function to validate that the user is supposed to see this data
      */
