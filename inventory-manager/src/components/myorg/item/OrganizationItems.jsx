@@ -15,6 +15,7 @@ const OrganizationItems = ({ token }) => {
     const [locationFilter, setLocationFilter] = useState('');
     const [quantityFilter, setQuantityFilter] = useState('');
     const [searchFilter, setSearchFilter] = useState('');
+    const [statusFilter, setStatusFilter] = useState('');
     const navigate = useNavigate();
     const handleItemClick = (item) => {
         navigate(`/organizations/${orgId}/items/${item}`);
@@ -71,6 +72,9 @@ const OrganizationItems = ({ token }) => {
                 item[1].toLowerCase().includes(searchFilter.toLowerCase())
             );
         }
+        if (statusFilter) {
+            filteredItemsCopy = filteredItemsCopy.filter(item => item[6] === statusFilter);
+        }
 
         setFilteredItems(filteredItemsCopy);
     };
@@ -118,6 +122,14 @@ const OrganizationItems = ({ token }) => {
                         value={searchFilter}
                         onChange={(e) => setSearchFilter(e.target.value)}
                     />
+                </label>
+                <label>
+                    Status:
+                    <select onChange={(e) => setStatusFilter(e.target.value)}>
+                        <option value="">All</option>
+                        <option value="AVAILABLE">Available</option>
+                        <option value="BORROWED">Borrowed</option>
+                    </select>
                 </label>
                 <button onClick={handleFilter}>Apply Filters</button>
             </div>

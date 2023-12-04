@@ -276,7 +276,7 @@ export const ListAllOrganizations = (props) => {
   // }
 
   const toRequest = (event, row) => {
-    navigate('/createrequest', { state: { data: row } });
+    navigate(`/createrequest/${row.orgId}`, { state: { data: row } });
   };
 
   const handleChangePage = (event, newPage) => {
@@ -334,7 +334,7 @@ export const ListAllOrganizations = (props) => {
                   <TableRow
                     hover
                     // onClick={(event) => handleClick(event, row.id)}
-                    onClick={(event) => toRequest(event, row)}
+                    onClick={(event) => toRequest(event, row, row.id)}
                     role="checkbox"
                     aria-checked={isItemSelected}
                     tabIndex={-1}

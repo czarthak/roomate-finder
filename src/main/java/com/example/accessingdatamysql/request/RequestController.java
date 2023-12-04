@@ -67,11 +67,29 @@ public class RequestController {
     }
     @PostMapping(path = "/add") // Map ONLY POST Requests
     @ResponseBody
-    public Request addJsonOrg(@RequestBody Request req) {
+    public Map<String, Object> createJoinRequest(@RequestBody Map <String, Object> json) {
         // @ResponseBody means the returned String is the response, not a view name
         // @RequestParam means it is a parameter from the GET or POST request
-        requestRepository.save(req);
-        return req;
+        Map<String, Object> response = new HashMap<>();
+        if (!json.containsKey("orgId") || !json.containsKey("jwt") || !json.containsKey("description"))
+        {
+            response.put("result", "failure - bad request");
+            return response;
+        }
+        AuthController au = new AuthController();
+        Map<String, String> map =  au.verify(json); // if the jwt token could not be verified
+        if (map.get("result").equals("success"))
+        {
+            json.put("userEmail", map.get("user"));
+//            System.out.println(json.get("orgId"));
+            response.put("data", customRequestRepository.createJoinRequest(json));
+            response.put("result", "success");
+        }
+        else
+        {
+            response.put("result", "failure - not authorized");
+        }
+        return response;
     }
 
     @PostMapping(path = "/user/create") // Map ONLY POST Requests
@@ -148,6 +166,7 @@ public class RequestController {
             response.put("result", "failure - bad request");
             return response;
         }
+        System.out.println(json.get("orgId"));
         Map<String, Object> map = getUserOrg(json);
         if (map.get("result").equals("success"))
         {
@@ -198,6 +217,8 @@ public class RequestController {
             response.put("result", "failed = user not found");
             return response;
         }
+        if (json.get("orgId") instanceof HashMap<?,?>)
+            return myOrgRosterRepository.findUserOrg(usr.get().getEmail(), Integer.parseInt((String)((HashMap)json.get("orgId")).get("orgId")));
         if (json.get("orgId") instanceof Integer)
             return myOrgRosterRepository.findUserOrg(usr.get().getEmail(), (Integer) json.get("orgId"));
         return myOrgRosterRepository.findUserOrg(usr.get().getEmail(),  Integer.parseInt((String) json.get("orgId")));

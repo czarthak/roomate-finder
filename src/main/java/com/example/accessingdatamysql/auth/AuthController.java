@@ -70,10 +70,12 @@ public class AuthController {
             if (claim != null)
             {
                 res.put("user", claim.getSubject());
+                res.put("result", "success");
             }
             else
             {
                 res.put("login", "failed - expired/bad token");
+                res.put("result", "failure");
             }
         }
         else

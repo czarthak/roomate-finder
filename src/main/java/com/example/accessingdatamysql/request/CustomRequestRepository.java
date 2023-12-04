@@ -87,6 +87,32 @@ public class CustomRequestRepository {
     }
 
     @Transactional
+    public Object createJoinRequest(@RequestBody Map<String, Object> json)
+    {
+// Extract parameters from the JSON map
+        Integer orgId;
+        if (json.get("orgId") instanceof Integer)
+            orgId = (Integer) json.get("orgId");
+        else if (json.get("orgId") instanceof HashMap<?,?>)
+            orgId = Integer.parseInt((String)((HashMap)json.get("orgId")).get("orgId"));
+        else {
+            orgId = Integer.parseInt((String)json.get("orgId"));
+        }
+        String description = (String) json.get("description");
+        String userEmail = (String) json.get("userEmail");
+        // Use native SQL query with EntityManager to create a new request
+        String nativeQuery = "INSERT INTO REQUEST (user_email, organization_id, status, type, description) " +
+                "VALUES (?1, ?2, ?3, ?4, ?5)";
+        Query query = entityManager.createNativeQuery(nativeQuery)
+                .setParameter(1, userEmail)
+                .setParameter(2, orgId)
+                .setParameter(3, "PENDING")
+                .setParameter(4, "JOIN")
+                .setParameter(5, description);
+        int updatedRows = query.executeUpdate();
+        return updatedRows > 0;
+    }
+    @Transactional
     public Object updateRequest(@RequestBody Map<String, Object> json)
     {
         Map<String, Object> result = new HashMap<>();

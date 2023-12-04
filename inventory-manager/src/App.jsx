@@ -54,7 +54,7 @@ function App() {
           <Route path="/createorganization" element={<CreateOrganization />} />
         </Route>
         <Route element={<PrivateRoutes token={token} />}>
-          <Route path="/createrequest" element={<CreateRequest />} />
+          <Route path="/createrequest/:orgId" element={<CreateRequest token={token}/>} />
         </Route>
         <Route element={<PrivateRoutes token={token} />}>
           <Route path="/myorganizations" element={<MyOrganizations token={token}/>} />

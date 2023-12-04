@@ -44,9 +44,6 @@ export const Navbar = ({ token }) => {
                 <NavLink to="/myrequests">My Requests</NavLink>
             </li>
               <li>
-                <NavLink to="/createrequest">Create Request</NavLink>
-              </li>
-              <li>
                 <NavLink to="/listallorganizations">
                   List All Organizations
                 </NavLink>

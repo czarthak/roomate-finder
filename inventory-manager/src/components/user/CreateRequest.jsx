@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
-import { useLocation } from 'react-router-dom';
+import {useLocation, useParams, useNavigate} from 'react-router-dom';
 
 
-export const CreateRequest = (props) => {
+export const CreateRequest = ({token}) => {
   // const [reqId, setReqId] = useState("");
   const [userEmail, setUserEmail] = useState("");
   const [desc, setDesc] = useState("");
@@ -11,7 +11,8 @@ export const CreateRequest = (props) => {
   const [status, setStatus] = useState("");
   const [type, setType] = useState("");
   const [organizationName, setOrganizationName] = useState(""); // name of org to join/add item to
-
+  const orgId = useParams();
+  const navigate = useNavigate();
   const location = useLocation();
   const rowData = location.state?.data;
 
@@ -30,18 +31,18 @@ export const CreateRequest = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(orgId);
     Axios.post("http://localhost:8080/request/add", {
-      userEmail: userEmail,
       // reqId: reqId,
-      desc: desc,
-      organizationId: 2,
-      status: "PENDING",
-      type: type,
-      organizationName: organizationName,
-      itemId: null,
-      quantity: null
+      jwt: token.jwt,
+      description: desc,
+      orgId: orgId
     }).then((response) => {
       console.log(response);
+      if (response.data.result === 'success')
+      {
+        navigate('/myrequests');
+      }
     });
   };
 
@@ -58,7 +59,7 @@ export const CreateRequest = (props) => {
           placeholder="Request ID"
         /> */}
 
-        <label htmlFor="name">Organization/Item Name</label>
+        <label htmlFor="name">Organization Name</label>
         <input
           value={organizationName}
           onChange={(e) => setOrganizationName(e.target.value)}
@@ -67,15 +68,6 @@ export const CreateRequest = (props) => {
           placeholder="name"
         />
 
-        <label htmlFor="userEmail">User Email</label>
-        <input
-          value={userEmail}
-          onChange={(e) => setUserEmail(e.target.value)}
-          name="userEmail"
-          id="userEmail"
-          placeholder="user_pid@vt.edu"
-          type="email"
-        />
 
         {/* <label htmlFor="status">Status</label>
         <input
@@ -87,14 +79,6 @@ export const CreateRequest = (props) => {
           placeholder="STATUS"
         />  */}
 
-        <label htmlFor="type">Type</label>
-          <input
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            name="type"
-            id="type"
-            placeholder="JOIN/ITEM"
-          />
 
         <label htmlFor="desc">Description</label>
         <input
