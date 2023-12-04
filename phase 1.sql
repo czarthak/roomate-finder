@@ -13,6 +13,10 @@ CREATE TABLE IF NOT EXISTS USER (
 INSERT INTO USER (email, lname, fname, password, phone_number) VALUES
 ('johnsmith@example.com', 'Smith', 'John', 'password123', '123-456-7890'),
 ('alicedoe@example.com', 'Doe', 'Alice', 'securepass', '987-654-3210'),
+('lukebrown@example.com', 'Brown', 'Luke', 'securepass1', '987-654-3211'),
+('oliviabell@example.com', 'Bell', 'Olivia', 'securepass2', '987-654-3212'),
+('melissajones@example.com', 'Jones', 'Melissa', 'securepass3', '987-654-3213'),
+('anthonypeters@example.com', 'Peters', 'Anthony', 'securepass4', '987-654-3214'),
 ('emilyjohnson@example.com', 'Johnson', 'Emily', 'sciencePass', '8888888888');
 
 # SELECT * FROM USER;
@@ -35,7 +39,11 @@ INSERT INTO ORGANIZATION (name, email, description, owner_email, category, membe
 ('Chess Society', 'chesssociety@example.com', 'Organization for chess lovers', 'alicedoe@example.com', 'RECREATION', 20),
 ('Science Association', 'science@example.com', 'Encouraging scientific exploration', 'johnsmith@example.com', 'ACADEMIC', 30),
 ('Political Discussion Group', 'politics@example.com', 'Discussions on current political affairs', 'alicedoe@example.com', 'POLITICS', 25),
-('Greek Life Association', 'greeklife@example.com', 'Promoting Greek culture and traditions', 'emilyjohnson@example.com', 'GREEKLIFE', 40);
+('Greek Life Association', 'greeklife@example.com', 'Promoting Greek culture and traditions', 'emilyjohnson@example.com', 'GREEKLIFE', 40),
+('Board Game Club', 'boardgames@example.com', 'Play a new board game every week!', 'alicedoe@example.com', 'RECREATION', 25),
+('Equestrian Club', 'equestrianclub@example.com', 'Come horseback riding with us!', 'oliviabell@example.com', 'RECREATION', 10),
+('HackVT', 'hackvt@example.com', 'Annual hackathon at VT', 'lukebrown@example.com', 'ACADEMIC', 25),
+('Math Club', 'mathclub@example.com', 'Competitive math contests', 'lukebrown@example.com', 'ACADEMIC', 45);
 
 CREATE TABLE IF NOT EXISTS ORGANIZATION_ROSTER (
     roster_id INT AUTO_INCREMENT NOT NULL,
@@ -56,28 +64,47 @@ VALUES
     ('johnsmith@example.com', 2, 'MEMBER'),
     ('johnsmith@example.com', 4, 'MANAGER'),
     ('alicedoe@example.com', 5, 'MEMBER'),
-    ('emilyjohnson@example.com', 2, 'MANAGER');
+    ('alicedoe@example.com', 5, 'MEMBER'),
+    ('alicedoe@example.com', 5, 'MEMBER'),
+    ('emilyjohnson@example.com', 2, 'MANAGER'),
+    ('anthonypeters@example.com', 2, 'MEMBER'),
+    ('anthonypeters@example.com', 3, 'MEMBER'),
+    ('anthonypeters@example.com', 4, 'MEMBER'),
+    ('anthonypeters@example.com', 7, 'MEMBER'),
+    ('anthonypeters@example.com', 8, 'MEMBER'),
+    ('anthonypeters@example.com', 9, 'MEMBER'),
+    ('oliviabell@example.com', 2, 'MEMBER'),
+    ('oliviabell@example.com', 3, 'MEMBER'),
+    ('oliviabell@example.com', 4, 'MANAGER'),
+    ('johnsmith@example.com', 7, 'MEMBER'),
+    ('johnsmith@example.com', 8, 'MANAGER'),
+    ('johnsmith@example.com', 9, 'MEMBER'),
+    ('oliviabell@example.com', 6, 'MEMBER'),
+    ('melissajones@example.com', 6, 'MEMBER'),
+    ('lukebrown@example.com', 6, 'MEMBER'),
+    ('alicedoe@example.com', 6, 'MEMBER'),
+    ('johnsmith@example.com', 6, 'MEMBER');
 
 # INSERT INTO ORGANIZATION_ROSTER(user_email, organization_id, type)
 # VALUES
 #     ('johnsmith@example.com', 2, 'MEMBER'),
 #     ('emilyjohnson@example.com', 2, 'MANAGER');
 
-UPDATE ORGANIZATION o
-SET member_count = (
-    SELECT COUNT(DISTINCT user_email)
-    FROM ORGANIZATION_ROSTER
-    WHERE organization_id = o.organization_id
-)
-WHERE true;
+-- UPDATE ORGANIZATION o
+-- SET member_count = (
+--     SELECT COUNT(DISTINCT user_email)
+--     FROM ORGANIZATION_ROSTER
+--     WHERE organization_id = o.organization_id
+-- )
+-- WHERE true;
 
 
 
-# SELECT DISTINCT o.*
-# FROM ORGANIZATION o
-#          JOIN ORGANIZATION_ROSTER r ON o.organization_id = r.organization_id
-# WHERE r.user_email = 'emilyjohnson@example.com'
-#    OR o.owner_email = 'emilyjohnson@example.com';
+-- # SELECT DISTINCT o.*
+-- # FROM ORGANIZATION o
+-- #          JOIN ORGANIZATION_ROSTER r ON o.organization_id = r.organization_id
+-- # WHERE r.user_email = 'emilyjohnson@example.com'
+-- #    OR o.owner_email = 'emilyjohnson@example.com';
 
 # DROP TABLE REQUEST; DROP TABLE FAVORITE; DROP TABLE LISTING; DROP TABLE ITEM; DROP TABLE LOCATION;
 
@@ -141,12 +168,18 @@ CREATE TABLE IF NOT EXISTS REQUEST (
 INSERT INTO REQUEST (user_email, organization_id, status, description, type)
 VALUES
     ('alicedoe@example.com', 1, 'PENDING', 'Hi Im really interested in programming, wanted to check out this club', 'JOIN'),
-    ('emilyjohnson@example.com', 1, 'ACCEPTED', 'Wanted to check this club out, Im a cs major', 'JOIN');
+    ('emilyjohnson@example.com', 1, 'ACCEPTED', 'Wanted to check this club out, Im a cs major', 'JOIN'),
+    ('anthonypeters@example.com', 8, 'ACCEPTED', 'I love hackathons and want to help organize HackVT!', 'JOIN'),
+    ('alicedoe@example.com', 9, 'PENDING', 'I want to do more competitive math', 'JOIN'),
+    ('alicedoe@example.com', 7, 'PENDING', 'Ive never ridden a horse before, but really want to learn', 'JOIN'),
+    ('alicedoe@example.com', 1, 'PENDING', 'I am interested in learning how to code', 'JOIN');
 
 INSERT INTO REQUEST (user_email, organization_id, status, description, type, item_id, quantity )
 VALUES
     ('johnsmith@example.com', 2, 'PENDING', 'I wanted to borrow a chess set to practice', 'ITEM', 1, 1),
-    ('emilyjohnson@example.com', 2, 'PENDING', 'I wanted to borrow the chess magazine so I can read', 'ITEM', 5, 1);
+    ('emilyjohnson@example.com', 2, 'PENDING', 'I wanted to borrow the chess magazine so I can read', 'ITEM', 5, 1),
+    ('anthonypeters@example.com', 2, 'DECLINED', 'Could I keep one of the chess sets used by the club?', 'ITEM', 1, 1),
+    ('anthonypeters@example.com', 2, 'ACCEPTED', 'I would like to borrow a chess magazine', 'ITEM', 5, 1);
 
 INSERT INTO ITEM (name, description, owner_email, quantity, category, status, location_id, organization_id)
 VALUES
