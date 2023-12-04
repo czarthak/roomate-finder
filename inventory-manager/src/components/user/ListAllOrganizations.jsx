@@ -215,7 +215,7 @@ export const ListAllOrganizations = (props) => {
   const navigate = useNavigate();
 
   const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('');
+  const [orderBy, setOrderBy] = React.useState('category');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -229,6 +229,7 @@ export const ListAllOrganizations = (props) => {
         try {
           const response = await Axios.get("http://localhost:8080/organization/all");
           setRows(response.data); // Update state with fetched data
+          setOrderBy('name');
         } catch (error) {
           console.error('Error fetching data: ', error);
         }
