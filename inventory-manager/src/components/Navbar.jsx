@@ -41,6 +41,9 @@ export const Navbar = ({ token }) => {
                 <NavLink to="/createorganization">Create Organization</NavLink>
               </li>
               <li>
+                <NavLink to="/myrequests">My Requests</NavLink>
+            </li>
+              <li>
                 <NavLink to="/createrequest">Create Request</NavLink>
               </li>
               <li>

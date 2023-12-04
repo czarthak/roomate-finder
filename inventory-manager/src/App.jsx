@@ -11,7 +11,6 @@ import {
   CreateRequest,
   ListAllOrganizations,
   OrganizationSearch,
-  OrganizationSearch,
 } from "./components/user/index";
 import { useState } from "react";
 import useToken from "./components/useToken";
@@ -21,6 +20,7 @@ import MyOrganizations from "./components/myorg/MyOrganizations";
 import OrganizationDetails from "./components/myorg/OrganizationDetails";
 import NotFound from "./components/error/NotFound";
 import OrganizationRoster from "./components/myorg/roster/OrganizationRoster";
+import MyRequests from "./components/myrequests/MyRequests";
 
 function App() {
   // const [token, setToken] = useState();
@@ -53,6 +53,9 @@ function App() {
         </Route>
         <Route element={<PrivateRoutes token={token} />}>
           <Route path="/myorganizations" element={<MyOrganizations token={token}/>} />
+        </Route>
+        <Route element={<PrivateRoutes token={token} />}>
+          <Route path="/myrequests" element={<MyRequests token={token}/>} />
         </Route>
         <Route element={<PrivateRoutes token={token} />}>
           <Route path="/organizations/:orgId" element={<OrganizationDetails token={token}/> } />

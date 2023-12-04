@@ -64,21 +64,21 @@ VALUES
 #     ('johnsmith@example.com', 2, 'MEMBER'),
 #     ('emilyjohnson@example.com', 2, 'MANAGER');
 
-UPDATE ORGANIZATION o
-SET member_count = (
-    SELECT COUNT(DISTINCT user_email)
-    FROM ORGANIZATION_ROSTER
-    WHERE organization_id = o.organization_id
-)
-WHERE true;
+-- UPDATE ORGANIZATION o
+-- SET member_count = (
+--     SELECT COUNT(DISTINCT user_email)
+--     FROM ORGANIZATION_ROSTER
+--     WHERE organization_id = o.organization_id
+-- )
+-- WHERE true;
 
 
 
-# SELECT DISTINCT o.*
-# FROM ORGANIZATION o
-#          JOIN ORGANIZATION_ROSTER r ON o.organization_id = r.organization_id
-# WHERE r.user_email = 'emilyjohnson@example.com'
-#    OR o.owner_email = 'emilyjohnson@example.com';
+-- # SELECT DISTINCT o.*
+-- # FROM ORGANIZATION o
+-- #          JOIN ORGANIZATION_ROSTER r ON o.organization_id = r.organization_id
+-- # WHERE r.user_email = 'emilyjohnson@example.com'
+-- #    OR o.owner_email = 'emilyjohnson@example.com';
 
 # DROP TABLE REQUEST; DROP TABLE FAVORITE; DROP TABLE LISTING; DROP TABLE ITEM; DROP TABLE LOCATION;
 CREATE TABLE IF NOT EXISTS REQUEST (
@@ -93,6 +93,13 @@ CREATE TABLE IF NOT EXISTS REQUEST (
     CONSTRAINT fk_user_request FOREIGN KEY (user_email) REFERENCES USER (email)
     -- CONSTRAINT fk_organization_request FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id)
 );
+
+INSERT INTO REQUEST (user_email, organization_name, status, type)
+VALUES
+    ('johnsmith@example.com', 'Coding Club', 'PENDING', 'JOIN'),
+    ('johnsmith@example.com', 'Science Association', 'ACCEPTED','JOIN'),
+    ('alicedoe@example.com','Chess Society', 'PENDING', 'JOIN'),
+    ('emilyjohnson@example.com', 'Chess Society', 'DECLINED', 'ITEM');
 
 CREATE TABLE IF NOT EXISTS LOCATION (
 	location_id INT AUTO_INCREMENT,
