@@ -27,4 +27,11 @@ public class RequestController {
         return req;
     }
 
+    // @GetMapping(path = "/org")
+    // public @ResponseBody Optional<User> getOrganization(@RequestBody Map<String, String> json)
+    // {
+    //     String email = json.get("email");
+    //     return userRepository.findById(email);
+    // }
+
 }
