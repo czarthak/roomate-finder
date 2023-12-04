@@ -42,6 +42,37 @@ public class RequestController {
         return requestRepository.findById(1).get();
     }
 
+    @PostMapping(path="/user")
+    public @ResponseBody Map<String, Object> getUsersRequests(@RequestBody Map<String, Object> json)
+    {
+        System.out.println("in user");
+        Map<String, Object> response = new HashMap<>();
+        User found = new User();
+        AuthController au = new AuthController();
+        Map<String, String> res =  au.verify(json); // if the jwt token could not be verified
+        if (res.containsKey("login") && res.get("login").equals("failed"))
+        {
+            response.put("result", "failed = bad token or bad request");
+            return response;
+        }
+        Optional<User> usr = userRepository.findById(res.get("user"));
+        if (!usr.isPresent())
+        {
+            response.put("result", "failed = user not found");
+            return response;
+        }
+        response.put("result", "success");
+        response.put("data", customRequestRepository.findUserRequests(res.get("user")));
+        return response;
+    }
+    @PostMapping(path = "/add") // Map ONLY POST Requests
+    @ResponseBody
+    public Request addJsonOrg(@RequestBody Request req) {
+        // @ResponseBody means the returned String is the response, not a view name
+        // @RequestParam means it is a parameter from the GET or POST request
+        requestRepository.save(req);
+        return req;
+    }
     @PostMapping(path = "/user/requests")
     public @ResponseBody Map<String, Object> getOrgRequest(@RequestBody Map<String, Object> json)
     {

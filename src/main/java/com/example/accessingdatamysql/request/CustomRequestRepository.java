@@ -28,7 +28,16 @@ public class CustomRequestRepository {
                 .setParameter("orgId", orgId);
         return query.getResultList();
     }
-
+    @Transactional
+    public List<Object> findUserRequests(String userEmail)
+    {
+        String nativeQuery = "SELECT r.status, r.description, r.type, r.quantity, i.name, o.name FROM REQUEST r JOIN ORGANIZATION o ON o.organization_id = r.organization_id JOIN ITEM i ON r.item_id = i.item_id WHERE r.user_email = :userEmail";
+        List<Object> requests = entityManager
+                .createNativeQuery(nativeQuery)
+                .setParameter("userEmail", userEmail)
+                .getResultList();
+        return requests;
+    }
     @Transactional
     public Object updateRequest(@RequestBody Map<String, Object> json)
     {

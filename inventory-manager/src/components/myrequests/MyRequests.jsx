@@ -18,7 +18,7 @@ const MyRequests = ({ token }) => {
         const fetchRequests = async () => {
             try {
                 console.log(token)
-                const response = await Axios.post('http://localhost:8080/myrequests/user', {
+                const response = await Axios.post('http://localhost:8080/request/user', {
                     jwt: token.jwt
                 });
 

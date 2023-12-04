@@ -34,10 +34,12 @@ export const CreateRequest = (props) => {
       userEmail: userEmail,
       // reqId: reqId,
       desc: desc,
-      // orgId: orgId,
-      status: status,
+      organizationId: 2,
+      status: "PENDING",
       type: type,
       organizationName: organizationName,
+      itemId: null,
+      quantity: null
     }).then((response) => {
       console.log(response);
     });
