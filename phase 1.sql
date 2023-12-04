@@ -56,7 +56,7 @@ VALUES
     ('johnsmith@example.com', 2, 'MEMBER'),
     ('johnsmith@example.com', 4, 'MANAGER'),
     ('alicedoe@example.com', 5, 'MEMBER'),
-    ('emilyjohnson@example.com', 2, 'MEMBER');
+    ('emilyjohnson@example.com', 2, 'MANAGER');
 
 # INSERT INTO ORGANIZATION_ROSTER(user_email, organization_id, type)
 # VALUES
@@ -100,20 +100,41 @@ CREATE TABLE IF NOT EXISTS LOCATION (
     CONSTRAINT fk_organization_location FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id) ON DELETE CASCADE
 );
 
+INSERT INTO LOCATION (location, organization_id)
+VALUES
+      ('Student Storage Unit 343', 2),
+      ('Club Room Rack A', 2),
+      ('Club Room Rack B', 2),
+      ('Borrowed', 2);
+
+
 CREATE TABLE IF NOT EXISTS ITEM (
     item_id INT AUTO_INCREMENT,
     name VARCHAR(128) NOT NULL,
     description VARCHAR(256),
     owner_email VARCHAR(128),
     quantity INT NOT NULL,
-    category VARCHAR(128),
-    status ENUM('AVAILABLE', 'BORROWED', 'LISTED', 'SOLD') NOT NULL,
+    category ENUM('STATIONERY', 'MARKETING', 'ELECTRONICS', 'SUPPLIES', 'PERISHABLES', 'MERCHANDISE', 'TOOLS', 'CHEMICALS', 'FLAMMABLE', 'OTHER', 'UNIQUE', 'BOOKS'),
+    status ENUM('AVAILABLE', 'BORROWED') NOT NULL,
     location_id INT NOT NULL,
     organization_id INT NOT NULL,
     PRIMARY KEY (item_id),
     CONSTRAINT fk_location_item FOREIGN KEY (location_id) REFERENCES LOCATION (location_id),
-    CONSTRAINT fk_organiztion_item FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id) ON DELETE CASCADE
+    CONSTRAINT fk_organization_item FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id) ON DELETE CASCADE
 );
+
+INSERT INTO ITEM (name, description, owner_email, quantity, category, status, location_id, organization_id)
+VALUES
+    ('Chess Set 1', 'Standard chess set with board', 'chesssociety@example.com', 5, 'TOOLS', 'AVAILABLE', 1, 2),
+    ('Chess Clock', 'Digital chess clock for tournaments', 'chesssociety@example.com', 2, 'ELECTRONICS', 'AVAILABLE', 2, 2),
+    ('Chess Strategy Book', 'Guide to advanced chess strategies', 'chesssociety@example.com', 3, 'BOOKS', 'AVAILABLE', 3, 2),
+    ('Chess Tactics Guide', 'Book on improving chess tactics', 'chesssociety@example.com', 4, 'BOOKS', 'AVAILABLE', 1, 2),
+    ('Chess Magazine', 'Latest issue of chess magazine', 'chesssociety@example.com', 1, 'BOOKS', 'AVAILABLE', 2, 2),
+    ('Chess Puzzle Set', 'Collection of challenging chess puzzles', 'chesssociety@example.com', 6, 'TOOLS', 'AVAILABLE', 3, 2),
+    ('Chess Club T-Shirt', 'Official Chess Society T-Shirt', 'chesssociety@example.com', 10, 'MERCHANDISE', 'AVAILABLE', 1, 2),
+    ('Chess Trophy', 'Tournament winner trophy', 'chesssociety@example.com', 1, 'UNIQUE', 'AVAILABLE', 2, 2),
+    ('Chess Analysis Board', 'Board for analyzing game positions', 'chesssociety@example.com', 2, 'TOOLS', 'AVAILABLE', 3, 2),
+    ('Chess Membership Card', 'Official membership card for Chess Society', 'chesssociety@example.com', 1, 'OTHER', 'AVAILABLE', 1, 2);
 
 CREATE TABLE IF NOT EXISTS LISTING (
     listing_id INT AUTO_INCREMENT,

@@ -91,6 +91,15 @@ public class MyOrgRosterRepository implements OrgRosterRepository{
             nativeQuery.setParameter("memberEmail", memberEmail);
 
             int updatedRows = nativeQuery.executeUpdate();
+            if (type == OrganizationRoster.Type.OWNER)
+            {
+                String secondquery = "UPDATE ORGANIZATION SET owner_email = :memberEmail " +
+                        "WHERE organization_id = :orgId ";
+                Query secondnativeQuery = entityManager.createNativeQuery(secondquery);
+                secondnativeQuery.setParameter("orgId", orgId);
+                secondnativeQuery.setParameter("memberEmail", memberEmail);
+                secondnativeQuery.executeUpdate();
+            }
 
             result.put("result", "success");
             result.put("updatedRows", updatedRows);

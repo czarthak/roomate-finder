@@ -19,6 +19,10 @@ import MyOrganizations from "./components/myorg/MyOrganizations";
 import OrganizationDetails from "./components/myorg/OrganizationDetails";
 import NotFound from "./components/error/NotFound";
 import OrganizationRoster from "./components/myorg/roster/OrganizationRoster";
+import OrganizationItems from "./components/myorg/items/OrganizationItems";
+import OrganizationItemDetails from "./components/myorg/items/OrganizationItemDetails";
+import OrganizationItemCreate from "./components/myorg/items/OrganizationItemCreate";
+import OrganizationLocations from "./components/myorg/location/OrganizationLocations";
 
 function App() {
   // const [token, setToken] = useState();
@@ -57,6 +61,18 @@ function App() {
         </Route>
         <Route element={<PrivateRoutes token={token} />}>
           <Route path="/organizations/:orgId/members" element={<OrganizationRoster token={token}/> } />
+        </Route>
+        <Route element={<PrivateRoutes token={token} />}>
+          <Route path="/organizations/:orgId/items" element={<OrganizationItems token={token}/> } />
+        </Route>
+        <Route element={<PrivateRoutes token={token} />}>
+          <Route path="/organizations/:orgId/items/:itemId" element={<OrganizationItemDetails token={token}/> } />
+        </Route>
+        <Route element={<PrivateRoutes token={token} />}>
+          <Route path="/organizations/:orgId/items/create" element={<OrganizationItemCreate token={token}/> } />
+        </Route>
+        <Route element={<PrivateRoutes token={token} />}>
+          <Route path="/organizations/:orgId/locations" element={<OrganizationLocations token={token}/> } />
         </Route>
         <Route path='*' element={<NotFound />}/>
         <Route path='/404' element={<NotFound />}/>
