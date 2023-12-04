@@ -1,5 +1,6 @@
 import './Register.css'
 import React, { useState } from "react";
+import {useNavigate} from "react-router-dom";
 import Axios from "axios";
 
 export const Register = (props) => {
@@ -8,7 +9,7 @@ export const Register = (props) => {
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [pass, setPass] = useState("");
-
+  const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
     Axios.post("http://localhost:8080/user/add", {
@@ -18,6 +19,7 @@ export const Register = (props) => {
       phoneNumber: phoneNumber,
       password: pass,
     }).then((response) => {
+      navigate('/login');
       console.log(response);
     });
   };
