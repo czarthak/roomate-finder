@@ -78,6 +78,7 @@ public class ItemController {
             }
             response.put("data", customItemRepository.getAllItems(orgId));
             response.put("result", "success");
+            response.put("type", map.get("type"));
         }
         else
         {
@@ -238,6 +239,7 @@ public class ItemController {
                 orgId = Integer.parseInt((String)(json.get("orgId")));
             response.put("data", customItemRepository.getLocation(orgId));
             response.put("result", "success");
+            response.put("type", map.get("type"));
         }
         else
         {

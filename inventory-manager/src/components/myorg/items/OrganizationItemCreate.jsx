@@ -27,6 +27,11 @@ const OrganizationItemCreate = ({ token }) => {
 
                 if (response.data.result === 'success') {
                     setLocations(response.data.data);
+                    if (response.data.type === 'MEMBER')
+                    {
+                        //members are not supposed to create items, redirect them to 404 page
+                        navigate('/404');
+                    }
                 } else {
                     console.error('Error fetching locations');
                 }

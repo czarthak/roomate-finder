@@ -19,7 +19,7 @@ const OrganizationItems = ({ token }) => {
     const handleItemClick = (item) => {
         navigate(`/organizations/${orgId}/items/${item}`);
     };
-
+    const [type, setType] = useState(null);
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -30,6 +30,7 @@ const OrganizationItems = ({ token }) => {
 
                 if (response.data.result === 'success') {
                     setItems(response.data.data);
+                    setType(response.data.type);
                     setFilteredItems(response.data.data);
                     // Extract categories and locations for filtering
                     const uniqueCategories = [...new Set(response.data.data.map(item => item[5]))];
@@ -81,9 +82,9 @@ const OrganizationItems = ({ token }) => {
         <div className="organization-items">
             <div className="header">
                 <h2>Organization Items</h2>
-                <button className="create-item-button" onClick={() => handleCreateButton()}>
+                {(type === 'MANAGER' || type === 'OWNER') && <button className="create-item-button" onClick={() => handleCreateButton()}>
                     Create Item
-                </button>
+                </button>}
             </div>
             <div className="filters">
                 <label>
