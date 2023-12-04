@@ -29,6 +29,7 @@ const AccountInformation = ({ token }) => {
     } catch (error) {
       console.error("Error fetching user information:", error);
     }
+    console.log(userInfo);
   };
 
   const handleUpdate = async () => {
