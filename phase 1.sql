@@ -80,17 +80,6 @@ WHERE true;
 #    OR o.owner_email = 'emilyjohnson@example.com';
 
 # DROP TABLE REQUEST; DROP TABLE FAVORITE; DROP TABLE LISTING; DROP TABLE ITEM; DROP TABLE LOCATION;
-CREATE TABLE IF NOT EXISTS REQUEST (
-	request_id INT AUTO_INCREMENT NOT NULL,
-    user_email VARCHAR(128) NOT NULL,
-    organization_id INT NOT NULL,
-    status ENUM('PENDING', 'ACCEPTED', 'DECLINED') NOT NULL,
-    description VARCHAR(256),
-    type ENUM('JOIN', 'ITEM') NOT NULL,
-    PRIMARY KEY (request_id),
-    CONSTRAINT fk_user_request FOREIGN KEY (user_email) REFERENCES USER (email) ON DELETE CASCADE,
-    CONSTRAINT fk_organization_request FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id) ON DELETE CASCADE
-);
 
 CREATE TABLE IF NOT EXISTS LOCATION (
 	location_id INT AUTO_INCREMENT,
@@ -122,6 +111,42 @@ CREATE TABLE IF NOT EXISTS ITEM (
     CONSTRAINT fk_location_item FOREIGN KEY (location_id) REFERENCES LOCATION (location_id),
     CONSTRAINT fk_organization_item FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id) ON DELETE CASCADE
 );
+INSERT INTO ITEM (name, description, owner_email, quantity, category, status, location_id, organization_id)
+VALUES
+    ('Chess Set 1', 'Standard chess set with board', 'chesssociety@example.com', 5, 'TOOLS', 'AVAILABLE', 1, 2),
+    ('Chess Clock', 'Digital chess clock for tournaments', 'chesssociety@example.com', 2, 'ELECTRONICS', 'AVAILABLE', 2, 2),
+    ('Chess Strategy Book', 'Guide to advanced chess strategies', 'chesssociety@example.com', 3, 'BOOKS', 'AVAILABLE', 3, 2),
+    ('Chess Tactics Guide', 'Book on improving chess tactics', 'chesssociety@example.com', 4, 'BOOKS', 'AVAILABLE', 1, 2),
+    ('Chess Magazine', 'Latest issue of chess magazine', 'chesssociety@example.com', 1, 'BOOKS', 'AVAILABLE', 2, 2),
+    ('Chess Puzzle Set', 'Collection of challenging chess puzzles', 'chesssociety@example.com', 6, 'TOOLS', 'AVAILABLE', 3, 2),
+    ('Chess Club T-Shirt', 'Official Chess Society T-Shirt', 'chesssociety@example.com', 10, 'MERCHANDISE', 'AVAILABLE', 1, 2),
+    ('Chess Trophy', 'Tournament winner trophy', 'chesssociety@example.com', 1, 'UNIQUE', 'AVAILABLE', 2, 2),
+    ('Chess Analysis Board', 'Board for analyzing game positions', 'chesssociety@example.com', 2, 'TOOLS', 'AVAILABLE', 3, 2),
+    ('Chess Membership Card', 'Official membership card for Chess Society', 'chesssociety@example.com', 1, 'OTHER', 'AVAILABLE', 1, 2);
+
+CREATE TABLE IF NOT EXISTS REQUEST (
+                                       request_id INT AUTO_INCREMENT NOT NULL,
+                                       user_email VARCHAR(128) NOT NULL,
+                                       organization_id INT NOT NULL,
+                                       status ENUM('PENDING', 'ACCEPTED', 'DECLINED') NOT NULL,
+                                       description VARCHAR(256),
+                                       type ENUM('JOIN', 'ITEM') NOT NULL,
+                                       item_id INT,
+                                       quantity INT,
+                                       PRIMARY KEY (request_id),
+                                       CONSTRAINT fk_user_request FOREIGN KEY (user_email) REFERENCES USER (email) ON DELETE CASCADE,
+                                       CONSTRAINT fk_organization_request FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id) ON DELETE CASCADE,
+                                       CONSTRAINT fk_item_request FOREIGN KEY (item_id) REFERENCES ITEM (item_id)
+);
+INSERT INTO REQUEST (user_email, organization_id, status, description, type)
+VALUES
+    ('alicedoe@example.com', 1, 'PENDING', 'Hi Im really interested in programming, wanted to check out this club', 'JOIN'),
+    ('emilyjohnson@example.com', 1, 'ACCEPTED', 'Wanted to check this club out, Im a cs major', 'JOIN');
+
+INSERT INTO REQUEST (user_email, organization_id, status, description, type, item_id, quantity )
+VALUES
+    ('johnsmith@example.com', 2, 'PENDING', 'I wanted to borrow a chess set to practice', 'ITEM', 1, 1),
+    ('emilyjohnson@example.com', 2, 'PENDING', 'I wanted to borrow the chess magazine so I can read', 'ITEM', 5, 1);
 
 INSERT INTO ITEM (name, description, owner_email, quantity, category, status, location_id, organization_id)
 VALUES

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import {useParams, Navigate, useNavigate } from 'react-router-dom';
 import Axios from 'axios';
-import './OrganizationDetails.css'
+// import './OrganizationDetails.css'
 const OrganizationDetails = ({token}) => {
     const { orgId } = useParams();
     const [organization, setOrganization] = useState(null);
+    const [type, setType] = useState('');
     const navigate = useNavigate();
     useEffect(() => {
         const fetchOrganizationDetails = async () => {
@@ -17,6 +18,7 @@ const OrganizationDetails = ({token}) => {
 
                 if (response.data.result === 'success') {
                     setOrganization(response.data.data);
+                    setType(response.data.type);
                 } else {
                     console.error('Error fetching organization details');
                     navigate('/404');
@@ -66,6 +68,9 @@ const OrganizationDetails = ({token}) => {
         navigate(`/organizations/${orgId}/locations`);
     };
 
+    const handleRequestButtonClick = () => {
+        navigate(`/organizations/${orgId}/requests`);
+    };
     if (!organization) {
         return <div>Loading...</div>;
     }
@@ -82,7 +87,7 @@ const OrganizationDetails = ({token}) => {
             {/* Buttons at the bottom */}
             <div className="button-container">
                 <button className="blue-button" onClick={handleRosterButtonClick}>Roster</button>
-                <button className="blue-button">Requests</button>
+                {(type === 'MANAGER' || type === 'OWNER') && <button className="blue-button" onClick={handleRequestButtonClick}>Requests</button>}
                 <button className="blue-button" onClick={handleItemsButtonClick}>Items</button>
                 <button className="blue-button" onClick={handleLocationButtonClick}>Locations</button>
                 <button className="dark-red-button" onClick={handleLeaveButtonClick}>Leave Organization</button>

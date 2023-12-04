@@ -116,7 +116,6 @@ public class OrgRosterController {
 //        System.out.println(json.entrySet());
         if (!json.containsKey("orgId") || !json.containsKey("newtype") || !json.containsKey("jwt") || !json.containsKey("memberEmail"))
         {
-            System.out.println("thought there were wrong headers");
             result.put("result", "failure bad request");
             return result;
         }
