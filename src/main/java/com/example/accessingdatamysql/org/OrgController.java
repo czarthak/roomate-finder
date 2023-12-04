@@ -44,10 +44,24 @@ public class OrgController {
         return orgRepository.findAll();
     }
 
-    @GetMapping(path="/all/stats")
-    public @ResponseBody Map<String, Object> getAllOrgStats() {
+    @GetMapping(path="/all/stats/category")
+    public @ResponseBody Map<String, Object> getAllOrgStatsByCategory() {
         // This returns a JSON with statistics about how many organziations are in each category
         List<Object[]> categoryCounts = customOrganizationRepository.countOrganizationsByCategory();
+        Map<String, Object> response = new HashMap<>();
+        // for (Object[] row : categoryCounts) {
+        //     Organization.Category category = (Organization.Category) row[0];
+        //     Long count = (Long) row[1];
+        //     stats.put(category.toString(), count);
+        // }
+        response.put("data", categoryCounts);
+        return response;
+    }
+
+    @GetMapping(path="/all/stats/members")
+    public @ResponseBody Map<String, Object> getAllOrgStatsByMembers() {
+        // This returns a JSON with statistics about how many organziations are in each category
+        List<Object[]> categoryCounts = customOrganizationRepository.countOrganizationsByMemberCount();
         Map<String, Object> response = new HashMap<>();
         // for (Object[] row : categoryCounts) {
         //     Organization.Category category = (Organization.Category) row[0];
