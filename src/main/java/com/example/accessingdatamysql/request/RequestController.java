@@ -73,6 +73,38 @@ public class RequestController {
         requestRepository.save(req);
         return req;
     }
+
+    @PostMapping(path = "/user/create") // Map ONLY POST Requests
+    @ResponseBody
+    public Map<String, Object> createRequest(@RequestBody Map<String, Object> json) {
+        // @ResponseBody means the returned String is the response, not a view name
+        // @RequestParam means it is a parameter from the GET or POST request
+        Map<String, Object> response = new HashMap<>();
+        if (!json.containsKey("orgId") || !json.containsKey("jwt") || !json.containsKey("description")
+                || !json.containsKey("quantity") || !json.containsKey("itemId"))
+        {
+            response.put("result", "failure - bad request");
+            return response;
+        }
+        Map<String, Object> map = getUserOrg(json);
+        if (map.get("result").equals("success"))
+        {
+            if (map.get("type") != OrganizationRoster.Type.MANAGER && map.get("type") != OrganizationRoster.Type.OWNER
+                && map.get("type") != OrganizationRoster.Type.MEMBER)
+            {
+                response.put("result", "failure - not a member of the org");
+                return response;
+            }
+            json.put("userEmail", map.get("userEmail"));
+            response.put("data", customRequestRepository.createItemRequest(json));
+            response.put("result", "success");
+        }
+        else
+        {
+            response.put("result", "failure - not authorized");
+        }
+        return response;
+    }
     @PostMapping(path = "/user/requests")
     public @ResponseBody Map<String, Object> getOrgRequest(@RequestBody Map<String, Object> json)
     {

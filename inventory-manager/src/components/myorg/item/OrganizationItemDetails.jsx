@@ -18,6 +18,14 @@ const OrganizationItemDetails = ({ token }) => {
         quantity: 0,
     });
     const navigate = useNavigate();
+    const [showRequestForm, setShowRequestForm] = useState(false);
+    const [requestDescription, setRequestDescription] = useState('');
+    const [requestQuantity, setRequestQuantity] = useState(1);
+    const [requestSent, setRequestSent] = useState(false);
+
+    const handleBorrowItem = () => {
+        setShowRequestForm(true);
+    };
     const [error, setError] = useState(null); // New state for error handling
     const handleDeleteItem = async () => {
         // Logic to handle item deletion
@@ -44,6 +52,32 @@ const OrganizationItemDetails = ({ token }) => {
         }
     };
 
+    const handleSendRequest = async () => {
+        // Logic to send the request
+        // You can customize this based on your backend API
+        console.log('Sending request...');
+        // Assuming you have an API endpoint to handle request creation
+        try {
+            // You need to replace this with your actual API endpoint
+            const response = await Axios.post('http://localhost:8080/requests/create', {
+                orgId: parseInt(orgId),
+                itemId: parseInt(itemId),
+                description: requestDescription,
+                quantity: requestQuantity,
+                jwt: token.jwt,
+            });
+
+            if (response.data.result === 'success') {
+                setRequestSent(true);
+                setError(null);
+            } else {
+                console.error('Error sending request');
+                setError('Something went wrong creating the send request!');
+            }
+        } catch (error) {
+            console.error('Some unexpected error occurred:', error);
+        }
+    };
     const handleDropdownChange = (field, value) => {
         setModifiedFields((prevFields) => ({
             ...prevFields,
@@ -93,8 +127,10 @@ const OrganizationItemDetails = ({ token }) => {
 
                         if (response.data.result === 'success') {
                             setItemInfo(response.data);
+                            setError(null);
                         } else {
                             console.error('Error fetching item information');
+                            setError('Something went wrong modifying the item');
                         }
                     } catch (error) {
                         console.error('Error fetching item information:', error);
@@ -158,6 +194,7 @@ const OrganizationItemDetails = ({ token }) => {
     return (
         <div className="organization-item-details">
             <h2>Item Details</h2>
+            {error && <p> {error}</p>}
             <div className="item-details">
                 <span>Name: {itemInfo.data[1]}</span>
                 <span>Description: {itemInfo.data[2]}</span>
@@ -244,6 +281,36 @@ const OrganizationItemDetails = ({ token }) => {
                     Delete Item
                 </button>
             )}
+            <div className="request-form">
+                {showRequestForm && !requestSent && (
+                    <div>
+                        <h3>Borrow Item</h3>
+                        <label>
+                            Description:
+                            <input
+                                type="text"
+                                value={requestDescription}
+                                onChange={(e) => setRequestDescription(e.target.value)}
+                            />
+                        </label>
+                        <label>
+                            Quantity:
+                            <input
+                                type="number"
+                                value={requestQuantity}
+                                onChange={(e) => setRequestQuantity(e.target.value)}
+                            />
+                        </label>
+                        <button onClick={handleSendRequest} className="send-request-button">
+                            Send Request
+                        </button>
+                    </div>
+                )}
+                {requestSent && <p>Request sent!</p>}
+            </div>
+            <button onClick={handleBorrowItem} className="borrow-item-button">
+                Borrow Item
+            </button>
         </div>
     );
 };

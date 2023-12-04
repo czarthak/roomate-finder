@@ -40,7 +40,7 @@ const MyRequests = ({ token }) => {
             <h2>Your Requests</h2>
             <ul>
                 {requests.map((request) => (
-                    <li key={request[3]} className="request-item">
+                    <li key={request[4]} className="request-item">
                         {/* <Link to={`/organizations/${org.orgId}`}>
                         <h3>{org.name}</h3>
                         </Link> */}
@@ -48,6 +48,8 @@ const MyRequests = ({ token }) => {
                         <p>Status: {request[0]}</p>
                         <p>Description: {request[1]}</p>
                         <p>Type: {request[3]}</p>
+                        {request[6] && <p> Item Name: {request[6]}</p>}
+                        {request[5] && <p> Item Quantity: {request[5]}</p>}
                         {/* Add more information as needed */}
                     </li>
                 ))}

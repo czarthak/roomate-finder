@@ -46,6 +46,46 @@ public class CustomRequestRepository {
 
         return resultRows;
     }
+
+    @Transactional
+    public Object createItemRequest(@RequestBody Map<String, Object> json)
+    {
+        // Extract parameters from the JSON map
+        Integer orgId;
+        if (json.get("orgId") instanceof Integer)
+            orgId = (Integer) json.get("orgId");
+        else {
+            orgId = Integer.parseInt((String)json.get("orgId"));
+        }
+        Integer quantity;
+        if (json.get("quantity") instanceof Integer)
+            quantity = (Integer) json.get("quantity");
+        else {
+            quantity = Integer.parseInt((String)json.get("quantity"));
+        }
+        Integer itemId;
+        if (json.get("itemId") instanceof Integer)
+            itemId = (Integer) json.get("itemId");
+        else {
+            itemId = Integer.parseInt((String)json.get("itemId"));
+        }
+        String description = (String) json.get("description");
+        String userEmail = (String) json.get("userEmail");
+        // Use native SQL query with EntityManager to create a new request
+        String nativeQuery = "INSERT INTO REQUEST (user_email, organization_id, status, quantity, type, description, item_id) " +
+                "VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7)";
+        Query query = entityManager.createNativeQuery(nativeQuery)
+                .setParameter(1, userEmail)
+                .setParameter(2, orgId)
+                .setParameter(3, "PENDING")
+                .setParameter(4, quantity)
+                .setParameter(5, "ITEM")
+                .setParameter(6, description)
+                .setParameter(7, itemId);
+        int updatedRows = query.executeUpdate();
+        return updatedRows > 0;
+    }
+
     @Transactional
     public Object updateRequest(@RequestBody Map<String, Object> json)
     {
