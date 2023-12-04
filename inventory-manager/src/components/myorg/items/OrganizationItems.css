@@ -52,4 +52,24 @@ button {
     display: block;
 }
 
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f0f0f0; /* Optional background color for the header */
+}
+
+.create-item-button {
+    display: block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #5bc0de; /* Blue color for modify button */
+    border: 1px solid #5bc0de;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 300px;
+
+}
 /* Add more styles as needed */

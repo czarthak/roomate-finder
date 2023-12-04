@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 
 import './OrganizationItems.css'
+import './OrganizationItemDetails.css'
 import {useNavigate, useParams} from "react-router-dom";
 const OrganizationItems = ({ token }) => {
     // const [orgId, setOrgId] = useState(null);
@@ -73,9 +74,17 @@ const OrganizationItems = ({ token }) => {
         setFilteredItems(filteredItemsCopy);
     };
 
+    const handleCreateButton = () => {
+        navigate(`/organizations/${orgId}/items/create`);
+    }
     return (
         <div className="organization-items">
-            <h2>Organization Items</h2>
+            <div className="header">
+                <h2>Organization Items</h2>
+                <button className="create-item-button" onClick={() => handleCreateButton()}>
+                    Create Item
+                </button>
+            </div>
             <div className="filters">
                 <label>
                     Category:

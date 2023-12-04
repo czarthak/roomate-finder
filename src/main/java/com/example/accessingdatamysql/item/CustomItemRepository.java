@@ -105,4 +105,47 @@ public class CustomItemRepository {
 
         return updatedRows > 0;
     }
+    @Transactional
+    public Object createItem(Map<String, Object> json)
+    {
+        // Extract parameters from the JSON map
+        Integer orgId;
+        if (json.get("orgId") instanceof Integer)
+            orgId = (Integer) json.get("orgId");
+        else {
+            orgId = Integer.parseInt((String)json.get("orgId"));
+        }
+        Integer quantity;
+        if (json.get("quantity") instanceof Integer)
+            quantity = (Integer) json.get("quantity");
+        else {
+            quantity = Integer.parseInt((String)json.get("quantity"));
+        }
+        Integer locationId;
+        if (json.get("locationId") instanceof Integer)
+            locationId = (Integer) json.get("locationId");
+        else {
+            locationId = Integer.parseInt((String)json.get("locationId"));
+        }
+        String status = (String) json.get("status");
+        String description = (String) json.get("description");
+        String category = (String) json.get("category");
+        String name = (String) json.get("name");
+        // Use native SQL query with EntityManager to update the item
+        // Use native SQL query with EntityManager to create a new item
+        String ownerEmail = (String) entityManager.createNativeQuery("SELECT O.email FROM ORGANIZATION O WHERE O.organization_id = :orgId").setParameter("orgId", orgId).getSingleResult();
+        String nativeQuery = "INSERT INTO ITEM (name, description, owner_email, quantity, category, status, location_id, organization_id) " +
+                "VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8)";
+        Query query = entityManager.createNativeQuery(nativeQuery)
+                .setParameter(1, name)
+                .setParameter(2, description)
+                .setParameter(3, ownerEmail)
+                .setParameter(4, quantity)
+                .setParameter(5, category)
+                .setParameter(6, status)
+                .setParameter(7, locationId)
+                .setParameter(8, orgId);
+        int updatedRows = query.executeUpdate();
+        return updatedRows > 0;
+    }
 }

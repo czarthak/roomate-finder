@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Axios from 'axios';
 import './OrganizationItemDetails.css';
-
+import '../OrganizationDetails.css'
 const OrganizationItemDetails = ({ token }) => {
     const { orgId, itemId } = useParams();
     const [itemInfo, setItemInfo] = useState(null);
@@ -18,7 +18,7 @@ const OrganizationItemDetails = ({ token }) => {
         quantity: 0,
     });
     const navigate = useNavigate();
-
+    const [error, setError] = useState(null); // New state for error handling
     const handleDeleteItem = async () => {
         // Logic to handle item deletion
         if (
@@ -226,6 +226,7 @@ const OrganizationItemDetails = ({ token }) => {
                             value={modifiedFields.locationId}
                             onChange={(e) => setModifiedFields( { ...modifiedFields, locationId:e.target.value})}
                         >
+                            <option value="">Select a location</option>
                             {locations.map(([locationName, locationId], index) => (
                                 <option key={locationId} value={locationId}>
                                     {locationName}

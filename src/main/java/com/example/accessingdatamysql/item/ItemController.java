@@ -121,6 +121,34 @@ public class ItemController {
         }
         return response;
     }
+    @PostMapping(path="/user/oneitem/create")
+    public @ResponseBody Map<String, Object> createItemToken(@RequestBody Map<String, Object> json)
+    {
+        Map<String, Object> response = new HashMap<>();
+        if (!json.containsKey("orgId") || !json.containsKey("jwt") || !json.containsKey("name")
+                || !json.containsKey("description") || !json.containsKey("quantity") || !json.containsKey("category")
+                || !json.containsKey("status") || !json.containsKey("locationId"))
+        {
+            response.put("result", "failure - bad request");
+            return response;
+        }
+        Map<String, Object> map = getUserOrg(json);
+        if (map.get("result").equals("success"))
+        {
+            if (map.get("type") != OrganizationRoster.Type.MANAGER && map.get("type") != OrganizationRoster.Type.OWNER)
+            {
+                response.put("result", "failure - not authorized, user cannot delete");
+                return response;
+            }
+            response.put("data", customItemRepository.createItem(json));
+            response.put("result", "success");
+        }
+        else
+        {
+            response.put("result", "failure - not authorized");
+        }
+        return response;
+    }
 
     @PostMapping(path="/user/oneitem/delete")
     public @ResponseBody Map<String, Object> deleteItemToken(@RequestBody Map<String, Object> json)
