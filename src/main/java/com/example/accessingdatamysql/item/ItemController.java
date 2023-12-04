@@ -57,7 +57,6 @@ public class ItemController {
     public @ResponseBody Map<String, Object> getItemsToken(@RequestBody Map<String, Object> json)
     {
         Map<String, Object> response = new HashMap<>();
-        System.out.println(json.entrySet());
         if (!json.containsKey("orgId") || !json.containsKey("jwt"))
         {
             response.put("result", "failure - bad request");
@@ -154,14 +153,12 @@ public class ItemController {
     public @ResponseBody Map<String, Object> deleteItemToken(@RequestBody Map<String, Object> json)
     {
         Map<String, Object> response = new HashMap<>();
-        System.out.println(json.entrySet());
         if (!json.containsKey("orgId") || !json.containsKey("jwt") || !json.containsKey("itemId"))
         {
             response.put("result", "failure - bad request");
             return response;
         }
         Map<String, Object> map = getUserOrg(json);
-        System.out.println(map.entrySet());
         if (map.get("result").equals("success"))
         {
             Integer itemId;

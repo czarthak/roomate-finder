@@ -5,6 +5,7 @@ import Axios from 'axios';
 const OrganizationDetails = ({token}) => {
     const { orgId } = useParams();
     const [organization, setOrganization] = useState(null);
+    const [type, setType] = useState('');
     const navigate = useNavigate();
     useEffect(() => {
         const fetchOrganizationDetails = async () => {
@@ -17,6 +18,7 @@ const OrganizationDetails = ({token}) => {
 
                 if (response.data.result === 'success') {
                     setOrganization(response.data.data);
+                    setType(response.data.type);
                 } else {
                     console.error('Error fetching organization details');
                     navigate('/404');
@@ -85,7 +87,7 @@ const OrganizationDetails = ({token}) => {
             {/* Buttons at the bottom */}
             <div className="button-container">
                 <button className="blue-button" onClick={handleRosterButtonClick}>Roster</button>
-                <button className="blue-button" onClick={handleRequestButtonClick}>Requests</button>
+                {(type === 'MANAGER' || type === 'OWNER') && <button className="blue-button" onClick={handleRequestButtonClick}>Requests</button>}
                 <button className="blue-button" onClick={handleItemsButtonClick}>Items</button>
                 <button className="blue-button" onClick={handleLocationButtonClick}>Locations</button>
                 <button className="dark-red-button" onClick={handleLeaveButtonClick}>Leave Organization</button>
