@@ -24,6 +24,8 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import Axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import TextField from "@mui/material/TextField";
 
 
 function descendingComparator(a, b, orderBy) {
@@ -213,7 +215,8 @@ EnhancedTableToolbar.propTypes = {
 //export default function EnhancedTable() {
 export const ListAllOrganizations = (props) => {
   const navigate = useNavigate();
-
+  const [searchInput, setSearchInput] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('category');
   const [selected, setSelected] = React.useState([]);
@@ -221,6 +224,11 @@ export const ListAllOrganizations = (props) => {
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+  const getFilteredRows = () => {
+    return rows
+        .filter(row => row.name.toLowerCase().includes(searchInput.toLowerCase()))
+        .filter(row => selectedCategory ? row.category === selectedCategory : true);
+  };
   //export const ListAllOrganizations = (props) => {
     const [rows, setRows] = useState([]); // State to store the rows
   
@@ -244,6 +252,13 @@ export const ListAllOrganizations = (props) => {
     setOrderBy(property);
   };
 
+  const handleSearchClicked = () => {
+    if (orderBy === 'name')
+      setOrderBy('category');
+    else
+      setOrderBy('name');
+    setOrder('asc');
+  }
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       const newSelected = rows.map((n) => n.id);
@@ -301,7 +316,7 @@ export const ListAllOrganizations = (props) => {
 
   const visibleRows = React.useMemo(
     () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
+      stableSort(getFilteredRows(), getComparator(order, orderBy)).slice(
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage,
       ),
@@ -311,6 +326,33 @@ export const ListAllOrganizations = (props) => {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <TextField
+              label="Search by Name"
+              variant="outlined"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              sx={{ mr: 2 }}
+          />
+          <button onClick={handleSearchClicked}> Search</button>
+          <FormControl sx={{ minWidth: 120 }}>
+            <InputLabel id="category-select-label">Category</InputLabel>
+            <Select
+                labelId="category-select-label"
+                id="category-select"
+                value={selectedCategory}
+                label="Category"
+                onChange={(e) => setSelectedCategory(e.target.value)}
+            >
+              <MenuItem value="">All</MenuItem>
+              <MenuItem value="ACADEMIC">Academic</MenuItem>
+              <MenuItem value="RECREATION">Recreation</MenuItem>
+              <MenuItem value="TECHNOLOGY">Technology</MenuItem>
+              <MenuItem value="POLITICS">Politics</MenuItem>
+              <MenuItem value="GREEKLIFE">Greek Life</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
