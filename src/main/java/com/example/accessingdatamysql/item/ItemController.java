@@ -35,7 +35,6 @@ public class ItemController {
     public @ResponseBody Map<String, Object> getItems(@RequestBody Map<String, Object> json)
     {
         Map<String, Object> response = new HashMap<>();
-        System.out.println(json.entrySet());
         if (!json.containsKey("orgId"))
         {
             response.put("result", "failure - bad request");
@@ -262,6 +261,12 @@ public class ItemController {
                 orgId = (Integer) json.get("orgId");
             else
                 orgId = Integer.parseInt((String)(json.get("orgId")));
+            if (map.get("type") == OrganizationRoster.Type.MEMBER)
+            {
+                response.put("result", "failure - members are not authorized to create locations");
+                response.put("type", map.get("type"));
+                return response;
+            }
             response.put("data", customItemRepository.createLocation((String)json.get("location"), orgId));
             response.put("result", "success");
             response.put("type", map.get("type"));
@@ -289,6 +294,12 @@ public class ItemController {
                 locationId = (Integer) json.get("locationId");
             else
                 locationId = Integer.parseInt((String)(json.get("locationId")));
+            if (map.get("type") == OrganizationRoster.Type.MEMBER)
+            {
+                response.put("result", "failure - members are not authorized to delete locations");
+                response.put("type", map.get("type"));
+                return response;
+            }
             response.put("data", customItemRepository.deleteLocation(locationId));
             response.put("result", "success");
             response.put("type", map.get("type"));
