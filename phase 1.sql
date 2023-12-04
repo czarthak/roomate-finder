@@ -91,6 +91,10 @@ CREATE TABLE IF NOT EXISTS REQUEST (
     CONSTRAINT fk_user_request FOREIGN KEY (user_email) REFERENCES USER (email) ON DELETE CASCADE,
     CONSTRAINT fk_organization_request FOREIGN KEY (organization_id) REFERENCES ORGANIZATION (organization_id) ON DELETE CASCADE
 );
+INSERT INTO REQUEST (user_email, organization_id, status, description, type)
+VALUES
+    ('alicedoe@example.com', 1, 'PENDING', 'Hi Im really interested in programming, wanted to check out this club', 'JOIN'),
+    ('emilyjohnson@example.com', 1, 'ACCEPTED', 'Wanted to check this club out, Im a cs major', 'JOIN');
 
 CREATE TABLE IF NOT EXISTS LOCATION (
 	location_id INT AUTO_INCREMENT,

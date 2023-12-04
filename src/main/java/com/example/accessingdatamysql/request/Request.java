@@ -1,4 +1,4 @@
-package com.example.accessingdatamysql;
+package com.example.accessingdatamysql.request;
 
 
 import jakarta.persistence.*;
@@ -20,13 +20,23 @@ public class Request {
 
     private String userEmail;
 
-    private int orgId;
+    private Integer organizationId;
 
     private String description;
 
+    @Enumerated(EnumType.STRING)
     private Status status;
-    
+
+    @Enumerated(EnumType.STRING)
     private Type type;
+
+    public Integer getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(Integer organizationId) {
+        this.organizationId = organizationId;
+    }
 
     public Status getStatus() {
         return status;
@@ -52,31 +62,26 @@ public class Request {
         this.userEmail = userEmail;
     }
 
-    public int getOrgId() {
-        return orgId;
-    }
 
-    public void setOrgId(int orgId) {
-        this.orgId = orgId;
-    }
 
-    public String getDesc() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDesc(String description) {
+    public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
     }
 
     @Id
     @Column(nullable = false)
-    private int reqId;
+    private int requestId;
 
-    public int getReqId() {
-        return reqId;
-    }
-
-    public void setReqId(int reqId) {
-        this.reqId = reqId;
-    }
 }
