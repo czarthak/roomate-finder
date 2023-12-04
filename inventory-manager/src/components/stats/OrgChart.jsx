@@ -4,16 +4,18 @@ import { Chart } from "react-google-charts";
 
 export const OrgChart = () => {
   const [info, setInfo] = useState();
+  const [infoForMemberChart, setInfoForMemberChart] = useState();
 
   useEffect(() => {
     // Fetch user information when the component mounts
     getOrgStats();
+    getOrgStatsByMember();
   }, []); // Empty dependency array ensures the effect runs once
 
   const getOrgStats = async () => {
     try {
       const response = await Axios.get(
-        "http://localhost:8080/organization/all/stats"
+        "http://localhost:8080/organization/all/stats/category"
       );
       const some = [["Location", "Number of Items"], ...response.data.data];
       setInfo(some);
@@ -22,18 +24,43 @@ export const OrgChart = () => {
     }
   };
 
-  const options = {
+  const getOrgStatsByMember = async () => {
+    try {
+      const response = await Axios.get(
+        "http://localhost:8080/organization/all/stats/members"
+      );
+      const some = [["Task", "Hours per Day"], ...response.data.data];
+      setInfoForMemberChart(some);
+    } catch (error) {
+      console.error("Error fetching stats:", error);
+    }
+  };
+
+  const options1 = {
     title: "Organizations by Category",
   };
 
+  const options2 = {
+    title: "Organizations by Popularity",
+  };
+
   return (
-    <Chart
-      chartType="PieChart"
-      data={info}
-      options={options}
-      width={"100%"}
-      height={"400px"}
-    />
+    <div>
+      <Chart
+        chartType="PieChart"
+        data={info}
+        options={options1}
+        width={"100%"}
+        height={"400px"}
+      />
+      <Chart
+        chartType="PieChart"
+        data={infoForMemberChart}
+        options={options2}
+        width={"100%"}
+        height={"400px"}
+      />
+    </div>
   );
 };
 export default OrgChart;
