@@ -4,7 +4,7 @@ import "./Home.css";
 export const Home = () => {
   return (
     <div className="home-container">
-      <h1>Welcome to inVT</h1>
+      <h1>Welcome to Crumble</h1>
       <p>
         inVT is the Virginia Tech Student Organization Inventory Management System.
         Manage your organization's inventory efficiently with our user-friendly platform.
