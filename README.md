@@ -1,5 +1,11 @@
 # Roommate Finder
 
+to build docker image:
+docker build -t <image_name>\n
+to run said image in detached mode without instant terminating:\n
+docker run -it --mount "type=bind,src=$pwd,target=/app" temp bash\n
+to enter a running container:\n
+docker exec -it <container_name> bash\n
 
 
 ## Getting started

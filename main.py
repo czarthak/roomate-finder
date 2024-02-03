@@ -1,6 +1,6 @@
 import mysql.connector
 from mysql.connector import Error
-
+#hello world
 try:
     connection = mysql.connector.connect(host='localhost',
                                          database='inventory',
