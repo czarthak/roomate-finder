@@ -1,4 +1,4 @@
-# DBMS inventory manager
+# Roommate Finder
 
 
 
