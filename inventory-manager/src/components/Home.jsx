@@ -24,15 +24,13 @@ export const Home = () => {
     <div className="home-container">
       <h1>Welcome to Roomie Match</h1>
       
-      <li><strong>Discover your ideal college roommate with Roomie Match!</strong></li>
-
-        <li>Our platform is designed to connect you with compatible roommates based on shared interests, study habits, and lifestyle preferences. Whether you have an apartment and are looking for someone to share it with, or you're on the hunt for the perfect spot, Roomie Match makes finding your next roommate a breeze.</li>
+      
       
       <div>
-        <ul        >
-          <li>Find personalized roommate matches</li>
-          <li>Chat securely within the platform</li>
-          <li>Filter matches by college, major, and more</li>
+        <ul>
+        <li><strong>Discover your ideal college roommate with Roomie Match!</strong></li>
+          <li><strong>Find personalized roommate matches</strong></li>
+          <li><strong>Filter matches by college, major, and more</strong></li>
         </ul>
       </div>
       
