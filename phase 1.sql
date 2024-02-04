@@ -28,7 +28,7 @@ VALUES (
         'melissajones@example.com', 'Jones', 'Melissa', 'securepass3', '987-654-3213', 'masters', 'engineering', 'Masters student focusing on sustainable engineering.', 'Highland Apartments', 'Crestview Apartments', 1600, 'ISFPA'
     ),
     (
-        'emilyjohnson@example.com', 'Johnson', 'Emily', 'sciencePass', '8888888888', 'phd', 'computer science', 'PhD candidate researching in computational theory.', 'Evergreen Estates', 'Pinnacle Point Apartments', 1700, 'ENFPT'
+        'emilyjohnson@example.com', 'Johnson', 'Emily', 'sciencePass', '888-888-8888', 'phd', 'computer science', 'PhD candidate researching in computational theory.', 'Evergreen Estates', 'Pinnacle Point Apartments', 1700, 'ENFPT'
     ),
     (
         'davidwhite@example.com', 'White', 'David', 'mypassword5', '123-456-7891', 'freshman', 'business', 'Freshman eager to dive into the world of entrepreneurship.', 'Brookside Apartments', 'Grandview Apartments', 1100, 'ENTPA'

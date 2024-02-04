@@ -5,7 +5,8 @@ import "./AccountInformation.css"; // Import your external CSS file
 import Places from "../map/places";
 import { useNavigate } from "react-router-dom"; // Import useNavigate hook
 import { Link } from "react-router-dom";
-
+import { TextField, Avatar } from '@mui/material';
+import { IconButton, CloudUploadIcon } from '@mui/material';
 
 
 const AccountInformation = ({ token }) => {
@@ -27,6 +28,7 @@ const AccountInformation = ({ token }) => {
 
 
 
+  const [selectedImage, setSelectedImage] = useState(null);
 
 
   const [initials, setInitials] = useState("");
@@ -72,6 +74,14 @@ const AccountInformation = ({ token }) => {
 
   const [updateSuccess, setUpdateSuccess] = useState(false);
 
+  const getImageUrl = (email) => {
+    const imageName = email.replace(/[@.]/g, '') + '.jpeg';
+    console.log(imageName);
+    // Update the path according to where your images are served from
+    const imageUrl = `${process.env.PUBLIC_URL}/${imageName}`;
+    return imageUrl;
+  };
+
   useEffect(() => {
     // Fetch user information when the component mounts
     getUserInfo();
@@ -112,14 +122,11 @@ const AccountInformation = ({ token }) => {
 
   return (
     <div className="account-info-container">
-      <div className="profile-side">
-        {profilePic ? (
-          <img src={profilePic} alt="Profile" className="profile-picture" />
-        ) : (
-          <div className="initials-circle">{/* User initials here */}</div>
-        )}
-        <input type="file" onChange={handleImageUpload} />
-      </div>
+      <Avatar
+        src={getImageUrl(userInfo.email)}
+        sx={{ width: 80, height: 80, m: 2 }}
+        alt={`${userInfo.fname} ${userInfo.lname}`}
+      />
       <h2>Profile Information</h2>
       {updateSuccess && (
         <p className="success-message">Information updated successfully!</p>
