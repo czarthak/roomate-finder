@@ -2,8 +2,10 @@
 import Axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Box, Card, CardContent, Typography, CardActions, Button, Grid, TextField, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel } from '@mui/material';
-import { TextField, Avatar } from '@mui/material';
-import React, { useState, useEffect, Avatar } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Avatar } from '@mui/material';
+
+
 
 
 const ListAllOrganizations = () => {
@@ -16,6 +18,15 @@ const ListAllOrganizations = () => {
 
 
   const [users, setUsers] = useState([]);
+
+  const getImageUrl = (email) => {
+    const imageName = email.replace(/[@.]/g, '') + '.jpeg';
+    console.log(imageName);
+    // Update the path according to where your images are served from
+    const imageUrl = `${process.env.PUBLIC_URL}/${imageName}`;
+    return imageUrl;
+  };
+
 
   useEffect(() => {
     const fetchUsers = async () => {
