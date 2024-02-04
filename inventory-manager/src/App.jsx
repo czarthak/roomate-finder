@@ -55,7 +55,7 @@ function App() {
         {/* For the personality test */}
         <Route element={<PrivateRoutes token={token} />}>
         <Route element={<PrivateRoutes token={token} />}>
-          <Route path="/dashboard" element={<Dashboard2 token={token} userEmail={'alicedoe@example.com'}/>} />
+          <Route path="/dashboard/:userEmail" element={<Dashboard2 token={token} />} />
         </Route>
         <Route path="/personality-test" element={<PersonalityTest />} /> 
           <Route

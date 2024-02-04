@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import Map3 from './Map'; // Import your Map component
 import UserInfo from './UserInfo'; // Import your UserInfo component
 import axios from 'axios';
+import {useParams} from "react-router-dom";
 
-const Dashboard2 = ({ userEmail, token }) => {
+const Dashboard2 = ({ token }) => {
     const [userApts, setUserApts] = useState([]);
+    const { userEmail } =  useParams();
 
     useEffect(() => {
         // Assuming you have a function to fetch apartments for a specific user
@@ -22,7 +24,7 @@ const Dashboard2 = ({ userEmail, token }) => {
 
         fetchUserApts();
     }, [userEmail]);
-
+    console.log(userEmail);
     return (
         <div style={{ display: 'flex', width: '100%' }}>
             <div style={{ flex: '70%' }}>
