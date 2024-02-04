@@ -34,6 +34,7 @@ const OrganizationDetails = ({token}) => {
 
     const handleRosterButtonClick = () => {
         // Redirect to the OrganizationMembers page
+        
         navigate(`/organizations/${orgId}/members`);
     };
     const handleItemsButtonClick = () => {
