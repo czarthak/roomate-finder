@@ -21,11 +21,9 @@ const Map3 = ({ token }) => {
 
     const fetchApartments = async () => {
         try {
-            console.log(token.jwt);
             const response = await axios.post('http://localhost:8080/user/user', {
                 jwt: token.jwt
             });
-            console.log(response.data);
             setApartments(response.data.apt);
         } catch (error) {
             console.error("Error fetching apartment data:", error);
@@ -43,7 +41,7 @@ const Map3 = ({ token }) => {
             apartments.forEach(([name, placeId]) => {
                 const request = {
                     placeId,
-                    fields: ["name", "formatted_address", "place_id", "geometry"],
+                    fields: ["name", "formatted_address", "place_id", "geometry", "photo", "formatted_phone_number", "rating", "website"],
                 };
                 service.getDetails(request, (place, status) => {
                     if (status === window.google.maps.places.PlacesServiceStatus.OK && place && place.geometry && place.geometry.location) {
@@ -60,6 +58,19 @@ const Map3 = ({ token }) => {
             });
         }
     }, [isLoaded, apartments, map]);
+
+    const renderInfoWindowContent = (place) => (
+        <div>
+            <h2>{place.name}</h2>
+            <p>{place.formatted_address}</p>
+            {place.photos && place.photos.length > 0 && (
+                <img src={place.photos[0].getUrl({maxWidth: 200, maxHeight: 200})} alt={place.name} style={{paddingTop: '10px'}}/>
+            )}
+            {place.rating && <p>Rating: {place.rating}/5</p>}
+            {place.formatted_phone_number && <p>Phone: {place.formatted_phone_number}</p>}
+            {place.website && <p><a href={place.website} target="_blank" rel="noopener noreferrer">Website</a></p>}
+        </div>
+    );
 
     if (loadError) {
         return <div>Map cannot be loaded right now, sorry.</div>;
@@ -84,10 +95,7 @@ const Map3 = ({ token }) => {
                                 setSelectedApt(null);
                             }}
                         >
-                            <div>
-                                <h2>{selectedApt.name}</h2>
-                                <p>{selectedApt.formatted_address}</p>
-                            </div>
+                            {renderInfoWindowContent(selectedApt)}
                         </InfoWindow>
                     )}
                 </GoogleMap>
