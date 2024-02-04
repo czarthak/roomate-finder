@@ -99,3 +99,21 @@ button:hover {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   /* Optional: Adds a subtle shadow for depth */
 }
+
+.personality-test-button {
+  background-color: #c2bf2c; /* Yellow color */
+  color: #000; /* Black text */
+  padding: 8px 16px; /* Adjust padding to fit the text */
+  border: none;
+  border-radius: 25px; /* Bubbly rounded edges */
+  cursor: pointer;
+  font-size: 0.9em; /* Adjust font size to ensure "Start Now" fits on the button */
+  text-align: center; /* Ensure text is centered */
+  display: inline-block; /* Allows control over padding and size */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Optional: adds subtle shadow for depth */
+  transition: background-color 0.3s ease;
+}
+
+.personality-test-button:hover {
+  background-color: #443d26; /* Lighter yellow on hover for visual feedback */
+}

@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS USER (
     existingApart VARCHAR(255),
     preferApart VARCHAR(255),
     budget DECIMAL(10,2),
-    personalTrait VARCHAR(255);
+    personalTrait VARCHAR(10);
     PRIMARY KEY (email)
 );
 
