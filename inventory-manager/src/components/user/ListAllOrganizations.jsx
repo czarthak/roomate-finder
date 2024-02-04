@@ -75,10 +75,11 @@ const ListAllOrganizations = () => {
           <MenuItem value="Computer Science">Computer Science</MenuItem>
           <MenuItem value="Engineering">Engineering</MenuItem>
           <MenuItem value="Business">Business</MenuItem>
-          <MenuItem value="Chemistry">Business</MenuItem>
-          <MenuItem value="Math">Business</MenuItem>
-          <MenuItem value="English">Business</MenuItem>
-          <MenuItem value="Economics">Business</MenuItem>
+          <MenuItem value="Chemistry">Chemistry</MenuItem>
+          <MenuItem value="Math">Math</MenuItem>
+          <MenuItem value="Pscyhology">Pscyhology</MenuItem>
+          <MenuItem value="Economics">Economics</MenuItem>
+          <MenuItem value="Electrical">Electrical</MenuItem>
         </Select>
       </FormControl>
 
