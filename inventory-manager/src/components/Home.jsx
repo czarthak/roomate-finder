@@ -37,7 +37,7 @@ export const Home = () => {
       
 
       <div className="login-signup-bubble">
-      <p>Already have an account? <a href="/login">Login</a> to find and connect with potential roommates now. If you're new here, <a href="/Register">Sign up</a> and begin your search for the ideal roommate in just 2 minutes.</p>
+      <p>Already have an account? <a href="/login">Login</a> If you're new here, <a href="/Register">Sign up</a> and begin your search for the ideal roommate now.</p>
       </div>
 
 
