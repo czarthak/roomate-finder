@@ -100,4 +100,5 @@ const PersonalityTest = () => {
   );
 };
 
+
 export default PersonalityTest;
