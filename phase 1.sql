@@ -7,6 +7,13 @@ CREATE TABLE IF NOT EXISTS USER (
     fname VARCHAR(64) NOT NULL,
     password VARCHAR(32) NOT NULL,
     phone_number VARCHAR(14),
+    year VARCHAR(255),
+    major VARCHAR(255),
+    bio TEXT,
+    existingApart VARCHAR(255),
+    preferApart VARCHAR(255),
+    budget DECIMAL(10,2),
+    personalTrait VARCHAR(255);
     PRIMARY KEY (email)
 );
 
@@ -19,7 +26,7 @@ INSERT INTO USER (email, lname, fname, password, phone_number) VALUES
 ('anthonypeters@example.com', 'Peters', 'Anthony', 'securepass4', '987-654-3214'),
 ('emilyjohnson@example.com', 'Johnson', 'Emily', 'sciencePass', '8888888888');
 
-# SELECT * FROM USER;
+# SELECT * FROM USER;   
 -- DELETE FROM USER;
 
 CREATE TABLE IF NOT EXISTS ORGANIZATION (

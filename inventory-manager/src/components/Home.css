@@ -63,11 +63,16 @@ a:hover {
 .login-signup-bubble {
   background-color: #003366; /* Dark blue color */
   color: white;
-  padding: 20px;
-  margin: 20px 0;
+  padding: 10px; /* Reduced from 20px to make the bubble smaller */
+  margin: 10px auto; /* Top and bottom margins are 10px, and left and right margins are auto */
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow for depth */
+  width: auto; /* Adjust this as needed */
+  max-width: 30%; /* Optional: to control the maximum width */
+  display: block; /* This ensures that margin auto has an effect */
 }
+
+
 
 .login-signup-bubble a {
   color: #FFD700; /* Gold color for contrast and emphasis */

@@ -9,8 +9,9 @@
 2. docker run -it -p 127.0.0.1:3000:3000 -p 127.0.0.1:8080:8080 --mount "type=bind,src=$pwd,target=/app" czarthak/complete bash
 3. Then run service mysql restart 
 4. sh change_password.sh
-5. (cd inventory-manager && npm start) & (mvn spring-boot:run &)
-6. Open localhost:3000/ in your browser to view the application
+5. mysql -u root -p inventory < phase1.sql //to populate schema with sample data
+6. (cd inventory-manager && npm start) & (mvn spring-boot:run &)
+7. Open localhost:3000/ in your browser to view the application
 
 To enter a running container:
 docker exec -it <container_name> bash
