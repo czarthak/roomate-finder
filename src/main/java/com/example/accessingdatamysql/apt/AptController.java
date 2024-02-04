@@ -19,6 +19,8 @@ public class AptController {
     @Autowired
     private CustomAptRepository customAptRepository;
 
+    @Autowired
+    private AptRepository aptRepository;
 
     @PostMapping(path="/user/desc")
     public @ResponseBody Map<String, Object> getUserDesc(@RequestBody Map<String, String> json)
@@ -53,6 +55,34 @@ public class AptController {
         }
         response.put("result", "success");
         response.put("apt deleted:", customAptRepository.deleteApt(res.get("user"), (String) json.get("id")));
+        return response;
+    }
+
+    @PostMapping(path="/user/add")
+    public @ResponseBody Map<String, Object> addUserApt(@RequestBody Map<String, Object> json)
+    {
+        Map<String, Object> response = new HashMap<>();
+        if (!json.containsKey("jwt"))
+        {
+            response.put("result", "failed = bad request");
+        }
+        AuthController au = new AuthController();
+        Map<String, String> res = au.verify(json); // if the jwt token could not be verified
+        if (res.containsKey("login") && res.get("login").equals("failed"))
+        {
+            response.put("result", "failed = bad token");
+            return response;
+        }
+        response.put("result", "success");
+        Apt apt = new Apt(res.get("user"), (String) json.get("description"), (String) json.get("id"));
+        try
+        {
+            aptRepository.save(apt);
+        }
+        catch (Exception e)
+        {
+            System.out.println("Likely tried saving duplicate apartment id Exception: " + e);
+        }
         return response;
     }
 }

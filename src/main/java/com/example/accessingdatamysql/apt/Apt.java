@@ -17,6 +17,15 @@ public class Apt {
     @Column(name = "id")
     private String id;
 
+    public Apt() {
+    }
+
+    public Apt(String email, String description, String id) {
+        this.email = email;
+        this.description = description;
+        this.id = id;
+    }
+
     public String getEmail() {
         return email;
     }

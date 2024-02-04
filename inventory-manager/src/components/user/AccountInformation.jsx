@@ -24,7 +24,7 @@ const AccountInformation = ({ token }) => {
     personalTrait: "",
   });
 
-
+  const [selectedApts, setSelectedApts] = useState([]);
   const [initials, setInitials] = useState("");
 
   const [profilePic, setProfilePic] = useState(localStorage.getItem('profilePic') || '');
@@ -65,6 +65,22 @@ const AccountInformation = ({ token }) => {
 
 
 
+  const removeApartment = async (id) => {
+    try {
+      const response = await Axios.post('http://localhost:8080/apt/user/delete', {
+        jwt: token.jwt,
+        id: id,
+      });
+
+      if (response.data.result === 'success') {
+        // Update the state to remove the apartment
+        setSelectedApts(selectedApts.filter(apt => apt[1] !== id));
+      }
+    } catch (error) {
+      console.error('Error removing apartment:', error);
+    }
+  };
+
 
   const [updateSuccess, setUpdateSuccess] = useState(false);
 
@@ -84,6 +100,7 @@ const AccountInformation = ({ token }) => {
         console.error("Error fetching user information:");
       }
       setUserInfo(response.data.user);
+      setSelectedApts(response.data.apt);
     } catch (error) {
       console.error("Error fetching user information:", error);
     }
@@ -103,12 +120,20 @@ const AccountInformation = ({ token }) => {
     }
   };
 
-  const handleLocationSelect = (location) => {
+  const handleLocationSelect = async (location) => {
     console.log(location);
-    setUserInfo((prevUserInfo) => ({
-      ...prevUserInfo,
-      preferApart: location.description, // Set preferApart to the selected location
-    }));
+    try {
+      const response = await Axios.post("http://localhost:8080/apt/user/add", {
+        jwt: token.jwt,
+        description: location.description,
+        id: location.reference
+      });
+      console.log(response);
+      setSelectedApts(prevApts => [...prevApts, [location.description, location.reference]]);
+    }
+    catch (error) {
+      console.error("Error updating user information:", error);
+    }
   };
 
   const handleChange = (e) => {
@@ -208,14 +233,6 @@ const AccountInformation = ({ token }) => {
         <label> Add some places you'd want to live at here </label>
         <Places handleLocationSelect={handleLocationSelect}/>
 
-        <label htmlFor="preferApart">Apartments you'd like to live at</label>
-        <input
-          type="text"
-          id="preferApart"
-          name="preferApart"
-          value={userInfo.preferApart}
-          onChange={handleChange}
-        />
 
         <label htmlFor="budget">Budget (Per Month)</label>
         <input
@@ -227,6 +244,16 @@ const AccountInformation = ({ token }) => {
         />
 
         <p></p>
+
+        <div className="selected-apartments">
+          <b> Apartments shortlisted </b>
+          {selectedApts.map((apt, index) => (
+              <div key={index} className="apartment-item">
+                {apt[0]} {/* Apartment description */}
+                <button className="remove-apartment-btn" onClick={() => removeApartment(apt[1])}>X</button>
+              </div>
+          ))}
+        </div>
 
         <div className="home-container">
         

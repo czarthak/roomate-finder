@@ -61,6 +61,35 @@ button:hover {
   }
 }
 
+.apartment-item {
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.apartment-item:hover {
+  border-color: #007bff; /* Highlight color on hover */
+}
+
+.remove-apartment-btn {
+  cursor: pointer;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  max-width: 40px;
+}
+
+.remove-apartment-btn:hover {
+  background-color: darkred;
+}
+
+
 /* AccountInformation.css */
 
 /* ... existing styles ... */
