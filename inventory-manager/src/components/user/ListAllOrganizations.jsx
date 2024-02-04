@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+//import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Box, Card, CardContent, Typography, CardActions, Button, Grid, TextField, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { Box, Card, CardContent, Typography, CardActions, Button, Grid, TextField, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel } from '@mui/material';
+
+import React, { useState, useEffect } from 'react';
 
 const ListAllOrganizations = () => {
   const navigate = useNavigate();
@@ -9,6 +11,9 @@ const ListAllOrganizations = () => {
   const [filterMajor, setFilterMajor] = useState('');
   const [filterYear, setFilterYear] = useState('');
   const [filterBudget, setFilterBudget] = useState('');
+  const [filterPersonalityTrait, setFilterPersonalityTrait] = useState('');
+  
+  
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -26,11 +31,19 @@ const ListAllOrganizations = () => {
   const filteredUsers = users.filter(user =>
     user.fname.toLowerCase().includes(searchInput.toLowerCase()) ||
     user.lname.toLowerCase().includes(searchInput.toLowerCase())
-  ).filter(user =>
-    (filterMajor ? user.major === filterMajor : true) &&
-    (filterYear ? user.year === filterYear : true) && (filterBudget ? user.budget <= filterBudget : true)
-  );
-
+  ).filter(user => {
+    const userBudget = parseFloat(user.budget); // Convert user budget to a floating point number
+    const selectedBudget = parseFloat(filterBudget); // Convert selected budget filter to a floating point number
+    // Handle budget comparison, including when no filter is applied
+    const budgetCondition = filterBudget ? userBudget <= selectedBudget : true;
+    const traitCondition = filterPersonalityTrait ? user.personalTrait === filterPersonalityTrait : true;
+    
+    return (
+      (filterMajor ? user.major === filterMajor : true) &&
+      (filterYear ? user.year === filterYear : true) &&
+      budgetCondition && traitCondition 
+    );
+  });
   return (
     <Box sx={{ flexGrow: 1, p: 2 }}>
       <TextField
@@ -57,7 +70,18 @@ const ListAllOrganizations = () => {
           <MenuItem value="Business">Business</MenuItem>
         </Select>
       </FormControl>
+      
+      {/* <FormControlLabel
+        control={
+          <Checkbox
+            checked={filterPersonalityTrait}
+            onChange={(e) => setFilterPersonalityTrait(e.target.checked)}
+          />
+        }
+        label="Match my personality trait"
+      /> */}
 
+      
       <FormControl sx={{ mb: 4, minWidth: 120 }}>
         <InputLabel id="year-select-label">Year</InputLabel>
         <Select
@@ -94,7 +118,24 @@ const ListAllOrganizations = () => {
         <MenuItem value="1500">Less than 1500</MenuItem>
       </Select>
     </FormControl>
-
+    
+        <FormControl sx={{ mb: 4, minWidth: 200 }}>
+        <InputLabel id="personalTrait-select-label">Personality</InputLabel>
+        <Select
+          labelId="personalTrait-select-label"
+          id="personalTrait-select"
+          value={filterPersonalityTrait}
+          label="PersonalityTrait"
+          onChange={(e) => setFilterPersonalityTrait(e.target.value)}
+          size="small" // Similar to above
+        >
+          <MenuItem value="">All</MenuItem>
+          <MenuItem value="ENTP">ENTP</MenuItem>
+          <MenuItem value="EJFG">EJFG</MenuItem>
+          <MenuItem value="INTJ">INTJ</MenuItem>
+          <MenuItem value="ENTJ">ENTJ</MenuItem>
+        </Select>
+      </FormControl>
 
 
       

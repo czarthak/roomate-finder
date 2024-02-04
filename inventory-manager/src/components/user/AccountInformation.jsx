@@ -51,7 +51,7 @@ const AccountInformation = ({ token }) => {
       formData.append('imageFile', file);
 
       // Include the email in the URL as a query parameter
-      const url = `http://localhost:8080/user/img?token=${encodeURIComponent(token.jwt)}`;
+      const url = `http://localhost:8080/user/img?email=${encodeURIComponent(userInfo.email)}`;
 
       Axios.post(url, formData, {
         headers: {
