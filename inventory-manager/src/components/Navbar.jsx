@@ -36,11 +36,11 @@ export const Navbar = ({ token }) => {
               </li>
               {/* <li>
                 <NavLink to="/myorganizations">My Organizations</NavLink>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <NavLink to="/createorganization">Create Organization</NavLink>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <NavLink to="/myrequests">My Requests</NavLink>
               </li> */}
               <li>

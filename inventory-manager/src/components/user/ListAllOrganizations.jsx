@@ -2,8 +2,9 @@
 import Axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Box, Card, CardContent, Typography, CardActions, Button, Grid, TextField, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel } from '@mui/material';
+import { TextField, Avatar } from '@mui/material';
+import React, { useState, useEffect, Avatar } from 'react';
 
-import React, { useState, useEffect } from 'react';
 
 const ListAllOrganizations = () => {
   const navigate = useNavigate();
@@ -12,8 +13,8 @@ const ListAllOrganizations = () => {
   const [filterYear, setFilterYear] = useState('');
   const [filterBudget, setFilterBudget] = useState('');
   const [filterPersonalityTrait, setFilterPersonalityTrait] = useState('');
-  
-  
+
+
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -37,11 +38,11 @@ const ListAllOrganizations = () => {
     // Handle budget comparison, including when no filter is applied
     const budgetCondition = filterBudget ? userBudget <= selectedBudget : true;
     const traitCondition = filterPersonalityTrait ? user.personalTrait === filterPersonalityTrait : true;
-    
+
     return (
       (filterMajor ? user.major === filterMajor : true) &&
       (filterYear ? user.year === filterYear : true) &&
-      budgetCondition && traitCondition 
+      budgetCondition && traitCondition
     );
   });
   return (
@@ -70,7 +71,7 @@ const ListAllOrganizations = () => {
           <MenuItem value="Business">Business</MenuItem>
         </Select>
       </FormControl>
-      
+
       {/* <FormControlLabel
         control={
           <Checkbox
@@ -81,7 +82,7 @@ const ListAllOrganizations = () => {
         label="Match my personality trait"
       /> */}
 
-      
+
       <FormControl sx={{ mb: 4, minWidth: 120 }}>
         <InputLabel id="year-select-label">Year</InputLabel>
         <Select
@@ -101,25 +102,25 @@ const ListAllOrganizations = () => {
       </FormControl>
 
       <FormControl sx={{ mb: 4, minWidth: 120 }}>
-      <InputLabel id="budget-select-label">Budget</InputLabel>
-      <Select
-        labelId="budget-select-label"
-        id="budget-select"
-        value={filterBudget}
-        label="Budget"
-        onChange={(e) => setFilterBudget(e.target.value)}
-        size="small"
-      >
-        <MenuItem value="">All</MenuItem>
-        <MenuItem value="500">Less than $500</MenuItem>
-        <MenuItem value="800">Less than $800</MenuItem>
-        <MenuItem value="1000">Less than $1000</MenuItem>
-        <MenuItem value="1200">Less than $1200</MenuItem>
-        <MenuItem value="1500">Less than 1500</MenuItem>
-      </Select>
-    </FormControl>
-    
-        <FormControl sx={{ mb: 4, minWidth: 200 }}>
+        <InputLabel id="budget-select-label">Budget</InputLabel>
+        <Select
+          labelId="budget-select-label"
+          id="budget-select"
+          value={filterBudget}
+          label="Budget"
+          onChange={(e) => setFilterBudget(e.target.value)}
+          size="small"
+        >
+          <MenuItem value="">All</MenuItem>
+          <MenuItem value="500">Less than $500</MenuItem>
+          <MenuItem value="800">Less than $800</MenuItem>
+          <MenuItem value="1000">Less than $1000</MenuItem>
+          <MenuItem value="1200">Less than $1200</MenuItem>
+          <MenuItem value="1500">Less than 1500</MenuItem>
+        </Select>
+      </FormControl>
+
+      <FormControl sx={{ mb: 4, minWidth: 200 }}>
         <InputLabel id="personalTrait-select-label">Personality</InputLabel>
         <Select
           labelId="personalTrait-select-label"
@@ -138,12 +139,17 @@ const ListAllOrganizations = () => {
       </FormControl>
 
 
-      
+
 
       <Grid container spacing={2}>
         {filteredUsers.map((user, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card>
+            <Card sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+              <Avatar
+                src={getImageUrl(user.email)}
+                sx={{ width: 56, height: 56, m: 2 }}
+                alt={`${user.fname} ${user.lname}`}
+              />
               <CardContent>
                 <Typography variant="h5" component="div">
                   {user.fname} {user.lname}
