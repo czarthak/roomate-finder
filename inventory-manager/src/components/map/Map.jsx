@@ -7,7 +7,7 @@ const mapStyle = {
     width: '100%'
 };
 
-const Map3 = ({ token }) => {
+const Map3 = ({ token, userApts }) => {
     const DEFAULT_ZOOM = 15;
     const { isLoaded, loadError } = useJsApiLoader({
         id: 'google-map-script',
@@ -35,10 +35,29 @@ const Map3 = ({ token }) => {
         fetchApartments();
     }, []);
 
+
     useEffect(() => {
         if (isLoaded && apartments.length > 0 && map) {
             const service = new window.google.maps.places.PlacesService(map);
             apartments.forEach(([name, placeId]) => {
+                const request = {
+                    placeId,
+                    fields: ["name", "formatted_address", "place_id", "geometry", "photo", "formatted_phone_number", "rating", "website"],
+                };
+                service.getDetails(request, (place, status) => {
+                    if (status === window.google.maps.places.PlacesServiceStatus.OK && place && place.geometry && place.geometry.location) {
+                        place.marker = new window.google.maps.Marker({
+                            map,
+                            position: place.geometry.location,
+                            title: name,
+                        });
+                        place.marker.addListener("click", () => {
+                            setSelectedApt(place);
+                        });
+                    }
+                });
+            });
+            userApts.forEach(([name, placeId]) => {
                 const request = {
                     placeId,
                     fields: ["name", "formatted_address", "place_id", "geometry", "photo", "formatted_phone_number", "rating", "website"],
