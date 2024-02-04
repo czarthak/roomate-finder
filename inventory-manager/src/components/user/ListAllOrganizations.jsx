@@ -75,6 +75,10 @@ const ListAllOrganizations = () => {
           <MenuItem value="Computer Science">Computer Science</MenuItem>
           <MenuItem value="Engineering">Engineering</MenuItem>
           <MenuItem value="Business">Business</MenuItem>
+          <MenuItem value="Chemistry">Business</MenuItem>
+          <MenuItem value="Math">Business</MenuItem>
+          <MenuItem value="English">Business</MenuItem>
+          <MenuItem value="Economics">Business</MenuItem>
         </Select>
       </FormControl>
 
