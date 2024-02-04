@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 
 
 
-
 const AccountInformation = ({ token }) => {
   const [userInfo, setUserInfo] = useState({
     fname: "",
@@ -24,6 +23,11 @@ const AccountInformation = ({ token }) => {
     budget: "",
     personalTrait: "",
   });
+
+
+ 
+
+
 
   const [initials, setInitials] = useState("");
 
@@ -167,14 +171,20 @@ const AccountInformation = ({ token }) => {
         />
 
         {/* Additional fields for user information */}
-        <label htmlFor="year">Year (Freshman, Sophmore, etc..)</label>
-        <input
-          type="text"
+        <label htmlFor="year">Year </label>
+        <select
           id="year"
           name="year"
           value={userInfo.year}
           onChange={handleChange}
-        />
+        >
+          <option value="Freshman">Freshman</option>
+          <option value="Sophomore">Sophomore</option>
+          <option value="Junior">Junior</option>
+          <option value="Senior">Senior</option>
+          <option value="Grad">Grad</option>
+        </select>
+
 
         <label htmlFor="major">Major</label>
         <input

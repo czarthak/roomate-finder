@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS USER (
 );
 
 INSERT INTO USER (email, lname, fname, password, phone_number) VALUES
-('johnsmith@example.com', 'Smith', 'John', 'password123', '123-456-7890'),
+
 ('alicedoe@example.com', 'Doe', 'Alice', 'securepass', '987-654-3210'),
 ('lukebrown@example.com', 'Brown', 'Luke', 'securepass1', '987-654-3211'),
 ('oliviabell@example.com', 'Bell', 'Olivia', 'securepass2', '987-654-3212'),
@@ -26,6 +26,8 @@ INSERT INTO USER (email, lname, fname, password, phone_number) VALUES
 ('anthonypeters@example.com', 'Peters', 'Anthony', 'securepass4', '987-654-3214'),
 ('emilyjohnson@example.com', 'Johnson', 'Emily', 'sciencePass', '8888888888');
 
+INSERT INTO USER (email, lname, fname, password, phone_number, year, major, bio, existing_apart, prefer_apart, budget, personal_trait) VALUES
+('johnsmith@example.com', 'Smith', 'John', 'password123', '123-456-7890', 'freshman', 'Computer Science', 'Hi my name is John', 'idk', 'idk', '800.0', 'EJFG');
 # SELECT * FROM USER;   
 -- DELETE FROM USER;
 
