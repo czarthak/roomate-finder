@@ -15,7 +15,6 @@ CREATE TABLE IF NOT EXISTS USER (
     PRIMARY KEY (email)
 );
 INSERT INTO USER (email, lname, fname, password, phone_number) VALUES
-
 ('alicedoe@example.com', 'Doe', 'Alice', 'securepass', '987-654-3210'),
 ('lukebrown@example.com', 'Brown', 'Luke', 'securepass1', '987-654-3211'),
 ('oliviabell@example.com', 'Bell', 'Olivia', 'securepass2', '987-654-3212'),
@@ -23,10 +22,14 @@ INSERT INTO USER (email, lname, fname, password, phone_number) VALUES
 ('anthonypeters@example.com', 'Peters', 'Anthony', 'securepass4', '987-654-3214'),
 ('emilyjohnson@example.com', 'Johnson', 'Emily', 'sciencePass', '8888888888');
 
+INSERT INTO USER (email, lname, fname, password, phone_number, year, major, bio, budget, personal_trait) VALUES
+('johnsmith@example.com', 'Smith', 'John', 'password123', '123-456-7890', 'freshman', 'Computer Science', 'Hi my name is John', '800.0', 'EJFG');
+
 CREATE TABLE IF NOT EXISTS APT (
   email VARCHAR(128) NOT NULL,
   description VARCHAR(512),
   id VARCHAR(256) NOT NULL,
+  PRIMARY KEY (id),
   CONSTRAINT fk_user_apt FOREIGN KEY (email) REFERENCES USER (email)
 );
 INSERT INTO APT(email, description, id) VALUES
@@ -35,21 +38,10 @@ INSERT INTO APT(email, description, id) VALUES
 
 
 
-CREATE TABLE IF NOT EXISTS APT (
-  email VARCHAR(128) NOT NULL,
-  description VARCHAR(512),
-  id VARCHAR(256) NOT NULL,
-  CONSTRAINT fk_user_apt FOREIGN KEY (email) REFERENCES USER (email)
-);
-INSERT INTO APT(email, description, id) VALUES
-('alicedoe@example.com', 'Collegiate Suites & Hunters Ridge, Henry Lane, Blacksburg, VA, USA', 'ChIJWf94jHyVTYgR0piad-XCMWw'),
-('alicedoe@example.com', 'The Edge Apartment Homes, Edge Way, Blacksburg, VA, USA', 'ChIJfTLXfW6VTYgRFpbHGhO5yDE');
-INSERT INTO USER (email, lname, fname, password, phone_number, year, major, bio, existing_apart, prefer_apart, budget, personal_trait) VALUES
-('johnsmith@example.com', 'Smith', 'John', 'password123', '123-456-7890', 'freshman', 'Computer Science', 'Hi my name is John', 'idk', 'idk', '800.0', 'EJFG');
 
 
-INSERT INTO USER (email, lname, fname, password, phone_number, year, major, bio, existing_apart, prefer_apart, budget, personal_trait) VALUES
-('johnsmith@example.com', 'Smith', 'John', 'password123', '123-456-7890', 'freshman', 'Computer Science', 'Hi my name is John', 'idk', 'idk', '800.0', 'EJFG');
+
+
 # SELECT * FROM USER;   
 -- DELETE FROM USER;
 
