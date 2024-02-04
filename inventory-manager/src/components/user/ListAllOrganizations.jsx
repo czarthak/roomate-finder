@@ -1,9 +1,8 @@
 //import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Box, Card, CardContent, Typography, CardActions, Button, Grid, TextField, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel } from '@mui/material';
-import { TextField, Avatar } from '@mui/material';
-import React, { useState, useEffect, Avatar } from 'react';
+import { Box, Card, CardContent, Typography, CardActions, Button, Grid, TextField, Avatar, FormControl, InputLabel, Select, MenuItem, Checkbox, FormControlLabel } from '@mui/material';
+import React, { useState, useEffect} from 'react';
 
 
 const ListAllOrganizations = () => {
@@ -45,6 +44,13 @@ const ListAllOrganizations = () => {
       budgetCondition && traitCondition
     );
   });
+  const getImageUrl = (email) => {
+    const imageName = email.replace(/[@.]/g, '') + '.jpeg';
+    console.log(imageName);
+    // Update the path according to where your images are served from
+    const imageUrl = `${process.env.PUBLIC_URL}/${imageName}`;
+    return imageUrl;
+  };
   return (
     <Box sx={{ flexGrow: 1, p: 2 }}>
       <TextField
@@ -69,6 +75,10 @@ const ListAllOrganizations = () => {
           <MenuItem value="Computer Science">Computer Science</MenuItem>
           <MenuItem value="Engineering">Engineering</MenuItem>
           <MenuItem value="Business">Business</MenuItem>
+          <MenuItem value="Chemistry">Business</MenuItem>
+          <MenuItem value="Math">Business</MenuItem>
+          <MenuItem value="English">Business</MenuItem>
+          <MenuItem value="Economics">Business</MenuItem>
         </Select>
       </FormControl>
 
@@ -174,7 +184,7 @@ const ListAllOrganizations = () => {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small" onClick={() => navigate(`/users/${user.email}/details`)}>View Details</Button>
+                <Button size="small" onClick={() => navigate(`/dashboard/${user.email}`)}>View Details</Button>
               </CardActions>
             </Card>
           </Grid>

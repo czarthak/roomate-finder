@@ -39,7 +39,7 @@ const UserInfo = ({ email }) => {
                     <p><strong>Budget:</strong> ${userData.user[4]}</p>
                     <p><strong>Personality Type:</strong> {userData.user[5]}</p>
                     <p><strong>Major:</strong> {userData.user[6]}</p>
-                    <h3>Shortlisted Apartments</h3>
+                    <h3>Their Shortlisted Apartments</h3>
                     <ul>
                         {userData.descriptions.map((apt, index) => (
                             <li key={index}>{apt[0]}</li>
