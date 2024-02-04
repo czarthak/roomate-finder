@@ -10,7 +10,43 @@ const AccountInformation = ({ token }) => {
     password: "",
     phoneNumber: "",
     email: "",
+    year: "",
+    major: "",
+    bio: "",
+    existingApart: "",
+    preferApart: "",
+    budget: "",
+    personalTrait: "",
   });
+
+  const [initials, setInitials] = useState("");
+
+  const [profilePic, setProfilePic] = useState(localStorage.getItem('profilePic') || '');
+
+  useEffect(() => {
+    // When userInfo is fetched or updated, update the initials
+    if (userInfo.fname && userInfo.lname) {
+      const initials = `${userInfo.fname[0]}${userInfo.lname[0]}`.toUpperCase();
+      setInitials(initials);
+    }
+  }, [userInfo]);
+
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result;
+        localStorage.setItem('profilePic', base64String); // Save to local storage
+        setProfilePic(base64String); // Update state
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const goToPersonalityTest = () => {
+
+  };
 
   const [updateSuccess, setUpdateSuccess] = useState(false);
 
@@ -21,7 +57,6 @@ const AccountInformation = ({ token }) => {
 
   const getUserInfo = async () => {
     try {
-      // console.log(token);
       const response = await Axios.post("http://localhost:8080/user/user", {
         jwt: token.jwt,
       });
@@ -29,17 +64,12 @@ const AccountInformation = ({ token }) => {
     } catch (error) {
       console.error("Error fetching user information:", error);
     }
-    console.log(userInfo);
   };
 
   const handleUpdate = async () => {
     try {
       const response = await Axios.put("http://localhost:8080/user/update", {
-        fname: userInfo.fname,
-        lname: userInfo.lname,
-        password: userInfo.password,
-        phoneNumber: userInfo.phoneNumber,
-        email: userInfo.email,
+        ...userInfo,
         jwt: token.jwt,
       });
       setUserInfo(response.data);
@@ -60,7 +90,15 @@ const AccountInformation = ({ token }) => {
 
   return (
     <div className="account-info-container">
-      <h2>Account Information</h2>
+      <div className="profile-side">
+        {profilePic ? (
+          <img src={profilePic} alt="Profile" className="profile-picture" />
+        ) : (
+          <div className="initials-circle">{/* User initials here */}</div>
+        )}
+        <input type="file" onChange={handleImageUpload} />
+      </div>
+      <h2>Profile Information</h2>
       {updateSuccess && (
         <p className="success-message">Information updated successfully!</p>
       )}
@@ -109,6 +147,77 @@ const AccountInformation = ({ token }) => {
           value={userInfo.email}
           onChange={handleChange}
         />
+
+        {/* Additional fields for user information */}
+        <label htmlFor="year">Year (Freshman, Sophmore, etc..)</label>
+        <input
+          type="text"
+          id="year"
+          name="year"
+          value={userInfo.year}
+          onChange={handleChange}
+        />
+
+        <label htmlFor="major">Major</label>
+        <input
+          type="text"
+          id="major"
+          name="major"
+          value={userInfo.major}
+          onChange={handleChange}
+        />
+
+        <label htmlFor="bio">Biography (A little about yourself)</label>
+        <textarea
+          id="bio"
+          name="bio"
+          value={userInfo.bio}
+          onChange={handleChange}
+        />
+
+        <label htmlFor="existingApart">Existing Apartment (Leave empty if not applicable)</label>
+        <input
+          type="text"
+          id="existingApart"
+          name="existingApart"
+          value={userInfo.existingApart}
+          onChange={handleChange}
+        />
+
+        <label htmlFor="preferApart">Preferred Apartment</label>
+        <input
+          type="text"
+          id="preferApart"
+          name="preferApart"
+          value={userInfo.preferApart}
+          onChange={handleChange}
+        />
+
+        <label htmlFor="budget">Budget (Per Month)</label>
+        <input
+          type="text"
+          id="budget"
+          name="budget"
+          value={userInfo.budget}
+          onChange={handleChange}
+        />
+
+        <p>If you would like advanced search options, taking our custom personality test would enhance your results</p>
+
+        <label htmlFor="personalTrait">Personality Test Result</label>
+        <input
+          type="text"
+          id="personalTrait"
+          name="personalTrait"
+          value={userInfo.personalTrait}
+          onChange={handleChange}
+        />
+
+        <div>
+          <button type="button" onClick={goToPersonalityTest}>
+            Take Personality Test
+          </button>
+        </div>
 
         <button type="button" onClick={handleUpdate}>
           Update Information

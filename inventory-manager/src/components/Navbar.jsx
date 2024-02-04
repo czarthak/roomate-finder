@@ -32,7 +32,7 @@ export const Navbar = ({ token }) => {
           ) : (
             <>
               <li>
-                <NavLink to="/accountinfo">Account Information</NavLink>
+                <NavLink to="/accountinfo">Profile Information</NavLink>
               </li>
               <li>
                 <NavLink to="/myorganizations">My Organizations</NavLink>

@@ -1,11 +1,32 @@
 package com.example.accessingdatamysql;
 
-
 import jakarta.persistence.*;
 
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "USER")
 public class User {
+
+    private String fname;
+
+    private String lname;
+
+    private String password;
+
+    private String phoneNumber;
+
+    private String year;
+
+    private String major;
+
+    private String bio;
+
+    private String existingApart;
+
+    private String preferApart;
+
+    private String budget;
+
+    private String personalTrait;
 
     public String getFname() {
         return fname;
@@ -39,14 +60,71 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getYear() {
+        return year;
+    }
 
-    private String fname;
+    public void setYear(String year) {
+        this.year = year;
+    }
 
-    private String lname;
+    public String getMajor() {
+        return major;
+    }
 
-    private String password;
+    public void setMajor(String major) {
+        this.major = major;
+    }
 
-    private String phoneNumber;
+    // Getter for bio
+    public String getBio() {
+        return bio;
+    }
+
+    // Setter for bio
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    // Getter for existingApart
+    public String getExistingApart() {
+        return existingApart;
+    }
+
+    // Setter for existingApart
+    public void setExistingApart(String existingApart) {
+        this.existingApart = existingApart;
+    }
+
+    // Getter for preferApart
+    public String getPreferApart() {
+        return preferApart;
+    }
+
+    // Setter for preferApart
+    public void setPreferApart(String preferApart) {
+        this.preferApart = preferApart;
+    }
+
+    // Getter for budget
+    public String getBudget() {
+        return budget;
+    }
+
+    // Setter for budget
+    public void setBudget(String budget) {
+        this.budget = budget;
+    }
+
+    // Getter for personalTrait
+    public String getPersonalTrait() {
+        return personalTrait;
+    }
+
+    // Setter for personalTrait
+    public void setPersonalTrait(String personalTrait) {
+        this.personalTrait = personalTrait;
+    }
 
     @Id
     @Column(nullable = false)
