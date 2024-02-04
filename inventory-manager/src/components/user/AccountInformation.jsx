@@ -19,7 +19,6 @@ const AccountInformation = ({ token }) => {
     year: "",
     major: "",
     bio: "",
-    existingApart: "",
     preferApart: "",
     budget: "",
     personalTrait: "",
@@ -79,7 +78,12 @@ const AccountInformation = ({ token }) => {
       const response = await Axios.post("http://localhost:8080/user/user", {
         jwt: token.jwt,
       });
-      setUserInfo(response.data);
+      console.log(response);
+      if (response.data.result != "success")
+      {
+        console.error("Error fetching user information:");
+      }
+      setUserInfo(response.data.user);
     } catch (error) {
       console.error("Error fetching user information:", error);
     }

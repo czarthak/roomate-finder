@@ -10,7 +10,6 @@ CREATE TABLE IF NOT EXISTS USER (
     year VARCHAR(255),
     major VARCHAR(255),
     bio TEXT,
-    prefer_apart VARCHAR(255),
     budget DECIMAL(10,2),
     personal_trait VARCHAR(255),
     PRIMARY KEY (email)

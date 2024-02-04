@@ -1,4 +1,6 @@
 package com.example.accessingdatamysql.apt;
+import com.example.accessingdatamysql.User;
+import com.example.accessingdatamysql.auth.AuthController;
 import com.example.accessingdatamysql.myorg.OrgRosterRepository;
 import com.example.accessingdatamysql.myorg.OrganizationRoster;
 import com.example.accessingdatamysql.org.Organization;
@@ -17,18 +19,40 @@ public class AptController {
     @Autowired
     private CustomAptRepository customAptRepository;
 
+
     @PostMapping(path="/user/desc")
-    public @ResponseBody Map<String, Object> getUserDesc(@RequestBody Map<String, Object> json)
+    public @ResponseBody Map<String, Object> getUserDesc(@RequestBody Map<String, String> json)
     {
         // This returns a JSON or XML with the users
         Map<String, Object> response = new HashMap<>();
-        if (!json.containsKey("email"))
+        if (!json.containsKey("user"))
         {
             response.put("result", "failure - bad request");
             return response;
         }
         response.put("result", "success");
-        response.put("descriptions" , customAptRepository.getAptDescriptions((String) json.get("email")));
+        response.put("descriptions" , customAptRepository.getAptDescriptions((String) json.get("user")));
+        return response;
+    }
+
+    @PostMapping(path="/user/delete")
+    public @ResponseBody Map<String, Object> deleteUserApt(@RequestBody Map<String, Object> json)
+    {
+        Map<String, Object> response = new HashMap<>();
+        if (!json.containsKey("jwt") || !json.containsKey("id") )
+        {
+            response.put("result", "failed = bad request");
+        }
+        User found = new User();
+        AuthController au = new AuthController();
+        Map<String, String> res = au.verify(json); // if the jwt token could not be verified
+        if (res.containsKey("login") && res.get("login").equals("failed"))
+        {
+            response.put("result", "failed = bad token");
+            return response;
+        }
+        response.put("result", "success");
+        response.put("apt deleted:", customAptRepository.deleteApt(res.get("user"), (String) json.get("id")));
         return response;
     }
 }

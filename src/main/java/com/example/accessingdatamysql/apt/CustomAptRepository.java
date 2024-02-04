@@ -18,10 +18,20 @@ public class CustomAptRepository {
     @Transactional
     public List<Object[]> getAptDescriptions(String email)
     {
-        String query = "SELECT description FROM APT WHERE email = ?1";
+        String query = "SELECT description, id FROM APT WHERE email = ?1";
 
         Query q = this.entityManager.createNativeQuery(query)
                 .setParameter(1, email);
         return (List<Object[]>)q.getResultList();
+    }
+    @Transactional
+    public boolean deleteApt(String email, String id)
+    {
+        String query = "DELETE FROM APT a WHERE a.email = ?1 AND a.id = ?2";
+
+        Query q = this.entityManager.createNativeQuery(query)
+                .setParameter(1, email)
+                .setParameter(2, id);
+        return q.executeUpdate() != 0;
     }
 }
