@@ -10,10 +10,10 @@ CREATE TABLE IF NOT EXISTS USER (
     year VARCHAR(255),
     major VARCHAR(255),
     bio TEXT,
-    existingApart VARCHAR(255),
-    preferApart VARCHAR(255),
+    existing_apart VARCHAR(255),
+    prefer_apart VARCHAR(255),
     budget DECIMAL(10,2),
-    personalTrait VARCHAR(255);
+    personal_trait VARCHAR(255),
     PRIMARY KEY (email)
 );
 

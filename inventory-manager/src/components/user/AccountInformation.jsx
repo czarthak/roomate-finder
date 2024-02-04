@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import PropTypes from "prop-types";
 import "./AccountInformation.css"; // Import your external CSS file
-
+import Places from "../map/places";
 const AccountInformation = ({ token }) => {
   const [userInfo, setUserInfo] = useState({
     fname: "",
@@ -223,6 +223,8 @@ const AccountInformation = ({ token }) => {
           Update Information
         </button>
       </div>
+      <label> Add some places you'd want to live at here </label>
+      <Places />
     </div>
   );
 };
