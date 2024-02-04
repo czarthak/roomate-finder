@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import PropTypes from "prop-types";
 import "./AccountInformation.css"; // Import your external CSS file
+import Places from "../map/places";
 import { useNavigate } from "react-router-dom"; // Import useNavigate hook
 import { Link } from "react-router-dom";
 
@@ -36,20 +37,34 @@ const AccountInformation = ({ token }) => {
     }
   }, [userInfo]);
 
+
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
+    // Replace with how you get the user's email
+
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result;
-        localStorage.setItem('profilePic', base64String); // Save to local storage
-        setProfilePic(base64String); // Update state
-      };
-      reader.readAsDataURL(file);
+      const formData = new FormData();
+      formData.append('imageFile', file);
+
+      // Include the email in the URL as a query parameter
+      const url = `http://localhost:8080/user/img?token=${encodeURIComponent(token.jwt)}`;
+
+      Axios.post(url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+        .then(response => {
+          console.log('Image uploaded successfully:', response.data);
+        })
+        .catch(error => {
+          console.error('Error uploading image:', error);
+        });
     }
   };
 
-  
+
+
 
   const [updateSuccess, setUpdateSuccess] = useState(false);
 
@@ -244,6 +259,8 @@ const AccountInformation = ({ token }) => {
           Update Information
         </button>
       </div>
+      <label> Add some places you'd want to live at here </label>
+      <Places />
     </div>
   );
 };

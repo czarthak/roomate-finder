@@ -31,10 +31,10 @@ import MyRequests from "./components/myrequests/MyRequests";
 import OrgChart from "./components/stats/OrgChart";
 import LocationInformation from "./components/myorg/location/LocationInformation";
 import ItemStats from "./components/myorg/item/ItemStats";
-
 function App() {
   // const [token, setToken] = useState();
   const { token, setToken } = useToken();
+  const API_KEY =`${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`;
   // const token = getToken();
   // if (!token)
   // {
