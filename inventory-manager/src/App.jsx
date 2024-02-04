@@ -2,6 +2,8 @@ import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import { Navbar } from "./components/Navbar";
 import { Home } from "./components/Home";
+
+import PersonalityTest from "./components/user/PersonalityTest";
 import {
   DeleteUser,
   Login,
@@ -47,7 +49,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login setToken={setToken} />} />
         <Route path="/register" element={<Register />} />
+        {/* For the personality test */}
         <Route element={<PrivateRoutes token={token} />}>
+        <Route path="/personality-test" element={<PersonalityTest />} /> 
           <Route
             path="/accountinfo"
             element={<AccountInformation token={token} />}
@@ -136,7 +140,7 @@ function App() {
         <Route path="/allorganizationstatistics" element={<OrgChart />} />
       </Routes>
     </div>
-  );
+  ); 
 }
 
 export default App;

@@ -3,6 +3,12 @@ import Axios from "axios";
 import PropTypes from "prop-types";
 import "./AccountInformation.css"; // Import your external CSS file
 import Places from "../map/places";
+import { useNavigate } from "react-router-dom"; // Import useNavigate hook
+import { Link } from "react-router-dom";
+
+
+
+
 const AccountInformation = ({ token }) => {
   const [userInfo, setUserInfo] = useState({
     fname: "",
@@ -32,22 +38,34 @@ const AccountInformation = ({ token }) => {
     }
   }, [userInfo]);
 
+
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
+    // Replace with how you get the user's email
+
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64String = reader.result;
-        localStorage.setItem('profilePic', base64String); // Save to local storage
-        setProfilePic(base64String); // Update state
-      };
-      reader.readAsDataURL(file);
+      const formData = new FormData();
+      formData.append('imageFile', file);
+
+      // Include the email in the URL as a query parameter
+      const url = `http://localhost:8080/user/img?token=${encodeURIComponent(token.jwt)}`;
+
+      Axios.post(url, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+        .then(response => {
+          console.log('Image uploaded successfully:', response.data);
+        })
+        .catch(error => {
+          console.error('Error uploading image:', error);
+        });
     }
   };
 
-  const goToPersonalityTest = () => {
 
-  };
+
 
   const [updateSuccess, setUpdateSuccess] = useState(false);
 
@@ -204,9 +222,19 @@ const AccountInformation = ({ token }) => {
           onChange={handleChange}
         />
 
-        <p>If you would like advanced search options, taking our custom personality test would enhance your results</p>
+        <p></p>
 
-        <label htmlFor="personalTrait">Personality Test Result</label>
+        <div className="home-container">
+        
+        <h2>Discover Your Roomie Match</h2>
+        <p>
+          Unlock a more personalized roommate matching experience by sharing your personality type.
+        </p>
+        <p>
+          Knowing your personality type helps us find the roommate who complements you best. Enter your 16-personality type (e.g., INFP, ESTJ, etc.) below:
+        </p>
+        
+        <label htmlFor="personalTrait">Personality Test Result:</label>
         <input
           type="text"
           id="personalTrait"
@@ -214,12 +242,20 @@ const AccountInformation = ({ token }) => {
           value={userInfo.personalTrait}
           onChange={handleChange}
         />
+        
+        <p>
+        Not sure of your personality type? No problem! Take our custom Test
+        <Link to="/personality-test" className="personality-test-button">
+        <b>Start Now</b>  
+        </Link>
+        
+</p>
+        
+       
+        
+        
+      </div>
 
-        <div>
-          <button type="button" onClick={goToPersonalityTest}>
-            Take Personality Test
-          </button>
-        </div>
 
         <button type="button" onClick={handleUpdate}>
           Update Information

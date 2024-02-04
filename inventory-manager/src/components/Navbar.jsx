@@ -45,7 +45,7 @@ export const Navbar = ({ token }) => {
               </li>
               <li>
                 <NavLink to="/listallorganizations">
-                  List All Organizations
+                  Find Roomates
                 </NavLink>
               </li>
               <li>
