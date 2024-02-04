@@ -31,6 +31,8 @@ import MyRequests from "./components/myrequests/MyRequests";
 import OrgChart from "./components/stats/OrgChart";
 import LocationInformation from "./components/myorg/location/LocationInformation";
 import ItemStats from "./components/myorg/item/ItemStats";
+import Map3 from "./components/map/Map";
+import Second from "./components/map/Second";
 function App() {
   // const [token, setToken] = useState();
   const { token, setToken } = useToken();
@@ -49,8 +51,12 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login setToken={setToken} />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/second" element={<Second />} />
         {/* For the personality test */}
         <Route element={<PrivateRoutes token={token} />}>
+        <Route element={<PrivateRoutes token={token} />}>
+          <Route path="/map" element={<Map3 token={token}/>} />
+        </Route>
         <Route path="/personality-test" element={<PersonalityTest />} /> 
           <Route
             path="/accountinfo"
