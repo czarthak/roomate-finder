@@ -20,10 +20,6 @@ public class User {
 
     private String bio;
 
-    private String existingApart;
-
-    private String preferApart;
-
     private String budget;
 
     private String personalTrait;
@@ -86,25 +82,6 @@ public class User {
         this.bio = bio;
     }
 
-    // Getter for existingApart
-    public String getExistingApart() {
-        return existingApart;
-    }
-
-    // Setter for existingApart
-    public void setExistingApart(String existingApart) {
-        this.existingApart = existingApart;
-    }
-
-    // Getter for preferApart
-    public String getPreferApart() {
-        return preferApart;
-    }
-
-    // Setter for preferApart
-    public void setPreferApart(String preferApart) {
-        this.preferApart = preferApart;
-    }
 
     // Getter for budget
     public String getBudget() {

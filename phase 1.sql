@@ -10,13 +10,11 @@ CREATE TABLE IF NOT EXISTS USER (
     year VARCHAR(255),
     major VARCHAR(255),
     bio TEXT,
-    existing_apart VARCHAR(255),
     prefer_apart VARCHAR(255),
     budget DECIMAL(10,2),
     personal_trait VARCHAR(255),
     PRIMARY KEY (email)
 );
-
 INSERT INTO USER (email, lname, fname, password, phone_number) VALUES
 ('johnsmith@example.com', 'Smith', 'John', 'password123', '123-456-7890'),
 ('alicedoe@example.com', 'Doe', 'Alice', 'securepass', '987-654-3210'),
@@ -25,6 +23,18 @@ INSERT INTO USER (email, lname, fname, password, phone_number) VALUES
 ('melissajones@example.com', 'Jones', 'Melissa', 'securepass3', '987-654-3213'),
 ('anthonypeters@example.com', 'Peters', 'Anthony', 'securepass4', '987-654-3214'),
 ('emilyjohnson@example.com', 'Johnson', 'Emily', 'sciencePass', '8888888888');
+
+CREATE TABLE IF NOT EXISTS APT (
+  email VARCHAR(128) NOT NULL,
+  description VARCHAR(512),
+  id VARCHAR(256) NOT NULL,
+  CONSTRAINT fk_user_apt FOREIGN KEY (email) REFERENCES USER (email)
+);
+INSERT INTO APT(email, description, id) VALUES
+('alicedoe@example.com', 'Collegiate Suites & Hunters Ridge, Henry Lane, Blacksburg, VA, USA', 'ChIJWf94jHyVTYgR0piad-XCMWw'),
+('alicedoe@example.com', 'The Edge Apartment Homes, Edge Way, Blacksburg, VA, USA', 'ChIJfTLXfW6VTYgRFpbHGhO5yDE');
+
+
 
 # SELECT * FROM USER;   
 -- DELETE FROM USER;

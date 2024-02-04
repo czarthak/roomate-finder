@@ -19,6 +19,7 @@ const AccountInformation = ({ token }) => {
     personalTrait: "",
   });
 
+
   const [initials, setInitials] = useState("");
 
   const [profilePic, setProfilePic] = useState(localStorage.getItem('profilePic') || '');
@@ -78,6 +79,14 @@ const AccountInformation = ({ token }) => {
     } catch (error) {
       console.error("Error updating user information:", error);
     }
+  };
+
+  const handleLocationSelect = (location) => {
+    console.log(location);
+    setUserInfo((prevUserInfo) => ({
+      ...prevUserInfo,
+      preferApart: location.description, // Set preferApart to the selected location
+    }));
   };
 
   const handleChange = (e) => {
@@ -174,17 +183,10 @@ const AccountInformation = ({ token }) => {
           value={userInfo.bio}
           onChange={handleChange}
         />
+        <label> Add some places you'd want to live at here </label>
+        <Places handleLocationSelect={handleLocationSelect}/>
 
-        <label htmlFor="existingApart">Existing Apartment (Leave empty if not applicable)</label>
-        <input
-          type="text"
-          id="existingApart"
-          name="existingApart"
-          value={userInfo.existingApart}
-          onChange={handleChange}
-        />
-
-        <label htmlFor="preferApart">Preferred Apartment</label>
+        <label htmlFor="preferApart">Apartments you'd like to live at</label>
         <input
           type="text"
           id="preferApart"
@@ -223,8 +225,7 @@ const AccountInformation = ({ token }) => {
           Update Information
         </button>
       </div>
-      <label> Add some places you'd want to live at here </label>
-      <Places />
+
     </div>
   );
 };
