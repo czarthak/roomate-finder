@@ -3,6 +3,11 @@ import Axios from "axios";
 import PropTypes from "prop-types";
 import "./AccountInformation.css"; // Import your external CSS file
 import Places from "../map/places";
+import { useNavigate } from "react-router-dom"; // Import useNavigate hook
+import { Link } from "react-router-dom";
+
+
+
 const AccountInformation = ({ token }) => {
   const [userInfo, setUserInfo] = useState({
     fname: "",
@@ -18,6 +23,11 @@ const AccountInformation = ({ token }) => {
     budget: "",
     personalTrait: "",
   });
+
+
+
+
+
 
   const [initials, setInitials] = useState("");
 
@@ -41,7 +51,7 @@ const AccountInformation = ({ token }) => {
       formData.append('imageFile', file);
 
       // Include the email in the URL as a query parameter
-      const url = `http://localhost:8080/user/img?token=${encodeURIComponent(token.jwt)}`;
+      const url = `http://localhost:8080/user/img?email=${encodeURIComponent(userInfo.email)}`;
 
       Axios.post(url, formData, {
         headers: {
@@ -161,14 +171,20 @@ const AccountInformation = ({ token }) => {
         />
 
         {/* Additional fields for user information */}
-        <label htmlFor="year">Year (Freshman, Sophmore, etc..)</label>
-        <input
-          type="text"
+        <label htmlFor="year">Year </label>
+        <select
           id="year"
           name="year"
           value={userInfo.year}
           onChange={handleChange}
-        />
+        >
+          <option value="Freshman">Freshman</option>
+          <option value="Sophomore">Sophomore</option>
+          <option value="Junior">Junior</option>
+          <option value="Senior">Senior</option>
+          <option value="Grad">Grad</option>
+        </select>
+
 
         <label htmlFor="major">Major</label>
         <input
@@ -214,22 +230,40 @@ const AccountInformation = ({ token }) => {
           onChange={handleChange}
         />
 
-        <p>If you would like advanced search options, taking our custom personality test would enhance your results</p>
+        <p></p>
 
-        <label htmlFor="personalTrait">Personality Test Result</label>
-        <input
-          type="text"
-          id="personalTrait"
-          name="personalTrait"
-          value={userInfo.personalTrait}
-          onChange={handleChange}
-        />
+        <div className="home-container">
 
-        <div>
-          <button type="button">
-            Take Personality Test
-          </button>
+          <h2>Discover Your Roomie Match</h2>
+          <p>
+            Unlock a more personalized roommate matching experience by sharing your personality type.
+          </p>
+          <p>
+            Knowing your personality type helps us find the roommate who complements you best. Enter your 16-personality type (e.g., INFP, ESTJ, etc.) below:
+          </p>
+
+          <label htmlFor="personalTrait">Personality Test Result:</label>
+          <input
+            type="text"
+            id="personalTrait"
+            name="personalTrait"
+            value={userInfo.personalTrait}
+            onChange={handleChange}
+          />
+
+          <p>
+            Not sure of your personality type? No problem! Take our custom Test
+            <Link to="/personality-test" className="personality-test-button">
+              <b>Start Now</b>
+            </Link>
+
+          </p>
+
+
+
+
         </div>
+
 
         <button type="button" onClick={handleUpdate}>
           Update Information
@@ -248,3 +282,4 @@ AccountInformation.propTypes = {
 };
 
 export default AccountInformation;
+
