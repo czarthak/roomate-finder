@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS USER (
 INSERT INTO USER (email, lname, fname, password, phone_number, year, major, bio, budget, personal_trait)
 VALUES
     ('john.doe@example.com', 'Doe', 'John', 'password123', '123-456-7890', 'Senior', 'Computer Science', 'I love coding and exploring new technologies.', 500.00, 'IJTG'),
-    ('jane.smith@example.com', 'Smith', 'Jane', 'pass456', '987-654-3210', 'Junior', 'Electrical', 'Passionate about renewable energy and sustainable solutions.', 700.00, 'ENTG'),
+    ('janesmith@example.com', 'Smith', 'Jane', 'pass456', '987-654-3210', 'Junior', 'Electrical', 'Passionate about renewable energy and sustainable solutions.', 700.00, 'ENTG'),
     ('mike.jackson@example.com', 'Jackson', 'Mike', 'mikepass', '555-555-5555', 'Sophomore', 'Business', 'Entrepreneur with a focus on innovation and growth.', 1100.00, 'INFP'),
     ('emily.jones@example.com', 'Jones', 'Emily', 'em123', '777-888-9999', 'Freshman', 'Psychology', 'Exploring the human mind and behavior is my passion.', 1500.00, 'INFG'),
     ('david.white@example.com', 'White', 'David', 'davidpass', '333-222-1111', 'Senior', 'Computer Science', 'Designing machines that make a difference in the world.', 2000.00, 'INTJ'),

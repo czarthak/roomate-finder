@@ -1,9 +1,6 @@
 package com.example.accessingdatamysql.apt;
 import com.example.accessingdatamysql.User;
 import com.example.accessingdatamysql.auth.AuthController;
-import com.example.accessingdatamysql.myorg.OrgRosterRepository;
-import com.example.accessingdatamysql.myorg.OrganizationRoster;
-import com.example.accessingdatamysql.org.Organization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
