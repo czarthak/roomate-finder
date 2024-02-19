@@ -9,7 +9,7 @@ export default function useToken() {
     const userToken = JSON.parse(tokenString);
     console.log(userToken);
     if (userToken.jwt != null) {
-      // Axios.post("http://localhost:8080/auth/verify", {
+      // Axios.post("http://3.95.226.179:8080/auth/verify", {
       //   jwt: userToken.jwt
       // }).then((response) => {
       //   console.log(response);

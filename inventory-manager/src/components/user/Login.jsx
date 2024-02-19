@@ -3,7 +3,7 @@ import Axios from "axios";
 import PropTypes from "prop-types";
 import { Link, Navigate } from "react-router-dom"; // Import Link from React Router
 import "./Login.css"; // Import your external CSS file
-
+import "../../.env";
 export const Login = ({ setToken }) => {
   const [email, setEmail] = useState();
   const [pass, setPass] = useState();
