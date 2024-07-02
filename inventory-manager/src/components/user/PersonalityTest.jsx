@@ -29,7 +29,6 @@ const PersonalityTest = () => {
     event.preventDefault();
     const personalityType = calculateResult();
     setResult(`Your personality type is: ${personalityType}`); // Update the result state
-    
   };
 
   return (
@@ -40,52 +39,48 @@ const PersonalityTest = () => {
 
       <form onSubmit={handleSubmit}>
         {/* Question 1 */}
-        
-        {/* Question 1 */}
         <div className="question">
-        <p>Do you find yourself rejuvenated by social gatherings and conversations with others?</p>
-        <label className={answers.energy === 'E' ? 'label-selected' : ''}>
+          <p>Do you find yourself rejuvenated by social gatherings and conversations with others?</p>
+          <label className={answers.energy === 'E' ? 'label-selected' : ''}>
             <input type="radio" name="energy" value="E" onChange={() => handleOptionChange('energy', 'E')} /> Yes
-        </label>
-        <label className={answers.energy === 'I' ? 'label-selected' : ''}>
+          </label>
+          <label className={answers.energy === 'I' ? 'label-selected' : ''}>
             <input type="radio" name="energy" value="I" onChange={() => handleOptionChange('energy', 'I')} /> No
-        </label>
+          </label>
         </div>
-
 
         {/* Question 2 */}
         <div className="question">
-        <p>When making decisions, do you prefer to focus on practical, real-world details rather than abstract concepts and possibilities?</p>
-        <label className={answers.information === 'S' ? 'label-selected' : ''}>
+          <p>Do you prefer to focus on practical, real-world details rather than abstract concepts and possibilities?</p>
+          <label className={answers.information === 'S' ? 'label-selected' : ''}>
             <input type="radio" name="information" value="S" onChange={() => handleOptionChange('information', 'S')} /> Yes
-        </label>
-        <label className={answers.information === 'N' ? 'label-selected' : ''}>
+          </label>
+          <label className={answers.information === 'N' ? 'label-selected' : ''}>
             <input type="radio" name="information" value="N" onChange={() => handleOptionChange('information', 'N')} /> No
-        </label>
+          </label>
         </div>
 
         {/* Question 3 */}
         <div className="question">
-        <p>When making decisions, do you rely more on logic and objective analysis than on your personal values and emotional considerations?</p>
-        <label className={answers.decisions === 'T' ? 'label-selected' : ''}>
+          <p>Do you rely more on logic and objective analysis than on personal values and emotional considerations?</p>
+          <label className={answers.decisions === 'T' ? 'label-selected' : ''}>
             <input type="radio" name="decisions" value="T" onChange={() => handleOptionChange('decisions', 'T')} /> Yes
-        </label>
-        <label className={answers.decisions === 'F' ? 'label-selected' : ''}>
+          </label>
+          <label className={answers.decisions === 'F' ? 'label-selected' : ''}>
             <input type="radio" name="decisions" value="F" onChange={() => handleOptionChange('decisions', 'F')} /> No
-        </label>
+          </label>
         </div>
 
         {/* Question 4 */}
         <div className="question">
-        <p>Do you enjoy planning ahead and sticking to a structured schedule over not having a plan at all?</p>
-        <label className={answers.lifestyle === 'J' ? 'label-selected' : ''}>
+          <p>Do you enjoy planning ahead and sticking to a structured schedule?</p>
+          <label className={answers.lifestyle === 'J' ? 'label-selected' : ''}>
             <input type="radio" name="lifestyle" value="J" onChange={() => handleOptionChange('lifestyle', 'J')} /> Yes
-        </label>
-        <label className={answers.lifestyle === 'P' ? 'label-selected' : ''}>
+          </label>
+          <label className={answers.lifestyle === 'P' ? 'label-selected' : ''}>
             <input type="radio" name="lifestyle" value="P" onChange={() => handleOptionChange('lifestyle', 'P')} /> No
-        </label>
+          </label>
         </div>
-
 
         <button type="submit">Submit</button>
       </form>
@@ -94,11 +89,10 @@ const PersonalityTest = () => {
       {result && <div className="result">{result}</div>}
 
       <p>
-        <Link to="/accountinfo" className="back-link">Back to Account To</Link>
+        <Link to="/accountinfo" className="back-link">Back to Account Info</Link>
       </p>
     </div>
   );
 };
-
 
 export default PersonalityTest;
