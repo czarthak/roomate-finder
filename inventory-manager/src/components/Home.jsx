@@ -24,22 +24,17 @@ export const Home = () => {
     <div className="home-container">
       <h1>Welcome to Roomie Match</h1>
       
-      
-      
       <div>
         <ul>
-        <li><strong>Discover your ideal college roommate with Roomie Match!</strong></li>
+          <li><strong>Discover your ideal college roommate with Roomie Match!</strong></li>
           <li><strong>Find personalized roommate matches</strong></li>
           <li><strong>Filter matches by college, major, and more</strong></li>
         </ul>
       </div>
-      
-      
 
       <div className="login-signup-bubble">
-      <p>Already have an account? <a href="/login">Login</a> If you're new here, <a href="/Register">Sign up</a> and begin your search for the ideal roommate now.</p>
+        <p>Already have an account? <a href="/login">Login</a>. If you're new here, <a href="/register">Sign up</a> and begin your search for the ideal roommate now.</p>
       </div>
-
 
       <div className="images-container">
         <img src={Image1} alt="Roommate Match Feature 1" />
